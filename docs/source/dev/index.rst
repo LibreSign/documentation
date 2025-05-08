@@ -1,15 +1,13 @@
 .. _dev-index:
 
-API
-===
+Desenvolvedor
+========================
 
-.. autosummary::
-   :toctree: generated
+Aqui vai o conteúdo da documentação para o desenvolvedor.
 
-.. redoc::
-   :spec-url: https://libresign.github.io/api/openapi.yaml
-   :embed:
 
-.. raw:: html
+.. toctree::
+   :maxdepth: 1
 
-   <iframe src="http://localhost:8080/swagger/" width="100%" height="900px" style="border: none;"></iframe>
+   guide-api
+   api

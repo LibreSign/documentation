@@ -1,6 +1,6 @@
 .. _user-index:
 
-Documentação do Usuário
+Usuário
 ========================
 
 Aqui vai o conteúdo da documentação para o usuário.
