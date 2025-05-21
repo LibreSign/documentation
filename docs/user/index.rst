@@ -11,3 +11,4 @@ Welcome to the user manual for the software. This documentation is designed to h
    start
    functionality
    faq
+   suport
