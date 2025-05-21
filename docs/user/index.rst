@@ -9,3 +9,5 @@ Welcome to the user manual for the software. This documentation is designed to h
 
    introduction
    start
+   functionality
+   faq

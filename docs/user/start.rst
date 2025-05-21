@@ -6,5 +6,7 @@ Acess the system
 
 Login
 ^^^^^^
- teste
+ .. figure:: images/login.png
+     :alt: Screen Login.
+
 
