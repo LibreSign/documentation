@@ -1,10 +1,14 @@
-Manual do Usuário
+Admin Manual
 =================
 
-Bem-vindo ao manual do usuário do LibreSign.
+Welcome to the user manual for the software. This documentation is designed to help you understand how to use the software effectively.
 
 .. toctree::
    :maxdepth: 2
+   :hidden:
 
-   introducao
-   uso_basico
+   introduction
+   installation
+   configuration
+   maintenance
+   security
