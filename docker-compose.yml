@@ -1,18 +1,13 @@
 services:
   sphinx:
     build:
-      context: .
-      dockerfile: Dockerfile.build
+      context: .docker/sphinx
     volumes:
       - ./docs:/app/docs
-      - ./docs/_build:/app/docs/_build
-    command: >
-      sh -c "
-      sphinx-build -b html /app/docs/main /app/docs/_build/main &&
-      sphinx-build -b html /app/docs/user /app/docs/_build/user &&
-      sphinx-build -b html /app/docs/admin /app/docs/_build/admin &&
-      sphinx-build -b html /app/docs/dev /app/docs/_build/dev
-      "
+      - ./volumes/html:/app/_build
+      - ./volumes/cache:/pipcache
+    environment:
+      - PIP_CACHE_DIR=/pipcache
 
   nginx:
     image: nginx:alpine
@@ -23,7 +18,7 @@ services:
       - ./docs/_build/user:/usr/share/nginx/html/user
       - ./docs/_build/admin:/usr/share/nginx/html/admin
       - ./docs/_build/dev:/usr/share/nginx/html/dev
-      - ./docs/swagger-ui:/usr/share/nginx/html/swagger-ui
-      - ./nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf
+      - ./swagger-ui:/usr/share/nginx/html/swagger-ui
+      - .docker/nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf
     depends_on:
       - sphinx
