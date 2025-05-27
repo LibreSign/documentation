@@ -1,8 +1,7 @@
 services:
   sphinx:
     build:
-      context: .
-      dockerfile: Dockerfile
+      context: .docker/sphinx
     volumes:
       - ./docs:/app/docs
       - ./docs/_build:/app/docs/_build
@@ -24,6 +23,6 @@ services:
       - ./docs/_build/admin:/usr/share/nginx/html/admin
       - ./docs/_build/dev:/usr/share/nginx/html/dev
       - ./docs/swagger-ui:/usr/share/nginx/html/swagger-ui
-      - ./nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf
+      - .docker/nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf
     depends_on:
       - sphinx
