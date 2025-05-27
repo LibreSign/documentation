@@ -2,7 +2,7 @@ services:
   sphinx:
     build:
       context: .
-      dockerfile: Dockerfile.build
+      dockerfile: Dockerfile
     volumes:
       - ./docs:/app/docs
       - ./docs/_build:/app/docs/_build
