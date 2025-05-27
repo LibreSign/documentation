@@ -3,7 +3,8 @@ services:
     build:
       context: .docker/sphinx
     volumes:
-      - ./docs:/app
+      - ./docs:/app/docs
+      - ./volumes/html:/app/_build
       - ./volumes/cache:/pipcache
     environment:
       - PIP_CACHE_DIR=/pipcache
