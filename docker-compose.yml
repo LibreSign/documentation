@@ -14,11 +14,7 @@ services:
     ports:
       - "8080:80"
     volumes:
-      - ./docs/_build/main:/usr/share/nginx/html
-      - ./docs/_build/user:/usr/share/nginx/html/user
-      - ./docs/_build/admin:/usr/share/nginx/html/admin
-      - ./docs/_build/dev:/usr/share/nginx/html/dev
-      - ./swagger-ui:/usr/share/nginx/html/swagger-ui
+      - ./volumes/html:/usr/share/nginx/html
       - .docker/nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf
     depends_on:
       - sphinx
