@@ -10,4 +10,4 @@ API
 
 .. raw:: html
 
-   <iframe src="/swagger-ui/index.html" width="100%" height="600px"></iframe>
+   <iframe src="/dev/swagger-ui/index.html" width="100%" height="600px"></iframe>
