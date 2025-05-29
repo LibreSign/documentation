@@ -1,8 +1,14 @@
-# conf.py para a documentação principal
+import os
+import sys
+import datetime
 
-project = 'LibreSign'
-copyright = ''
-author = ''
+now = datetime.datetime.now()
+
+copyright = str(now.year) + ' LibreCode coop'
+project = 'LibreSign Documentation'
+author = 'LibreSign Team'
+release = '1.0'
+
 
 release = '1.0'
 

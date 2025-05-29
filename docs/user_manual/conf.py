@@ -1,7 +1,11 @@
 import os
 import sys
+import datetime
 sys.path.insert(0, os.path.abspath('.'))
 
+now = datetime.datetime.now()
+
+copyright = str(now.year) + ' LibreCode coop'
 project = 'LibreSign Documentation'
 author = 'LibreSign Team'
 release = '1.0'
