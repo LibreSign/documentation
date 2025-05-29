@@ -25,7 +25,6 @@ jobs:
 
       - name: Build Sphinx documentation
         run: |
-          cd docs
           make all
 
       - name: Deploy to GitHub Pages
