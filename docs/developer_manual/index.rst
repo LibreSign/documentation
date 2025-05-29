@@ -1,9 +1,9 @@
 .. _dev-index:
 
-Desenvolvedor
+Developer
 ========================
 
-Aqui vai o conteúdo da documentação para o desenvolvedor.
+Here you will find the documentation for developers.
 
 
 .. toctree::
