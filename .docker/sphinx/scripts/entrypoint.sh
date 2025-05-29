@@ -1,8 +1,6 @@
 #!/bin/bash
 set -e
 
-export PIP_CACHE_DIR=/pipcache
-
 echo "🔍 Checking for required dependencies..."
 
 echo "⬆️ Upgrading pip..."

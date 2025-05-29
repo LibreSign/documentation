@@ -4,9 +4,6 @@ services:
       context: .docker/sphinx
     volumes:
       - ./:/app
-      - .pipcache:/pipcache
-    environment:
-      - PIP_CACHE_DIR=/pipcache
 
   nginx:
     image: nginx:alpine
