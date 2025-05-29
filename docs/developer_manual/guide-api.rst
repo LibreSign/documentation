@@ -1,22 +1,22 @@
 Guide API
-================
+=========
 
 Prerequisites
------------------
+-------------
 
- - All requests require a <code> Content-Type </code> of application/json.
- - The API is located at `here <https://nextcloud.local/index.php/apps/libresign/api/v1.0/>`__
- - All request parameters are required, unless otherwise specified
+- All requests require a <code> Content-Type </code> of application/json.
+- The API is located at `here <https://nextcloud.local/index.php/apps/libresign/api/v1.0/>`__
+- All request parameters are required, unless otherwise specified
 
 
 Examples on Insomnia
-----------------------
+--------------------
 
 You can download `here <https://libresign.github.io/Insomnia_2021-11-24.json/>`__ an example of request to API.
 
 
 Headers
------------------
+-------
 
 `Read <https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Authorization/>`__
 
@@ -46,15 +46,15 @@ Example:
 
 
 Endpoints
-----------------
+---------
 
 .. _Single flow:
 
 Single flow
---------------
+-----------
 
 Request signature
-^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^
 POST /request-signature
 
 .. code-block::
@@ -83,7 +83,7 @@ You will receive the fileId or UUID, store this data to create visible elements.
 
 
 Validate
-^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^
 
 Get data of a specific file, you can use file_id or uuid on path, both data you will receive after request to POST /request-signature
 
@@ -96,7 +96,7 @@ The association between user and file will result on a signRequestId. You will n
         --header 'Authorization: Basic YWRtaW46YWRtaW4='
 
 List files
-^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^
 List all LibreSign files
 
 .. code-block::
@@ -106,10 +106,10 @@ List all LibreSign files
         --header 'Authorization: Basic YWRtaW46YWRtaW4=' \
 
 Visible elements
-^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^
 
 Create
-+++++++++++++++++
+++++++
 
 POST /file/{uuid}/elements
 
@@ -132,7 +132,7 @@ POST /file/{uuid}/elements
         }'
 
 Update
-+++++++++++++++++
+++++++
 
 PATCH /file/{uuid}/elements/{elementId}
 
@@ -157,13 +157,13 @@ The UUID you will receive when you will do a request to POST /request-signature 
         }'
 
 Delete
-+++++++++++++++++
+++++++
 
 DELETE /file/{uuid}/elements/{elementId}
 
 
 Define sign password
-^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^
 
 If the system is enabled to sign using password, the user will need to create a password to sign the file.
 
@@ -178,7 +178,7 @@ If the system is enabled to sign using password, the user will need to create a 
         }'
 
 Changing status
-^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^
 
 You will need change the status of a file from draft to able to sign. When you change the status, all users will receive an email with URL to create account if the user don't exists or authenticate and sign the file.
 
@@ -199,7 +199,7 @@ You will need change the status of a file from draft to able to sign. When you c
         }'
 
 Define user signature
-^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^
 
 This is necessary for all user to store the own signature or initial.
 
@@ -227,7 +227,7 @@ This is necessary for all user to store the own signature or initial.
         }'
 
 Sign method
-^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^
 
 You can change the sign method between password, email, sms, telegram or signal.
 
@@ -235,7 +235,7 @@ To sign using SMS you will need install the app twofactor_gateway and configure 
 
 Example:
 
-.. code-block:: docker-compose
+.. code-block:: bash
 
     docker-compose exec --user www-data nextcloud php occ config:app:set libresign identify_method --value=["nextcloud"]
 
@@ -244,16 +244,16 @@ Example:
     docker-compose exec --user www-data nextcloud php occ config:app:set libresign identify_method --value=["sms"]
 
 SMS
-+++++++++++++
++++
 
 Configuring the SMS gateway.
 
-.. code-block:: docker-compose
+.. code-block:: bash
 
     docker-compose exec --user www-data nextcloud php occ twofactorauth:gateway:configure sms
 
 Define phone number
-+++++++++++++++++++++
++++++++++++++++++++
 
 To sign using SMS the user will need define the phone number.
 
@@ -268,7 +268,7 @@ To sign using SMS the user will need define the phone number.
         }'
 
 Request code
-+++++++++++++++++++++
+++++++++++++
 
 If the sign method is a code, the authenticated user will need request a code to sign the file.
 
@@ -279,7 +279,7 @@ If the sign method is a code, the authenticated user will need request a code to
     --header 'Content-Type: application/json' \
 
 Sign using code
-+++++++++++++++++++++
++++++++++++++++
 
 To sign you only will need send the code that you received by email or SMS.
 

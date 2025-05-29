@@ -1,5 +1,5 @@
 Suport LibreSign
-=======
+================
 
 If you have questions, find errors or need help using LibreSign, please contact the LibreCode team.
 

@@ -1,13 +1,6 @@
 API
 ===
 
-.. autosummary::
-   :toctree: generated
-
-.. redoc::
-   :spec-url: https://libresign.github.io/api/openapi.yaml
-   :embed:
-
 .. raw:: html
 
    <link rel="stylesheet" href="swagger-ui.css" />
