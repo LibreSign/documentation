@@ -123,24 +123,14 @@ When editing the documentation installing ``sphinx-autobuild`` though pip can be
 3. Watch for file changes ``make SPHINXBUILD=sphinx-autobuild html``
 4. Open http://127.0.0.1:8000 in the browser and start editing
 
-Building PDF
-============
-
-1. Follow instructions for "Building HTML" above
-2. Install ``latexmk`` and ``texlive-latex-extra`` - https://pipenv.readthedocs.io/en/latest/
-3. Create a Python environment (typically inside this repository): ``pipenv --python 3.9``
-4. Change into the environment: ``pipenv shell``
-5. Install the dependencies ``pip install -r docs/requirements.txt``
-6. Now you can use ``make ...`` to build all the stuff - for example ``make pdf`` to build the PDF flavor of all manuals
-
 Using the VSCode DevContainer
 =============================
 
 This repository contains a full-featured `VSCode DevContainer <https://code.visualstudio.com/docs/devcontainers/containers>`_.
 You can use it in your local development environment or via `GitHub Codespaces <https://github.com/features/codespaces>`_.
 Just open the container an use one of the commands from above to build the project. For example ``make`` to build the full
-documentation, ``make html`` to build the HTML documentation or ``make pdf`` to build the PDF documentation. You can also use
-``make SPHINXBUILD=sphinx-autobuild html`` in combination with `port forwarding <https://code.visualstudio.com/docs/devcontainers/containers#_forwarding-or-publishing-a-port>`_
+documentation. You can also use ``make SPHINXBUILD=sphinx-autobuild html``
+in combination with `port forwarding <https://code.visualstudio.com/docs/devcontainers/containers#_forwarding-or-publishing-a-port>`_
 to  watch file changes and automatically reload the html preview.
 
 Usign docker
