@@ -3,9 +3,8 @@ services:
     build:
       context: .docker/sphinx
     volumes:
-      - ./docs:/app/docs
-      - ./volumes/html:/app/_build
-      - ./volumes/cache:/pipcache
+      - ./:/app
+      - .pipcache:/pipcache
     environment:
       - PIP_CACHE_DIR=/pipcache
 
@@ -14,7 +13,7 @@ services:
     ports:
       - "8000:80"
     volumes:
-      - ./volumes/html:/usr/share/nginx/html
+      - ./_build:/usr/share/nginx/html
       - .docker/nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf
     depends_on:
       - sphinx
