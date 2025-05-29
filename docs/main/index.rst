@@ -1,7 +1,7 @@
 .. LibreSign Main Documentation
 
-Welcome to LibreSign documentation 
-=====================================
+Welcome to LibreSign documentation
+==================================
 
 Chose one of the sections below to access the corresponding documentation:
 
