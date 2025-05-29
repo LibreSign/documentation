@@ -1,10 +1,10 @@
 .. LibreSign Main Documentation
 
-Bem-vindo à documentação do LibreSign
+Welcome to LibreSign documentation 
 =====================================
 
-Escolha uma das seções abaixo para acessar a documentação correspondente:
+Chose one of the sections below to access the corresponding documentation:
 
-- `Documentação para Usuários <http://localhost:8080/user/>`_
-- `Documentação para Desenvolvedores <http://localhost:8080/dev/>`_
-- `Documentação para Administradores <http://localhost:8080/admin/>`_
+- `User Documentation <http://localhost:8080/user/>`_
+- `Developer Documentation <http://localhost:8080/dev/>`_
+- `Admin Documentation <http://localhost:8080/admin/>`_
