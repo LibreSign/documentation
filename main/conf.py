@@ -22,6 +22,7 @@ exclude_patterns = []
 
 html_theme = 'sphinx_rtd_theme'
 html_theme_options = {
+    'style_nav_header_background': '#184c4e',
 	'logo_only': True,
 	'navigation_with_keys': True,
 	'style_external_links': True,
