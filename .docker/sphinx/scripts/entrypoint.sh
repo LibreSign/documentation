@@ -18,5 +18,4 @@ echo "🛠️ Building documentation..."
 sphinx-autobuild --port 0 /app/docs/user_manual /app/_build/user &
 sphinx-autobuild --port 0 /app/docs/admin_manual /app/_build/admin &
 sphinx-autobuild --port 0 /app/docs/developer_manual /app/_build/dev &
-sphinx-autobuild --port 0 /app/docs/swagger-ui /app/_build/swagger-ui &
 sphinx-autobuild --port 0 /app/docs/main /app/_build
