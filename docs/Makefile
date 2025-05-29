@@ -21,13 +21,16 @@
 
 .PHONY: user admin dev all
 
+main:
+	sphinx-autobuild --port 0 /app/docs/main /app/_build
+
 user:
-	sphinx-build -b html user_manual build/user_manual
+	sphinx-build -b html user_manual /app/_build/user
 
 admin:
-	sphinx-build -b html admin_manual build/admin_manual
+	sphinx-build -b html admin_manual /app/_build/admin
 
 dev:
-	sphinx-build -b html developer_manual build/developer_manual
+	sphinx-build -b html developer_manual /app/_build/dev
 
-all: user admin dev
+all: main user admin dev
