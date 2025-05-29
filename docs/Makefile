@@ -22,15 +22,15 @@
 .PHONY: main user admin dev all
 
 main:
-	sphinx-build -b html main ../_build
+	sphinx-build main ../_build
 
 user:
-	sphinx-build -b html user_manual user_manual ../_build
+	sphinx-build user_manual ../_build
 
 admin:
-	sphinx-build -b html admin_manual admin_manual ../_build
+	sphinx-build admin_manual ../_build
 
 dev:
-	sphinx-build -b html developer_manual developer_manual ../_build
+	sphinx-build developer_manual ../_build
 
 all: main user admin dev
