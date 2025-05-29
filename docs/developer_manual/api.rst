@@ -3,9 +3,9 @@ API
 
 .. raw:: html
 
-   <link rel="stylesheet" href="swagger-ui.css" />
-   <script src="swagger-ui-bundle.js"></script>
-   <script src="swagger-ui-standalone-preset.js"></script>
+   <link rel="stylesheet" href="/developer_manual/swagger-ui/swagger-ui.css" />
+   <script src="/developer_manual/swagger-ui/swagger-ui-bundle.js"></script>
+   <script src="/developer_manual/swagger-ui/swagger-ui-standalone-preset.js"></script>
    <div id="swagger-ui"></div>
    <script>
       window.onload = () => {
