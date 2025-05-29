@@ -12,7 +12,7 @@ services:
   nginx:
     image: nginx:alpine
     ports:
-      - "8080:80"
+      - "8000:80"
     volumes:
       - ./volumes/html:/usr/share/nginx/html
       - .docker/nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf
