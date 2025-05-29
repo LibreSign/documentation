@@ -21,5 +21,4 @@ html_theme_options = {
 	'style_external_links': True,
 	'version_selector': False,
 }
-html_static_path = ['_static']
 html_extra_path = ['html']
