@@ -19,7 +19,7 @@
 # %: Makefile
 # 	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 
-.PHONY: user admin dev all
+.PHONY: main user admin dev all
 
 main:
 	sphinx-build -b html main ../_build
