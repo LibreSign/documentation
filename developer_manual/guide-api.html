@@ -1,0 +1,395 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guide API &mdash; LibreSign Documentation 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/general.css?v=c0a7eb24" />
+      <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/dark.css?v=70edf1c7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=d6b6a36a"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/dark_mode_js/default_dark.js?v=fd565c74"></script>
+      <script src="_static/dark_mode_js/theme_switcher.js?v=358d3910"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="API" href="api.html" />
+    <link rel="prev" title="Developer" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #184c4e" >
+
+          
+          
+          <a href="index.html">
+            
+              <img src="_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Guide API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#examples-on-insomnia">Examples on Insomnia</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#headers">Headers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#endpoints">Endpoints</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#single-flow">Single flow</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#request-signature">Request signature</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#validate">Validate</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#list-files">List files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#visible-elements">Visible elements</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#create">Create</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#update">Update</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#delete">Delete</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#define-sign-password">Define sign password</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#changing-status">Changing status</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#define-user-signature">Define user signature</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sign-method">Sign method</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#sms">SMS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#define-phone-number">Define phone number</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#request-code">Request code</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sign-using-code">Sign using code</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #184c4e" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">LibreSign Documentation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Guide API</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/guide-api.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="guide-api">
+<h1>Guide API<a class="headerlink" href="#guide-api" title="Link to this heading"></a></h1>
+<section id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>All requests require a &lt;code&gt; Content-Type &lt;/code&gt; of application/json.</p></li>
+<li><p>The API is located at <a class="reference external" href="https://nextcloud.local/index.php/apps/libresign/api/v1.0/">here</a></p></li>
+<li><p>All request parameters are required, unless otherwise specified</p></li>
+</ul>
+</section>
+<section id="examples-on-insomnia">
+<h2>Examples on Insomnia<a class="headerlink" href="#examples-on-insomnia" title="Link to this heading"></a></h2>
+<p>You can download <a class="reference external" href="https://libresign.github.io/Insomnia_2021-11-24.json/">here</a> an example of request to API.</p>
+</section>
+<section id="headers">
+<h2>Headers<a class="headerlink" href="#headers" title="Link to this heading"></a></h2>
+<p><a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Authorization/">Read</a></p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">POST</span> \
+<span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="o">/</span><span class="n">index</span><span class="o">.</span><span class="n">php</span><span class="o">/</span><span class="n">apps</span><span class="o">/</span><span class="n">libresign</span><span class="o">/</span><span class="n">api</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">webhook</span><span class="o">/</span><span class="n">register</span> \
+<span class="o">-</span><span class="n">H</span> <span class="s1">&#39;Accept: application/json&#39;</span> \
+<span class="o">-</span><span class="n">H</span> <span class="s1">&#39;Authorization: Basic YWRtaW46YWRtaW4=&#39;</span> \
+<span class="o">-</span><span class="n">H</span> <span class="s1">&#39;Content-Type: application/json&#39;</span>
+<span class="o">-</span><span class="n">d</span> <span class="s1">&#39;{</span>
+    <span class="s2">&quot;file&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://test.coop/test.pdf&quot;</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;test&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;callback&quot;</span><span class="p">:</span> <span class="s2">&quot;https://test.coop/callbackWebhook&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;users&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;display_name&quot;</span><span class="p">:</span> <span class="s2">&quot;Jhon Doe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;email&quot;</span><span class="p">:</span> <span class="s2">&quot;jhondoe@test.coop&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Lorem ipsum&quot;</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span><span class="s1">&#39;</span>
+</pre></div>
+</div>
+</section>
+<section id="endpoints">
+<h2>Endpoints<a class="headerlink" href="#endpoints" title="Link to this heading"></a></h2>
+</section>
+<section id="single-flow">
+<span id="id1"></span><h2>Single flow<a class="headerlink" href="#single-flow" title="Link to this heading"></a></h2>
+<section id="request-signature">
+<h3>Request signature<a class="headerlink" href="#request-signature" title="Link to this heading"></a></h3>
+<p>POST /request-signature</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">--</span><span class="n">request</span> <span class="n">POST</span> \
+    <span class="o">--</span><span class="n">url</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="o">/</span><span class="n">apps</span><span class="o">/</span><span class="n">libresign</span><span class="o">/</span><span class="n">api</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">request</span><span class="o">-</span><span class="n">signature</span> \
+    <span class="o">--</span><span class="n">header</span> <span class="s1">&#39;Authorization: Basic YWRtaW46YWRtaW4=&#39;</span> \
+    <span class="o">--</span><span class="n">header</span> <span class="s1">&#39;Content-Type: application/json&#39;</span> \
+    <span class="o">--</span><span class="n">data</span> <span class="s1">&#39;{</span>
+        <span class="s2">&quot;file&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;base64&quot;</span><span class="p">:</span> <span class="s2">&quot;JVBERi0xLjYKJcOkw7zDtsOfCjIgMCBvYmoKPDwvTGVuZ3RoIDMgMCBSL0ZpbHRlci9GbGF0ZURlY29kZT4+CnN0cmVhbQp4nDPQM1Qo5ypUMFAw0DMwslAwtTTVMzIxV7AwMdSzMDNUKErlCtdSyOMyVADBonQuA4iUhaVCLheKYqBIDlw7xLAcuLEgFlwVVwZXmhZXoAIAI+sZGAplbmRzdHJlYW0KZW5kb2JqCgozIDAgb2JqCjg2CmVuZG9iagoKNSAwIG9iago8PAo+PgplbmRvYmoKCjYgMCBvYmoKPDwvRm9udCA1IDAgUgovUHJvY1NldFsvUERGL1RleHRdCj4+CmVuZG9iagoKMSAwIG9iago8PC9UeXBlL1BhZ2UvUGFyZW50IDQgMCBSL1Jlc291cmNlcyA2IDAgUi9NZWRpYUJveFswIDAgNTk1LjI3NTU5MDU1MTE4MSA4NDEuODg5NzYzNzc5NTI4XS9Hcm91cDw8L1MvVHJhbnNwYXJlbmN5L0NTL0RldmljZVJHQi9JIHRydWU+Pi9Db250ZW50cyAyIDAgUj4+CmVuZG9iagoKNCAwIG9iago8PC9UeXBlL1BhZ2VzCi9SZXNvdXJjZXMgNiAwIFIKL01lZGlhQm94WyAwIDAgNTk1IDg0MSBdCi9LaWRzWyAxIDAgUiBdCi9Db3VudCAxPj4KZW5kb2JqCgo3IDAgb2JqCjw8L1R5cGUvQ2F0YWxvZy9QYWdlcyA0IDAgUgovT3BlbkFjdGlvblsxIDAgUiAvWFlaIG51bGwgbnVsbCAwXQo+PgplbmRvYmoKCjggMCBvYmoKPDwvQ3JlYXRvcjxGRUZGMDA0NDAwNzIwMDYxMDA3Nz4KL1Byb2R1Y2VyPEZFRkYwMDRDMDA2OTAwNjIwMDcyMDA2NTAwNEYwMDY2MDA2NjAwNjkwMDYzMDA2NTAwMjAwMDM3MDAyRTAwMzA+Ci9DcmVhdGlvbkRhdGUoRDoyMDIxMDIyMzExMDgwOS0wMycwMCcpPj4KZW5kb2JqCgp4cmVmCjAgOQowMDAwMDAwMDAwIDY1NTM1IGYgCjAwMDAwMDAyNzAgMDAwMDAgbiAKMDAwMDAwMDAxOSAwMDAwMCBuIAowMDAwMDAwMTc2IDAwMDAwIG4gCjAwMDAwMDA0MzggMDAwMDAgbiAKMDAwMDAwMDE5NSAwMDAwMCBuIAowMDAwMDAwMjE3IDAwMDAwIG4gCjAwMDAwMDA1MzYgMDAwMDAgbiAKMDAwMDAwMDYxOSAwMDAwMCBuIAp0cmFpbGVyCjw8L1NpemUgOS9Sb290IDcgMCBSCi9JbmZvIDggMCBSCi9JRCBbIDw1RkQ4MDlEMTdFODMwQUU5OTRDODkxNDVBMTMwNUQyQz4KPDVGRDgwOUQxN0U4MzBBRTk5NEM4OTE0NUExMzA1RDJDPiBdCi9Eb2NDaGVja3N1bSAvRDZBQThGQTBBQjMwODg2QkQ5ODU0QzYyMTg5QjI2NDQKPj4Kc3RhcnR4cmVmCjc4NQolJUVPRgo=&quot;</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Contract&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;users&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;email&quot;</span><span class="p">:</span> <span class="s2">&quot;a@b.c&quot;</span>
+                <span class="s2">&quot;displayName&quot;</span><span class="p">:</span> <span class="s2">&quot;User Name&quot;</span>
+            <span class="p">}</span>
+        <span class="p">]</span>
+    <span class="p">}</span><span class="s1">&#39;</span>
+</pre></div>
+</div>
+<p>After this request the file will receive the status draft and you need change the status of the document to notify all users.</p>
+<p>You will receive the fileId or UUID, store this data to create visible elements.</p>
+</section>
+<section id="validate">
+<h3>Validate<a class="headerlink" href="#validate" title="Link to this heading"></a></h3>
+<p>Get data of a specific file, you can use file_id or uuid on path, both data you will receive after request to POST /request-signature</p>
+<p>The association between user and file will result on a signRequestId. You will need this to sign the document or define the page and coordinates of place that the signature of the user will be filled.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">--</span><span class="n">request</span> <span class="n">GET</span> \
+    <span class="o">--</span><span class="n">url</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="o">/</span><span class="n">apps</span><span class="o">/</span><span class="n">libresign</span><span class="o">/</span><span class="n">api</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">file</span><span class="o">/</span><span class="n">validate</span><span class="o">/</span><span class="n">file_id</span><span class="o">/</span><span class="mi">1995</span> \
+    <span class="o">--</span><span class="n">header</span> <span class="s1">&#39;Authorization: Basic YWRtaW46YWRtaW4=&#39;</span>
+</pre></div>
+</div>
+</section>
+<section id="list-files">
+<h3>List files<a class="headerlink" href="#list-files" title="Link to this heading"></a></h3>
+<p>List all LibreSign files</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">--</span><span class="n">request</span> <span class="n">GET</span> \
+    <span class="o">--</span><span class="n">url</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="o">/</span><span class="n">apps</span><span class="o">/</span><span class="n">libresign</span><span class="o">/</span><span class="n">api</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">file</span><span class="o">/</span><span class="nb">list</span> \
+    <span class="o">--</span><span class="n">header</span> <span class="s1">&#39;Authorization: Basic YWRtaW46YWRtaW4=&#39;</span> \
+</pre></div>
+</div>
+</section>
+<section id="visible-elements">
+<h3>Visible elements<a class="headerlink" href="#visible-elements" title="Link to this heading"></a></h3>
+<section id="create">
+<h4>Create<a class="headerlink" href="#create" title="Link to this heading"></a></h4>
+<p>POST /file/{uuid}/elements</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">--</span><span class="n">request</span> <span class="n">POST</span> \
+    <span class="o">--</span><span class="n">url</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="o">/</span><span class="n">apps</span><span class="o">/</span><span class="n">libresign</span><span class="o">/</span><span class="n">api</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">file</span><span class="o">/</span><span class="mi">88968195</span><span class="o">-</span><span class="mi">6</span><span class="n">f0a</span><span class="o">-</span><span class="mi">4036</span><span class="o">-</span><span class="n">ac05</span><span class="o">-</span><span class="mi">9680</span><span class="n">feb109e4</span><span class="o">/</span><span class="n">elements</span> \
+    <span class="o">--</span><span class="n">header</span> <span class="s1">&#39;Authorization: Basic YWRtaW46YWRtaW4=&#39;</span> \
+    <span class="o">--</span><span class="n">header</span> <span class="s1">&#39;Content-Type: application/json&#39;</span> \
+    <span class="o">--</span><span class="n">data</span> <span class="s1">&#39;{</span>
+        <span class="s2">&quot;coordinates&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;top&quot;</span><span class="p">:</span> <span class="mi">188</span><span class="p">,</span>
+            <span class="s2">&quot;left&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+            <span class="s2">&quot;width&quot;</span><span class="p">:</span> <span class="mi">370</span><span class="p">,</span>
+            <span class="s2">&quot;height&quot;</span><span class="p">:</span> <span class="mi">90</span><span class="p">,</span>
+            <span class="s2">&quot;page&quot;</span><span class="p">:</span> <span class="mi">1</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;signature&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;signRequestId&quot;</span><span class="p">:</span> <span class="mi">51</span>
+    <span class="p">}</span><span class="s1">&#39;</span>
+</pre></div>
+</div>
+</section>
+<section id="update">
+<h4>Update<a class="headerlink" href="#update" title="Link to this heading"></a></h4>
+<p>PATCH /file/{uuid}/elements/{elementId}</p>
+<p>The UUID you will receive when you will do a request to POST /request-signature and the signRequestId is the relation between an user and the file to sign. You can check the signRequestId doing a request to /validate</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">--</span><span class="n">request</span> <span class="n">PATCH</span> \
+    <span class="o">--</span><span class="n">url</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="o">/</span><span class="n">apps</span><span class="o">/</span><span class="n">libresign</span><span class="o">/</span><span class="n">api</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">file</span><span class="o">/</span><span class="mf">87e5</span><span class="n">d5f0</span><span class="o">-</span><span class="mi">1</span><span class="n">a9b</span><span class="o">-</span><span class="mi">48</span><span class="n">cd</span><span class="o">-</span><span class="mi">8146</span><span class="o">-</span><span class="mi">0</span><span class="n">ee8b3aafd83</span><span class="o">/</span><span class="n">elements</span><span class="o">/</span><span class="mi">1</span> \
+    <span class="o">--</span><span class="n">header</span> <span class="s1">&#39;Authorization: Basic YWRtaW46YWRtaW4=&#39;</span> \
+    <span class="o">--</span><span class="n">header</span> <span class="s1">&#39;Content-Type: application/json&#39;</span> \
+    <span class="o">--</span><span class="n">data</span> <span class="s1">&#39;{</span>
+        <span class="s2">&quot;coordinates&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;top&quot;</span><span class="p">:</span> <span class="mi">188</span><span class="p">,</span>
+            <span class="s2">&quot;left&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+            <span class="s2">&quot;width&quot;</span><span class="p">:</span> <span class="mi">370</span><span class="p">,</span>
+            <span class="s2">&quot;height&quot;</span><span class="p">:</span> <span class="mi">90</span><span class="p">,</span>
+            <span class="s2">&quot;page&quot;</span><span class="p">:</span> <span class="mi">1</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;signature&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;signRequestId&quot;</span><span class="p">:</span> <span class="mi">1</span>
+    <span class="p">}</span><span class="s1">&#39;</span>
+</pre></div>
+</div>
+</section>
+<section id="delete">
+<h4>Delete<a class="headerlink" href="#delete" title="Link to this heading"></a></h4>
+<p>DELETE /file/{uuid}/elements/{elementId}</p>
+</section>
+</section>
+<section id="define-sign-password">
+<h3>Define sign password<a class="headerlink" href="#define-sign-password" title="Link to this heading"></a></h3>
+<p>If the system is enabled to sign using password, the user will need to create a password to sign the file.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">--</span><span class="n">request</span> <span class="n">POST</span> \
+    <span class="o">--</span><span class="n">url</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="o">/</span><span class="n">apps</span><span class="o">/</span><span class="n">libresign</span><span class="o">/</span><span class="n">api</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">account</span><span class="o">/</span><span class="n">signature</span> \
+    <span class="o">--</span><span class="n">header</span> <span class="s1">&#39;Authorization: Basic YWRtaW46YWRtaW4=&#39;</span> \
+    <span class="o">--</span><span class="n">header</span> <span class="s1">&#39;Content-Type: application/json&#39;</span> \
+    <span class="o">--</span><span class="n">data</span> <span class="s1">&#39;{</span>
+        <span class="s2">&quot;signPassword&quot;</span><span class="p">:</span> <span class="s2">&quot;password&quot;</span>
+    <span class="p">}</span><span class="s1">&#39;</span>
+</pre></div>
+</div>
+</section>
+<section id="changing-status">
+<h3>Changing status<a class="headerlink" href="#changing-status" title="Link to this heading"></a></h3>
+<p>You will need change the status of a file from draft to able to sign. When you change the status, all users will receive an email with URL to create account if the user don’t exists or authenticate and sign the file.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>PS: The URL that all users will receive have an UUID, this is the UUID of the relation between the file and user, don’t is the UUID of file.</p>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">--</span><span class="n">request</span> <span class="n">PATCH</span> \
+    <span class="o">--</span><span class="n">url</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="o">/</span><span class="n">apps</span><span class="o">/</span><span class="n">libresign</span><span class="o">/</span><span class="n">api</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">request</span><span class="o">-</span><span class="n">signature</span> \
+    <span class="o">--</span><span class="n">header</span> <span class="s1">&#39;Authorization: Basic YWRtaW46YWRtaW4=&#39;</span> \
+    <span class="o">--</span><span class="n">header</span> <span class="s1">&#39;Content-Type: application/json&#39;</span> \
+    <span class="o">--</span><span class="n">data</span> <span class="s1">&#39;{</span>
+        <span class="s2">&quot;file&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;fileId&quot;</span><span class="p">:</span> <span class="mi">1995</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="mi">1</span>
+    <span class="p">}</span><span class="s1">&#39;</span>
+</pre></div>
+</div>
+</section>
+<section id="define-user-signature">
+<h3>Define user signature<a class="headerlink" href="#define-user-signature" title="Link to this heading"></a></h3>
+<p>This is necessary for all user to store the own signature or initial.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">--</span><span class="n">request</span> <span class="n">POST</span> \
+    <span class="o">--</span><span class="n">url</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="o">/</span><span class="n">apps</span><span class="o">/</span><span class="n">libresign</span><span class="o">/</span><span class="n">api</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">account</span><span class="o">/</span><span class="n">signature</span><span class="o">/</span><span class="n">elements</span> \
+    <span class="o">--</span><span class="n">header</span> <span class="s1">&#39;Authorization: Basic YWRtaW46YWRtaW4=&#39;</span> \
+    <span class="o">--</span><span class="n">header</span> <span class="s1">&#39;Content-Type: application/json&#39;</span> \
+    <span class="o">--</span><span class="n">data</span> <span class="s1">&#39;{</span>
+        <span class="s2">&quot;elements&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;signature&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;file&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;base64&quot;</span><span class="p">:</span> <span class="s2">&quot;iVBORw0KGgoAAAANSUhEUgAAAJYAAACWCAIAAACzY+a1AAABhWlDQ1BJQ0MgcHJvZmlsZQAAKJF9kT1Iw0AcxV9TRSkVQTtIcchQnSyIFREnrUIRKpRaoVUHk0u/oElDkuLiKLgWHPxYrDq4OOvq4CoIgh8gbm5Oii5S4v+SQosYD4778e7e4+4dIDQqTDW7xgFVs4x0Ii5mc6tizysCCGMAMcxIzNTnUqkkPMfXPXx8vYvyLO9zf44+JW8ywCcSzzLdsIg3iKc2LZ3zPnGIlSSF+Jx4zKALEj9yXXb5jXPRYYFnhoxMep44RCwWO1juYFYyVOJJ4oiiapQvZF1WOG9xVis11ronf2Ewr60sc53mMBJYxBJSECGjhjIqsBClVSPFRJr24x7+sONPkUsmVxmMHAuoQoXk+MH/4He3ZiE24SYF40D3i21/jAA9u0Czbtvfx7bdPAH8z8CV1vZXG8D0J+n1thY5Avq3gYvrtibvAZc7wNCTLhmSI/lpCoUC8H5G35QDBm+BwJrbW2sfpw9AhrpK3gAHh8BokbLXPd7d29nbv2da/f0AA+Zy4dveUIkAAAAJcEhZcwAALiMAAC4jAXilP3YAAAAHdElNRQflChoSNCP5pnpQAAAAGXRFWHRDb21tZW50AENyZWF0ZWQgd2l0aCBHSU1QV4EOFwAAAFhJREFUeNrtwTEBAAAAwqD1T20Hb6AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOAxCFEAAZDlHEoAAAAASUVORK5CYII=&quot;</span>
+            <span class="p">}</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;initial&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;file&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;base64&quot;</span><span class="p">:</span> <span class="s2">&quot;iVBORw0KGgoAAAANSUhEUgAAAJYAAACWCAIAAACzY+a1AAABhWlDQ1BJQ0MgcHJvZmlsZQAAKJF9kT1Iw0AcxV9TRSkVQTtIcchQnSyIFREnrUIRKpRaoVUHk0u/oElDkuLiKLgWHPxYrDq4OOvq4CoIgh8gbm5Oii5S4v+SQosYD4778e7e4+4dIDQqTDW7xgFVs4x0Ii5mc6tizysCCGMAMcxIzNTnUqkkPMfXPXx8vYvyLO9zf44+JW8ywCcSzzLdsIg3iKc2LZ3zPnGIlSSF+Jx4zKALEj9yXXb5jXPRYYFnhoxMep44RCwWO1juYFYyVOJJ4oiiapQvZF1WOG9xVis11ronf2Ewr60sc53mMBJYxBJSECGjhjIqsBClVSPFRJr24x7+sONPkUsmVxmMHAuoQoXk+MH/4He3ZiE24SYF40D3i21/jAA9u0Czbtvfx7bdPAH8z8CV1vZXG8D0J+n1thY5Avq3gYvrtibvAZc7wNCTLhmSI/lpCoUC8H5G35QDBm+BwJrbW2sfpw9AhrpK3gAHh8BokbLXPd7d29nbv2da/f0AA+Zy4dveUIkAAAAJcEhZcwAALiMAAC4jAXilP3YAAAAHdElNRQflChoSNCP5pnpQAAAAGXRFWHRDb21tZW50AENyZWF0ZWQgd2l0aCBHSU1QV4EOFwAAAFhJREFUeNrtwTEBAAAAwqD1T20Hb6AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOAxCFEAAZDlHEoAAAAASUVORK5CYII=&quot;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="p">]</span>
+    <span class="p">}</span><span class="s1">&#39;</span>
+</pre></div>
+</div>
+</section>
+<section id="sign-method">
+<h3>Sign method<a class="headerlink" href="#sign-method" title="Link to this heading"></a></h3>
+<p>You can change the sign method between password, email, sms, telegram or signal.</p>
+<p>To sign using SMS you will need install the app twofactor_gateway and configure the gateway to SMS.</p>
+<p>Example:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>--user<span class="w"> </span>www-data<span class="w"> </span>nextcloud<span class="w"> </span>php<span class="w"> </span>occ<span class="w"> </span>config:app:set<span class="w"> </span>libresign<span class="w"> </span>identify_method<span class="w"> </span>--value<span class="o">=[</span><span class="s2">&quot;nextcloud&quot;</span><span class="o">]</span>
+
+docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>--user<span class="w"> </span>www-data<span class="w"> </span>nextcloud<span class="w"> </span>php<span class="w"> </span>occ<span class="w"> </span>config:app:set<span class="w"> </span>libresign<span class="w"> </span>identify_method<span class="w"> </span>--value<span class="o">=[</span><span class="s2">&quot;email&quot;</span><span class="o">]</span>
+
+docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>--user<span class="w"> </span>www-data<span class="w"> </span>nextcloud<span class="w"> </span>php<span class="w"> </span>occ<span class="w"> </span>config:app:set<span class="w"> </span>libresign<span class="w"> </span>identify_method<span class="w"> </span>--value<span class="o">=[</span><span class="s2">&quot;sms&quot;</span><span class="o">]</span>
+</pre></div>
+</div>
+<section id="sms">
+<h4>SMS<a class="headerlink" href="#sms" title="Link to this heading"></a></h4>
+<p>Configuring the SMS gateway.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>--user<span class="w"> </span>www-data<span class="w"> </span>nextcloud<span class="w"> </span>php<span class="w"> </span>occ<span class="w"> </span>twofactorauth:gateway:configure<span class="w"> </span>sms
+</pre></div>
+</div>
+</section>
+<section id="define-phone-number">
+<h4>Define phone number<a class="headerlink" href="#define-phone-number" title="Link to this heading"></a></h4>
+<p>To sign using SMS the user will need define the phone number.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">--</span><span class="n">request</span> <span class="n">PUT</span> \
+    <span class="o">--</span><span class="n">url</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="o">/</span><span class="n">settings</span><span class="o">/</span><span class="n">users</span><span class="o">/</span><span class="n">admin</span><span class="o">/</span><span class="n">settings</span> \
+    <span class="o">--</span><span class="n">header</span> <span class="s1">&#39;Authorization: Basic YWRtaW46YWRtaW4=&#39;</span> \
+    <span class="o">--</span><span class="n">header</span> <span class="s1">&#39;Content-Type: application/json&#39;</span> \
+    <span class="o">--</span><span class="n">data</span> <span class="s1">&#39;{</span>
+        <span class="s2">&quot;phone&quot;</span><span class="p">:</span> <span class="s2">&quot;+1987654321&quot;</span>
+    <span class="p">}</span><span class="s1">&#39;</span>
+</pre></div>
+</div>
+</section>
+<section id="request-code">
+<h4>Request code<a class="headerlink" href="#request-code" title="Link to this heading"></a></h4>
+<p>If the sign method is a code, the authenticated user will need request a code to sign the file.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">--</span><span class="n">url</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="o">/</span><span class="n">apps</span><span class="o">/</span><span class="n">libresign</span><span class="o">/</span><span class="n">api</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">sign</span><span class="o">/</span><span class="n">file_id</span><span class="o">/</span><span class="mi">3051</span><span class="o">/</span><span class="n">code</span> \
+<span class="o">--</span><span class="n">header</span> <span class="s1">&#39;Authorization: Basic YWRtaW46YWRtaW4=&#39;</span> \
+<span class="o">--</span><span class="n">header</span> <span class="s1">&#39;Content-Type: application/json&#39;</span> \
+</pre></div>
+</div>
+</section>
+<section id="sign-using-code">
+<h4>Sign using code<a class="headerlink" href="#sign-using-code" title="Link to this heading"></a></h4>
+<p>To sign you only will need send the code that you received by email or SMS.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">--</span><span class="n">request</span> <span class="n">POST</span> \
+    <span class="o">--</span><span class="n">url</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="o">/</span><span class="n">apps</span><span class="o">/</span><span class="n">libresign</span><span class="o">/</span><span class="n">api</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">sign</span><span class="o">/</span><span class="n">file_id</span><span class="o">/</span><span class="mi">1995</span> \
+    <span class="o">--</span><span class="n">header</span> <span class="s1">&#39;Authorization: Basic YWRtaW46YWRtaW4=&#39;</span> \
+    <span class="o">--</span><span class="n">header</span> <span class="s1">&#39;Content-Type: application/json&#39;</span> \
+    <span class="o">--</span><span class="n">data</span> <span class="s1">&#39;{</span>
+        <span class="s2">&quot;code&quot;</span><span class="p">:</span> <span class="s2">&quot;5150&quot;</span>
+    <span class="p">}</span><span class="s1">&#39;</span>
+</pre></div>
+</div>
+<p>You also can define the relation between the user and the file elements. You can receive the list of elements on validate endpoint and you will need create a relation between the user to sign and the element.</p>
+</section>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Developer" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="api.html" class="btn btn-neutral float-right" title="API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025 LibreCode coop.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
