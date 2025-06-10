@@ -1,4 +1,4 @@
-Guide Contribution
+Contribution Guide
 ==================
 
 Overview
