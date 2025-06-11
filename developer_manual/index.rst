@@ -11,4 +11,4 @@ Here you will find the documentation for developers.
 
    guide-api
    api
-   contribution-guide
+   contributing-guide
