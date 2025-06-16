@@ -1,15 +1,14 @@
-Contributing Guide
+Contributing to LibreSign
 ==================
 
 Overview
 --------
 
-About LibreSign repository
+Welcome
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The LibreSign repository is a collaborative platform where developers can contribute to the LibreSign project. It is designed to facilitate contributions from developers of all skill levels, whether they are new to the project or experienced contributors.
 
-This guide provides an overview of how to contribute to the LibreSign repository, including the process for submitting changes, reviewing contributions, and best practices for collaboration.
+We really appreciate everyone who would like to contribute to the LibreSign project! There are many ways to contribute, including writing code, filing issues on GitHub, helping people, assisting in triaging, reproducing, or fixing bugs that people have filed, and enhancing our documentation. Also giving a star to the project is a really good way to help and donate.
 
 Contributing to the LibreSign repository. Access the repository at `LibreSign <https://github.com/LibreSign/libresign/>`__
 
@@ -20,6 +19,46 @@ Forms of contribution
 Translating LibreSign
 +++++++++++++++++++++
 
+  - How translate LibreSign at Transifex
+  - Add and/or change texts at LibreSign code using the L10N libraries. Would be good point to Nextcloud developer documentation at this point.
+  - A quick instructions about how the translated text will go back to LibreSign repository
+  - A warning talking that the l10n can't be changed
+
+
+Setup environment
++++++++++++++++++
+
+  Will be necessary move part of https://github.com/LibreSign/libresign/blob/main/CONTRIBUTING.md to here and add a comment ato CONTRIBUTING.md pointing to here about the environment
+  - Prerequirements
+    - PHP version
+      - Why use the minimum PHP version. We can't send a code using features that only works at newest version of PHP. LibreSign need to be compatible with minimum PHP version accepted by relative Nextcloud server version
+      - how to set the PHP version at LibreCode environment
+    - Node version and where is possible to check the place that have this information (package.json)
+    - Other not mandatory dependencies but important to have and explain that the LibreCode 
+    Nextcloud docker environment already have the follow dependencies.
+      - poppler-utils
+      - locale charmap as UTF-8 at operational system
+
+Branch policies
++++++++++++++++
+
+    - Expose about main and stable branches
+    - Explain that the development is at main branch of LibreSign
+    - Creating branch and suggestion about branch nomenclature
+
+Commits
++++++++
+
+    - Conventional commits
+        - Comments about conventional commits exposing a bit why we use this
+        - possible issues about Conventional commits
+    - DCO.
+        - Expose why we use DCO.
+        - Fixing possible issues about DCO    
+    - Pull request
+        - How to open
+            - Instructions about destination branch
+            - Possible issues about conventional commits and DCO and point to this documentation at the point that explain about this
 
 Requesting features
 +++++++++++++++++++
