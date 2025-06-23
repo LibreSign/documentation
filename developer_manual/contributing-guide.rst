@@ -39,6 +39,39 @@ Forms of contribution
 Translating LibreSign
 ^^^^^^^^^^^^^^^^^^^^^
 
+How translate LibreSign at Transifex
+++++++++++++++++++++++++++++++++++++
+
+* 1. Access the link to start translating: `LibreSign at Transifex <https://app.transifex.com/nextcloud/nextcloud/libresign>`__
+
+* 2. Create an account on Transifex if you don't have one:
+
+    .. figure:: images/create_login_transifex.png
+        :alt: Create account screen.
+
+    * 1 - Click on "Sign up" to create an account.
+    * 2 - Fill in the required information and click "Sign up".
+
+* 3. After creating your account, you will be redirected to the LibreSign project page on Transifex: 
+
+    .. figure:: images/transifex_main_screen.png
+        :alt: LibreSign project page on Transifex.
+
+    * 1 - Verify that you are on the LibreSign project page.
+    * 2 - Search for the language you want to translate LibreSign into.
+    * 3 - Verify that the language you want to translate into is available in the list of languages.
+    * 4 - Click on the button "Translate". And you will be redirected to the translation page.
+
+* 4. Here you can start translating LibreSign into your language:
+
+    .. figure:: images/steps_translate_text_transifex.png
+        :alt: Translation screen.
+
+    * 1 - Here, you can see the string that you need to translate.
+    * 2 - Here, you can see the text box to write your translation.
+    * 3 - Now, you need to click on the arrow button.
+    * 4 - Click on "Save as Suggestion" to save your translation.
+
 
 Requesting features
 ^^^^^^^^^^^^^^^^^^^
