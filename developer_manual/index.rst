@@ -11,4 +11,10 @@ Here you will find the documentation for developers.
 
    guide-api
    api
-   contributing-guide
+   translation
+   requesting-features
+   reporting-bugs
+   setup-environment
+   branch-policies
+   commits
+   pull-request
