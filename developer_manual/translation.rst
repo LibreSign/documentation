@@ -5,7 +5,7 @@ Transifex
 +++++++++
 
 * 1. Access the link to start translating: `LibreSign at Transifex <https://app.transifex.com/nextcloud/nextcloud/libresign>`__
-* 2. If you do not have an account, accesse `Transifex <https://www.transifex.com/>`__ to create one or login.
+* 2. If you do not have an account, accesse Transifex to create one or login.
 
 L10N libraries
 ++++++++++++++
