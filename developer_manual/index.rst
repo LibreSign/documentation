@@ -16,8 +16,10 @@ Here you will find the documentation for developers.
 
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
+   :hidden:
 
+   introduction
    guide-api
    api
    code-of-conduct
