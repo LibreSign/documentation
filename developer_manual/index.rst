@@ -20,6 +20,7 @@ Here you will find the documentation for developers.
 
    guide-api
    api
+   code-of-conduct
    translation
    requesting-features
    reporting-bugs
