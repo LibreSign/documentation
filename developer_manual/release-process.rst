@@ -17,7 +17,7 @@ To the body, add the following template. Read all and replace the placeholders w
     <!-- Replace "20.1.8" with the previous version number e.g. "12.2.3" -->
     <!-- 2. Replace "stable30" with the LibreSign minor branch name e.g. "stable22" -->
     <!-- 3. Replace "20" with the LibreSign version e.g. "12" for "stable22" -->
-    <!-- 4. Replace CASE SENSITIVE "X" with the Nextcloud stable branch number e.g. "22" for "stable22" -->
+    <!-- 4. Replace CASE SENSITIVE "XX" with the Nextcloud stable branch number e.g. "22" for "stable22" -->
     ## 💺 Preparation
     - [ ] Check there are no pending backports:
     - [ ] https://github.com/LibreSign/libresign/labels/backport-request
@@ -63,11 +63,11 @@ To the body, add the following template. Read all and replace the placeholders w
         - [ ] Firefox
         - [ ] Safari
     - [ ] Create the new milestone
-        - [ ] Rename milestone `💚 Next Patch (X)` to `v20.1.9` in https://github.com/LibreSign/libresign/milestones
+        - [ ] Rename milestone `💚 Next Patch (XX)` to `v20.1.9` in https://github.com/LibreSign/libresign/milestones
         Unless last release of the stable branch:
-        - [ ] Create a follow up milestone for `💚 Next Patch (X)` (Due date in ~4 weeks, ~4 days for beta/RC)
-        - [ ] Move all open PRs and issues from milestone `v20.1.9` to `💚 Next Patch (X)`: https://github.com/LibreSign/libresign/issues?q=is%3Aissue%20state%3Aopen%20milestone%3Av20.1.9
-        - [ ] Move all open PRs and issues from milestone `v20.1.9` to `💚 Next Patch (X)`: https://github.com/LibreSign/libresign/issues?q=is%3Apr%20state%3Aopen%20milestone%3Av20.1.9
+        - [ ] Create a follow up milestone for `💚 Next Patch (XX)` (Due date in ~4 weeks, ~4 days for beta/RC)
+        - [ ] Move all open PRs and issues from milestone `v20.1.9` to `💚 Next Patch (XX)`: https://github.com/LibreSign/libresign/issues?q=is%3Aissue%20state%3Aopen%20milestone%3Av20.1.9
+        - [ ] Move all open PRs and issues from milestone `v20.1.9` to `💚 Next Patch (XX)`: https://github.com/LibreSign/libresign/issues?q=is%3Apr%20state%3Aopen%20milestone%3Av20.1.9
         - [ ] Close the `v20.1.9` milestone
     - [ ] Create a new release
         - [ ] Prepare a (pre-)release in https://github.com/LibreSign/libresign/releases/new?tag=v20.1.9&target=stable30
