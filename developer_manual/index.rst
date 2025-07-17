@@ -31,8 +31,4 @@ Here you will find all the documentation for developers.
    getting-started/index
    api/index
    translation
-   requesting-features
-   reporting-bugs
-   setup-environment
-   branch-policies
-   commits
+   release-process
