@@ -57,4 +57,3 @@ Visit our `blog <https://libresign.coop/posts/>`__
    setup-environment
    branch-policies
    commits
-   pull-request
