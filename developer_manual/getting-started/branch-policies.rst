@@ -3,7 +3,7 @@ Branch policies
 
 This document describes the branching model used in LibreSign and how contributions should be targeted.
 
-Branch Names
+Branch names
 ------------
 
 Main
@@ -42,7 +42,7 @@ Stable branches maintain release lines compatible with a specific **Nextcloud Se
         In LibreSign, ``min-version`` and ``max-version`` are always the same number.  
         This number is the MAJOR version of the compatible Nextcloud Server.
 
-Target Branches for Contributions
+Target branches for contributions
 ---------------------------------
 
 -   **New features / improvements**:
@@ -61,18 +61,18 @@ Target Branches for Contributions
     -   Create a branch from that stable branch.
     -   Open a PR to the same stable branch.
 
-Bugfixes and Backports
+Bugfixes and backports
 ----------------------
 If a bug fix also needs to be applied to an older release line, it must be **backported**.  
 Backporting means applying the same change to another branch (Git calls this *cherry-picking*).
 
-Automatic Backport
+Automatic backport
 ^^^^^^^^^^^^^^^^^^
 If the cherry-pick applies cleanly and only small conflicts need to be resolved, the `backport bot <https://github.com/nextcloud/backportbot>`_ can be used.
 
 See the `bot usage <https://github.com/nextcloud/backportbot#usage>`_ for available commands.
 
-Manual Backport
+Manual backport
 ^^^^^^^^^^^^^^^
 For more complex changes, the backport must be done manually:
 
@@ -93,6 +93,6 @@ For more complex changes, the backport must be done manually:
 
     # Open a pull request for the backport
 
-Creating Branch
+Creating branch
 ---------------
 Follow the convention of naming branches as ``feature/description`` or ``bugfix/description``.
