@@ -8,3 +8,4 @@ Development environment
    setup
    updating
    frontend
+   coding-standards
