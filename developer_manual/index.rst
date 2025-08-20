@@ -1,49 +1,27 @@
 .. _dev-index:
 
-Developer Manual
+Developer manual
 ================
 
-We really appreciate everyone who would like to contribute to the LibreSign project! There are many ways to contribute, including writing code, filing issues on GitHub, helping people, assisting in triaging, reproducing, or fixing bugs that people have filed, and enhancing our documentation. Also giving a star to the project is a really good way to help and donate.
+Thank you for your interest in contributing to LibreSign!
 
-Before you get started, we encourage you to read our code of conduct, which describes our community norms:
+There are many ways to help our project:
 
-   * 1. `Our code of conduct <https://github.com/LibreSign/libresign/blob/main/CODE_OF_CONDUCT.md>`__, which explicitly stipulates that everyone must be gracious, respectful, and professional. This also documents our conflict resolution policy and encourages people to ask questions.
+- Write code or fix bugs  
+- Test and reproduce reported issues  
+- Improve the documentation  
+- Translate to other languages  
+- Share the security and privacy the word  
+- Give a ⭐ on `GitHub <https://github.com/LibreSign/libresign>`_  
 
+If you want to go further, you can also support LibreSign through  
+`GitHub Sponsors <https://github.com/sponsors/LibreSign/>`_.
 
-Here you will find the documentation for developers.
+We provide professional support for companies as well.  
 
-Introduction
-============
+For services or partnerships, please `contact us <https://libresign.coop/#contact>`_.
 
-What is LibreSign?
-------------------
-
-LibreSign is a software package that provides a set of tools for working with digital signatures. It is designed to be easy to use and flexible, allowing you to integrate it into your own applications or use it as a standalone tool.
-
-About This Documentation
-------------------------
-
-This section is intended for developers who want to understand the architecture of LibreSign, contribute to the codebase, or integrate the solution with other systems.
-
-Here you will find:
-
- - An overview of the project's architecture and core technologies;
-
- - Instructions for setting up the development environment;
-
- - Code standards, folder structure, and best practices adopted in the project;
-
- - Detailed API documentation and usage examples;
-
-Guidelines for contributing to the source code and submitting improvements.
-
-Whether you're part of the team, an external contributor, or simply curious about how LibreSign works under the hood — this section is for you.
-
-Blog
-----
-
-Visit our `blog <https://libresign.coop/posts/>`__
-
+Here you will find all the documentation for developers.
 
 .. toctree::
    :maxdepth: 2
