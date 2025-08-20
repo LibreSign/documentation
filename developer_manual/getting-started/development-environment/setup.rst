@@ -1,5 +1,11 @@
-Development environment
-=======================
+Setup
+=====
+
+.. note::
+   If the project does not have an issue for what you want to work on, please create one first.
+
+If you would like to start contributing code, you may wish to begin with our list of good first issues.  
+See the respective sections below for further instructions.
 
 Prerequisites
 -------------
@@ -28,15 +34,6 @@ Additional dependencies
 
 - ``poppler-utils``  
 - System locale configured with UTF-8 charset  
-
-Developing for LibreSign
-------------------------
-
-.. note::
-   If the project does not have an issue for what you want to work on, please create one first.
-
-If you would like to start contributing code, you may wish to begin with our list of good first issues.  
-See the respective sections below for further instructions.
 
 Setting up Nextcloud
 --------------------
@@ -78,8 +75,8 @@ Inside the container, go to ``apps-extra/libresign`` and run:
     # Build and watch JS changes
     npm run watch
 
-Final configuration
--------------------
+Configuring LibreSign
+---------------------
 
 After setting up the environment and installing LibreSign, open  
 ``Administration Settings > LibreSign`` in Nextcloud and:
@@ -87,3 +84,26 @@ After setting up the environment and installing LibreSign, open
 - Click the **Download binaries** button.  
 - Once all items show status **successful** (except “root certificate not configured”),  
   continue to the next section to configure the root certificate.
+
+
+Extra apps
+----------
+
+LibreSign also integrates with the following Nextcloud apps:
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 80
+
+   * - **App**
+     - **Description**
+   * - `guests <https://apps.nextcloud.com/apps/guests>`__
+     - Allows inviting guest users to sign documents.
+   * - `notifications <https://github.com/nextcloud/notifications>`__
+     - Sends notifications about signature requests and updates.
+   * - `activity <https://github.com/nextcloud/activity>`__
+     - Logs activities such as signature requests and confirmations.
+   * - `viewer <https://github.com/nextcloud/viewer>`__
+     - Enables PDF viewing inside LibreSign without leaving the app.
+   * - `files_pdfviewer <https://apps.nextcloud.com/apps/files_pdfviewer>`__
+     - Required in combination with *viewer* for proper PDF rendering.
