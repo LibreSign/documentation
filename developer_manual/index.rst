@@ -51,7 +51,6 @@ Visit our `blog <https://libresign.coop/posts/>`__
 
    getting-started/index
    api/index
-   code-of-conduct
    translation
    requesting-features
    reporting-bugs
