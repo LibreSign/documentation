@@ -1,40 +1,55 @@
 Release process
 ===============
 
-The release process will start creating an issue using one of the following name suggestions:
+Version numbers
+---------------
+
+- The version number follows **MAJOR.MINOR.PATCH**.
+- ``MAJOR`` aligns with the supported Nextcloud Server version (see :ref:`supported-nextcloud-versions`).
+- ``MINOR`` is used for LibreSign feature releases.
+- ``PATCH`` is used for bug fixes or small improvements.
+
+Stable branches
+---------------
+
+Each **stable branch** in LibreSign corresponds to a specific Nextcloud **MAJOR** version.  
+For example: ``stable21`` is compatible with Nextcloud 21.
+
+Release checklist
+-----------------
+
+A new release starts by creating a GitHub issue with one of the following titles:
 
 .. code-block:: plain
 
-    Release process for v20.1.9
-    Release process for v20.1.9 and v20.1.8
+    🚀 Release todo v20.1.9
+    🚀 Release todo v20.1.9 and v20.1.8
 
-To the body, add the following template. Read all and replace the placeholders with the correct values.
+In the body, paste and adapt the following template. Replace placeholders
+with the correct values as you progress through the steps.
 
 .. code-block:: markdown
 
-    <!-- CASE SENSITIVE replace the following strings in the template -->
     <!-- 1. Replace "20.1.9" with the version number e.g. "12.2.4" -->
     <!-- Replace "20.1.8" with the previous version number e.g. "12.2.3" -->
     <!-- 2. Replace "stable30" with the LibreSign minor branch name e.g. "stable22" -->
-    <!-- 3. Replace "20" with the LibreSign version e.g. "12" for "stable22" -->
-    <!-- 4. Replace CASE SENSITIVE "XX" with the Nextcloud stable branch number e.g. "22" for "stable22" -->
     ## 💺 Preparation
     - [ ] Check there are no pending backports:
-    - [ ] https://github.com/LibreSign/libresign/labels/backport-request
+        - [ ] https://github.com/LibreSign/libresign/labels/backport-request
     - [ ] Check all milestones don't have priority issues still open
         <!-- Add above the link of stables that will be involved in this release process -->
         <!-- Get branches/versions to release from https://github.com/LibreSign/libresign/milestones -->
-        - [ ] https://github.com/LibreSign/libresign/milestone/318
-        - [ ] https://github.com/LibreSign/libresign/milestone/319
+        - [ ] https://github.com/LibreSign/libresign/milestone/<!-- put here the milestone ID e.g. 318 -->
+        - [ ] https://github.com/LibreSign/libresign/milestone/<!-- put here the milestone ID e.g. 319 -->
     - [ ] Check there are no important PRs open against the branch
         <!-- Add above the link with correct base branch of stables that will be involved in this release process -->
         <!-- Get branches/versions to release from https://github.com/LibreSign/libresign/milestones -->
         - [ ] https://github.com/LibreSign/libresign/pulls?q=is%3Apr+is%3Aopen+base%3Astable30
         - [ ] https://github.com/LibreSign/libresign/pulls?q=is%3Apr+is%3Aopen+base%3Astable31
     - [ ] List all PRs that will be added to the changelog
-        <!-- List the content to add at the pull request using the follow command and pay attention to replace the milestone name and the version number:
+        <!-- List the content to add at the pull request using the follow command and pay attention to replace the XX by the Nextcloud version:
 
-            gh pr list --repo LibreSign/libresign --state merged -S "milestone:\"Next Patch (30)\" " -L 100
+            gh pr list --repo LibreSign/libresign --state merged -S "milestone:\"Next Patch (XX)\" " -L 100
         -->
     - [ ] Create a PR against main branch at the `CHANGELOG.md` file with the changelog of all milestones that are subject to the release. Look the pattern used in the file and follow it.
         <!-- name suggestions to commit and pull request:
@@ -45,6 +60,10 @@ To the body, add the following template. Read all and replace the placeholders w
     - [ ] Merge the PR
     <!-- Duplicate the follow steps for each version that will be released, starting with the oldest version. -->
     <!-- Pay attention to start with the **oldest** version here, so the appstore and github releases show the newest version as "Last release" and them. -->
+    <!-- Replace "XX" with the Nextcloud stable branch number e.g. "22" for "stable22" -->
+    <!-- 1. Replace "20.1.9" with the version number e.g. "12.2.4" -->
+    <!-- Replace "20.1.8" with the previous version number e.g. "12.2.3" -->
+    <!-- 2. Replace "stable30" with the LibreSign minor branch name e.g. "stable22" -->
     ## 🚀 v20.1.9
     - [ ] Backport the changelog from main to the stable branches
         - [ ] <!-- Add link to PR here -->
@@ -69,6 +88,8 @@ To the body, add the following template. Read all and replace the placeholders w
         - [ ] Move all open PRs and issues from milestone `v20.1.9` to `💚 Next Patch (XX)`: https://github.com/LibreSign/libresign/issues?q=is%3Aissue%20state%3Aopen%20milestone%3Av20.1.9
         - [ ] Move all open PRs and issues from milestone `v20.1.9` to `💚 Next Patch (XX)`: https://github.com/LibreSign/libresign/issues?q=is%3Apr%20state%3Aopen%20milestone%3Av20.1.9
         - [ ] Close the `v20.1.9` milestone
+    - [ ] Archive all issues and PRs that were merged in this release
+        - [ ] https://github.com/orgs/LibreSign/projects/2/views/4
     - [ ] Create a new release
         - [ ] Prepare a (pre-)release in https://github.com/LibreSign/libresign/releases/new?tag=v20.1.9&target=stable30
         - [ ] Make sure that chosen tag is v20.1.9, target is stable30, and previous tag is v20.1.8
