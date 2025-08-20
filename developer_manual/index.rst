@@ -49,6 +49,7 @@ Visit our `blog <https://libresign.coop/posts/>`__
    :maxdepth: 2
    :hidden:
 
+   prologue/index
    getting-started/index
    api/index
    translation
