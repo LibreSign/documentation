@@ -7,3 +7,4 @@ Getting started
 
    branch-policies
    development-environment/index
+   commits
