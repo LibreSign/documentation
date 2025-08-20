@@ -49,6 +49,7 @@ Visit our `blog <https://libresign.coop/posts/>`__
    :maxdepth: 2
    :hidden:
 
+   getting-started/index
    guide-api
    api
    code-of-conduct
