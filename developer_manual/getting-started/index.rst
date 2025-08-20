@@ -7,4 +7,5 @@ Getting started
 
    branch-policies
    development-environment/index
+   tests
    commits
