@@ -7,3 +7,4 @@ Prologue
 
     code-of-conduct
     community-support
+    reporting-bugs
