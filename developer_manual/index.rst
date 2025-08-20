@@ -15,10 +15,10 @@ Here you will find the documentation for developers.
 Introduction
 ============
 
-What is Libresign?
+What is LibreSign?
 ------------------
 
-Libresign is a software package that provides a set of tools for working with digital signatures. It is designed to be easy to use and flexible, allowing you to integrate it into your own applications or use it as a standalone tool.
+LibreSign is a software package that provides a set of tools for working with digital signatures. It is designed to be easy to use and flexible, allowing you to integrate it into your own applications or use it as a standalone tool.
 
 About This Documentation
 ------------------------
