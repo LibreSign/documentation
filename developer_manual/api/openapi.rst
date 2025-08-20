@@ -1,5 +1,5 @@
-API
-===
+OCS OpenAPI
+===========
 
 .. raw:: html
 

@@ -50,8 +50,7 @@ Visit our `blog <https://libresign.coop/posts/>`__
    :hidden:
 
    getting-started/index
-   guide-api
-   api
+   api/index
    code-of-conduct
    translation
    requesting-features
