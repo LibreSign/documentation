@@ -6,4 +6,4 @@ Getting started
    :maxdepth: 2
 
    branch-policies
-   setup-environment
+   development-environment
