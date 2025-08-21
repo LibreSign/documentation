@@ -2,26 +2,31 @@ Translation
 ===========
 
 Transifex
-+++++++++
+---------
 
-* 1. Access the link to start translating: `LibreSign at Transifex <https://app.transifex.com/nextcloud/nextcloud/libresign>`__
-* 2. If you do not have an account, accesse Transifex to create one or login.
+1. Access the link to start translating:
 
-L10N libraries
-++++++++++++++
+   `LibreSign at Transifex <https://app.transifex.com/nextcloud/nextcloud/libresign>`__
+2. If you do not have an account, create one or log in at Transifex.
 
-LibreSign uses the L10n libraries from Nextcloud. You can find the documentation for these libraries at `Nextcloud L10N <https://github.com/nextcloud-libraries/nextcloud-l10n>`__.
+That’s all translators need to start.
 
-    .. note::
-        L10n can't be changed.
+You don’t need to change anything in the codebase to translate LibreSign.
 
-How the way to translate works with Transifex
-+++++++++++++++++++++++++++++++++++++++++++++
+Fixing original strings
+-----------------------
 
-The LibreSign repository is connected to Transifex, so you can translate the application directly from there. The translations are automatically updated in the repository.
+If you find an original string that needs to be corrected, locate it in the codebase and send a Pull Request (PR) to the repository with the fix.
 
-* 1. Origin file(example: en.po) is versioned in the repository.
-* 2. The transifex sincronization and extracted this file.
-* 3. Translaters can translate the file in Transifex.
-* 4. Transifex send the translated file to the repository(as PR).
+Translation workflow with Transifex
+-----------------------------------
 
+The LibreSign repository is directly integrated with Transifex. This means you can translate the application in Transifex, and the translations are automatically synchronized with the repository.
+
+Workflow steps:
+
+1. A GitHub bot runs daily to detect new strings in the codebase.
+2. All new strings are pushed to Transifex and made available for translation.
+3. Translators provide translations directly in Transifex and will be committed to the repository at the next daily run.
+4. Transifex sends the translated files back to the repository, placing them into the ``l10n`` folder.
+5. You will need to wait the next release to see your translations in the application.
