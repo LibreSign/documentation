@@ -13,6 +13,7 @@ release = '1.0'
 extensions = [
     'sphinx_rtd_theme',
     'sphinx_rtd_dark_mode',
+    'sphinx_copybutton',
 ]
 
 templates_path = ['_templates']
