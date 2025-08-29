@@ -1,6 +1,8 @@
 User Manual
 =================
 
+Welcome to the LibreSign User Manual, your easy-to-follow guide to mastering digital signatures with LibreSign. This documentation includes clear, step-by-step instructions on the system’s core features, from signing and verifying documents to tracking status updates. You’ll also find detailed explanations of interface elements—screens, menus, and workflows—for smooth navigation. Additionally, handy tips and a comprehensive FAQ section are here to answer common questions and enhance your experience. No technical background required—designed to be accessible, practical, and helpful for all users.
+
 Introduction
 ============
 

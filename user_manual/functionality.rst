@@ -1,8 +1,12 @@
+.. _functionality/:
+
 Functionality
 =================
 
 Screens
 --------------
+
+.. _main_screen:
 
 Main screen
 ^^^^^^^^^^^
@@ -24,8 +28,27 @@ Files screen
 
 In this page you can see your files. Can see the status:
     * Green: signed;
+        The document has been signed by all required signatories. There are no further actions pending. It can be downloaded, validated, or stored securely.
+
     * Orange: warning;
+        The document has some pending issues or inconsistencies. This may mean that:
+
+         - One or more signatories have not yet completed the signature.
+         - There are problems with the digital certificate validation.
+         - The signature deadline is approaching or has expired.
+
+    .. note::
+        Recommended action: click on the document to view details and resolve any pending issues.
+
     * Red: draft; 
+        The document is still being prepared. This may include:
+
+         - Signature areas not defined.
+         - Signatories not configured.
+         - Document not yet sent for signature.
+
+    .. note::
+        Action required: finalize the settings and send for signature.
 
 Validate screen
 ^^^^^^^^^^^^^^^
@@ -53,6 +76,8 @@ File loaded
 
 Here you can see the file that was loaded. You can also see the status of the file. The status can be:
     * Red: draft;
+
+.. _add_signature:
 
 Add signature
 ^^^^^^^^^^^^^
@@ -88,6 +113,8 @@ Choose location to sign
 * 3 - File: Here you will sign in the location you chosen in the file.
 * 4 - Request button: This button allows you to request the signature of the file.
 
+.. _see_signed_file:
+
 See the file signed
 """""""""""""""""""
 .. figure:: images/check_file_signed.png
@@ -121,6 +148,41 @@ Sign the file
 * 1 - Check your signature.
 * 2 - Here you can see the way you will sign the file.
 * 3 - Click on the button Sign the document.
+
+Type of signature
+'''''''''''''''''
+
+Here you will see the type of signature you chose to sign the file:
+    .. figure:: images/screen_file_type_signature.png
+        :alt: Type of signature.
+    
+    * 1 - This you can draw your signature.
+    * 2 - This you can type your signature.
+    * 3 - This you can upload an image of your signature.
+    * 4 - This space you can draw your signature using the mouse.
+    * 5 - If you do not like what you draw, you can click here to clear and draw again.
+    * 6 - In this option you can choose colors to draw your signature.
+
+Type signature - Fill
+'''''''''''''''''
+
+Here you will see the type of signature you chose to sign the file:
+    .. figure:: images/type_signature_fill.png
+        :alt: Type of signature.
+    
+    * 1 - Type option.
+    * 2 - This fill you can type your signature.
+    * 3 - In this space you can see how your signature will look like.
+
+Upload signature - Fill
+'''''''''''''''''
+
+Here you will see the type of signature you chose to sign the file:
+    .. figure:: images/upload_option_signature.png
+        :alt: Upload signature.
+    
+    * 1 - Upload option.
+    * 2 - Here you can upload an image of your signature. The image must be in .png, .jpg or .jpeg format.
 
 Signed file
 """""""""""
