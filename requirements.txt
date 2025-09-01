@@ -5,4 +5,5 @@ sphinxcontrib-openapi==0.8.4
 sphinxcontrib-redoc
 sphinx-autobuild
 sphinx-copybutton
+sphinx-notfound-page
 docutils==0.21.2
