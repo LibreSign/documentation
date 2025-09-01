@@ -69,7 +69,7 @@ with the correct values as you progress through the steps.
     - [ ] Check there are no pending backports:
         - [ ] https://github.com/LibreSign/libresign/labels/backport-request
     - [ ] Check all milestones don't have priority issues still open
-        <!-- Add above the link of stables that will be involved in this release process -->
+        <!-- Add above the link of milestone that will be involved in this release process -->
         <!-- Get branches/versions to release from https://github.com/LibreSign/libresign/milestones -->
         - [ ] https://github.com/LibreSign/libresign/milestone/<!-- put here the milestone ID e.g. 318 -->
         - [ ] https://github.com/LibreSign/libresign/milestone/<!-- put here the milestone ID e.g. 319 -->
@@ -80,7 +80,6 @@ with the correct values as you progress through the steps.
         - [ ] https://github.com/LibreSign/libresign/pulls?q=is%3Apr+is%3Aopen+base%3Astable22
     - [ ] List all PRs that will be added to the changelog
         - [ ] Go to https://github.com/LibreSign/libresign/releases/new
-        - [ ] Click at the button to create a new release draft with the next version number
         - [ ] At the tag field, type the next version number, e.g. `v20.1.9`
         - [ ] Select the base branch, e.g. `stable20`
         - [ ] Click at the button to **Generate release notes**
@@ -89,11 +88,11 @@ with the correct values as you progress through the steps.
     - [ ] Make this to all releases that will be done in this process.
     - [ ] Create a PR against `main` branch at the `CHANGELOG.md` file with the changelog of all milestones that are subject to the release. Look the pattern used in the file and follow it.
         You can use the :code:`[skip ci]` tag in the commit message to skip the CI checks for the backport PRs to make the process faster.
-        <!-- name suggestions to commit and pull request:
-            chore(release): Changelog for 20.1.9
-            chore(release): Changelog for 20.1.9 and 20.1.8
-        -->
-        - [ ] <!-- Add link to PR here -->
+        ```
+        name suggestions to commit and pull request:
+        chore(release): Changelog for 20.1.9
+        chore(release): Changelog for 20.1.9 and 20.1.8
+        ```
     - [ ] Merge the PR
     <!-- Duplicate the follow steps for each version that will be released, starting with the oldest version. -->
     <!-- Pay attention to start with the **oldest** version here, so the appstore and github releases show the newest version as "Last release" and them. -->
@@ -137,7 +136,7 @@ with the correct values as you progress through the steps.
         <!-- Add the content of the changelog section here -->
 
         Milestone: [v20.1.9](<!-- Add the link to the closed milestone here -->)
-        **Full Changelog**: https://github.com/LibreSign/libresign/compare/v20.1.9...v20.1.8
+        **Full Changelog**: https://github.com/LibreSign/libresign/compare/v20.1.8...v20.1.9?closed=1
     - [ ] Publish release
     - [ ] Check that the GitHub Action started: https://github.com/LibreSign/libresign/actions
     - [ ] Ensure that the GitHub Action finished successfully: https://github.com/LibreSign/libresign/actions
