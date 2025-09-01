@@ -4,6 +4,11 @@ Testing
 LibreSign includes multiple test suites (see ``.github/workflows`` for CI jobs).  
 Below are the most relevant for day-to-day development and how to run them locally.
 
+.. admonition:: Tips
+
+   - Keep your local branches rebased and dependencies up to date to reduce noise in lints and type checks.
+   - Tests and CI are also part of the documentation, check ``.github/workflows`` and the ``tests`` folder for usage examples.
+
 Unit tests
 ----------
 
@@ -71,14 +76,3 @@ JavaScript linters
 
    npm run lint:fix
    npm run stylelint:fix
-
-Tips
-----
-
-- Prefer running commands **inside the Nextcloud container** as the ``www-data`` user
-  when applicable (permissions and paths will match CI). You may also use the
-  ``runuser`` command, as shown in the examples.
-- Keep your local branches rebased and dependencies up to date to reduce noise in
-  lints and type checks.
-- Tests and CI are also part of the documentation, check ``.github/workflows`` and
-  the ``tests`` folder for usage examples.
