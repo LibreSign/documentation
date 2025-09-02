@@ -83,6 +83,7 @@ with the correct values as you progress through the steps.
         - [ ] At the tag field, type the next version number, e.g. `v20.1.9`
         - [ ] Select the base branch, e.g. `stable20`
         - [ ] Click at the button to **Generate release notes**
+        - [ ] Save this as a draft
     - [ ] Go to the main branch, pull the latest changes and create a new branch called `chore/changelog`
     - [ ] Add the changelog entries to the `CHANGELOG.md` file, following the pattern used in the file.
     - [ ] Make this to all releases that will be done in this process.
@@ -121,8 +122,8 @@ with the correct values as you progress through the steps.
         - [ ] Rename milestone `💚 Next Patch (XX)` to `v20.1.9` in https://github.com/LibreSign/libresign/milestones
         Unless last release of the stable branch:
         - [ ] Create a follow up milestone for `💚 Next Patch (XX)` (Due date in ~4 weeks, ~4 days for beta/RC)
-        - [ ] Move all open PRs and issues from milestone `v20.1.9` to `💚 Next Patch (XX)`: https://github.com/LibreSign/libresign/issues?q=is%3Aissue%20state%3Aopen%20milestone%3Av20.1.9
-        - [ ] Move all open PRs and issues from milestone `v20.1.9` to `💚 Next Patch (XX)`: https://github.com/LibreSign/libresign/issues?q=is%3Apr%20state%3Aopen%20milestone%3Av20.1.9
+        - [ ] Move all open issuesfrom milestone `v20.1.9` to `💚 Next Patch (XX)`: https://github.com/LibreSign/libresign/issues?q=is%3Aissue%20state%3Aopen%20milestone%3Av20.1.9
+        - [ ] Move all open PRs from milestone `v20.1.9` to `💚 Next Patch (XX)`: https://github.com/LibreSign/libresign/issues?q=is%3Apr%20state%3Aopen%20milestone%3Av20.1.9
         - [ ] Close the `v20.1.9` milestone
     - [ ] Archive all issues and PRs that were merged in this release
         - [ ] https://github.com/orgs/LibreSign/projects/2/views/4
@@ -135,8 +136,8 @@ with the correct values as you progress through the steps.
         ## What's Changed
         <!-- Add the content of the changelog section here -->
 
-        Milestone: [v20.1.9](<!-- Add the link to the closed milestone here -->)
-        **Full Changelog**: https://github.com/LibreSign/libresign/compare/v20.1.8...v20.1.9?closed=1
+        Milestone: [v20.1.9](<!-- Add the link to the closed milestone here -->?closed=1)
+        **Full Changelog**: https://github.com/LibreSign/libresign/compare/v20.1.8...v20.1.9
     - [ ] Publish release
     - [ ] Check that the GitHub Action started: https://github.com/LibreSign/libresign/actions
     - [ ] Ensure that the GitHub Action finished successfully: https://github.com/LibreSign/libresign/actions
