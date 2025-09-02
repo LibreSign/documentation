@@ -1,0 +1,244 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Branch policies &mdash; LibreSign Documentation 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../_static/dark_mode_css/general.css?v=c0a7eb24" />
+      <link rel="stylesheet" type="text/css" href="../_static/dark_mode_css/dark.css?v=70edf1c7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=d6b6a36a"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=f281be69"></script>
+      <script src="../_static/dark_mode_js/default_dark.js?v=fd565c74"></script>
+      <script src="../_static/dark_mode_js/theme_switcher.js?v=358d3910"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Development environment" href="development-environment/index.html" />
+    <link rel="prev" title="Getting started" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #184c4e" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../prologue/index.html">Prologue</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Getting started</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Branch policies</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#branch-names">Branch names</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#main">Main</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#stables">Stables</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#target-branches-for-contributions">Target branches for contributions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bugfixes-and-backports">Bugfixes and backports</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#automatic-backport">Automatic backport</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#manual-backport">Manual backport</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#creating-branch">Creating branch</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="development-environment/index.html">Development environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tests.html">Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commits.html">Commits</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../translation.html">Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../release-process.html">Release process</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #184c4e" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">LibreSign Documentation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Getting started</a></li>
+      <li class="breadcrumb-item active">Branch policies</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/getting-started/branch-policies.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="branch-policies">
+<h1>Branch policies<a class="headerlink" href="#branch-policies" title="Link to this heading"></a></h1>
+<p>This document describes the branching model used in LibreSign and how contributions should be targeted.</p>
+<section id="branch-names">
+<h2>Branch names<a class="headerlink" href="#branch-names" title="Link to this heading"></a></h2>
+<section id="main">
+<h3>Main<a class="headerlink" href="#main" title="Link to this heading"></a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">main</span></code> branch is the <strong>default development branch</strong> of LibreSign, equivalent to the <code class="docutils literal notranslate"><span class="pre">master</span></code> branch in the Nextcloud Server repository.</p>
+<ul class="simple">
+<li><p>Code in <code class="docutils literal notranslate"><span class="pre">main</span></code> represents the <strong>next stable release</strong> of LibreSign, which aligns with the <strong>next stable release</strong> of the Nextcloud Server.</p></li>
+<li><p>Development in <code class="docutils literal notranslate"><span class="pre">main</span></code> must follow the <a class="reference external" href="https://github.com/nextcloud/server/wiki/Maintenance-and-Release-Schedule">Nextcloud Server Maintenance and Release Schedule</a> to ensure compatibility and coordinated releases.</p></li>
+<li><p>New features and general changes are developed in short-lived branches created from <code class="docutils literal notranslate"><span class="pre">main</span></code> and merged back through reviewed pull requests.</p></li>
+<li><p><strong>Bug fixes</strong>:</p>
+<ul>
+<li><p>If a fix affects <strong>all supported versions</strong>, implement it in <code class="docutils literal notranslate"><span class="pre">main</span></code> and backport it to the relevant stable branches.</p></li>
+<li><p>If a fix is <strong>specific to a single stable line</strong>, implement it only in that stable branch.</p></li>
+</ul>
+</li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">main</span></code> branch is <strong>not intended for production use</strong>; it contains code under active development for the upcoming release.</p></li>
+</ul>
+</section>
+<section id="stables">
+<h3>Stables<a class="headerlink" href="#stables" title="Link to this heading"></a></h3>
+<p>Stable branches maintain release lines compatible with a specific <strong>Nextcloud Server</strong> major version.</p>
+<ul>
+<li><p>Branch names follow the format <code class="docutils literal notranslate"><span class="pre">stableXX</span></code>, where <code class="docutils literal notranslate"><span class="pre">XX</span></code> is the <strong>MAJOR</strong> version of the supported Nextcloud Server.</p>
+<ul class="simple">
+<li><p>Example: <code class="docutils literal notranslate"><span class="pre">stable21</span></code> → compatible with Nextcloud 21.</p></li>
+</ul>
+</li>
+<li><p>Create a new stable branch when a new Nextcloud Server major version is released and LibreSign will support it.</p></li>
+<li><p><strong>To identify which Nextcloud Server version a stable branch supports</strong>:</p>
+<ol class="arabic">
+<li><p>Checkout the branch locally or open it in GitHub.</p></li>
+<li><p>Open the file <code class="docutils literal notranslate"><span class="pre">appinfo/info.xml</span></code>.</p></li>
+<li><p>Look for the <code class="docutils literal notranslate"><span class="pre">&lt;nextcloud&gt;</span></code> element:</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;nextcloud</span><span class="w"> </span><span class="na">min-version=</span><span class="s">&quot;21&quot;</span><span class="w"> </span><span class="na">max-version=</span><span class="s">&quot;21&quot;</span><span class="w"> </span><span class="nt">/&gt;</span>
+</pre></div>
+</div>
+<p>In LibreSign, <code class="docutils literal notranslate"><span class="pre">min-version</span></code> and <code class="docutils literal notranslate"><span class="pre">max-version</span></code> are always the same number.
+This number is the MAJOR version of the compatible Nextcloud Server.</p>
+</li>
+</ol>
+</li>
+</ul>
+</section>
+</section>
+<section id="target-branches-for-contributions">
+<h2>Target branches for contributions<a class="headerlink" href="#target-branches-for-contributions" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>New features / improvements</strong>:</p>
+<ul>
+<li><p>Create a branch from <code class="docutils literal notranslate"><span class="pre">main</span></code>.</p></li>
+<li><p>Open a PR to <code class="docutils literal notranslate"><span class="pre">main</span></code>.</p></li>
+</ul>
+</li>
+<li><p><strong>Bug fix affecting all supported versions</strong>:</p>
+<ul>
+<li><p>Create a branch from <code class="docutils literal notranslate"><span class="pre">main</span></code>.</p></li>
+<li><p>Open a PR to <code class="docutils literal notranslate"><span class="pre">main</span></code>.</p></li>
+<li><p>Backport to all affected stable branches.</p></li>
+</ul>
+</li>
+<li><p><strong>Bug fix specific to a stable</strong>:</p>
+<ul>
+<li><p>Create a branch from that stable branch.</p></li>
+<li><p>Open a PR to the same stable branch.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="bugfixes-and-backports">
+<h2>Bugfixes and backports<a class="headerlink" href="#bugfixes-and-backports" title="Link to this heading"></a></h2>
+<p>If a bug fix also needs to be applied to an older release line, it must be <strong>backported</strong>.
+Backporting means applying the same change to another branch (Git calls this <em>cherry-picking</em>).</p>
+<section id="automatic-backport">
+<h3>Automatic backport<a class="headerlink" href="#automatic-backport" title="Link to this heading"></a></h3>
+<p>If the cherry-pick applies cleanly and only small conflicts need to be resolved, the <a class="reference external" href="https://github.com/nextcloud/backportbot">backport bot</a> can be used.</p>
+<p>See the <a class="reference external" href="https://github.com/nextcloud/backportbot#usage">bot usage</a> for available commands.</p>
+</section>
+<section id="manual-backport">
+<h3>Manual backport<a class="headerlink" href="#manual-backport" title="Link to this heading"></a></h3>
+<p>For more complex changes, the backport must be done manually:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Switch to the target branch and update it</span>
+git<span class="w"> </span>checkout<span class="w"> </span>stable25
+git<span class="w"> </span>pull<span class="w"> </span>origin<span class="w"> </span>stable25
+
+<span class="c1"># Create the new backport branch</span>
+git<span class="w"> </span>checkout<span class="w"> </span>-b<span class="w"> </span>fix/foo-stable25
+
+<span class="c1"># Cherry-pick the change from the commit SHA of the original PR in main</span>
+git<span class="w"> </span>cherry-pick<span class="w"> </span>abc123
+
+<span class="c1"># Resolve any conflicts, commit, and push</span>
+git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>fix/foo-stable25
+
+<span class="c1"># Open a pull request for the backport</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="creating-branch">
+<h2>Creating branch<a class="headerlink" href="#creating-branch" title="Link to this heading"></a></h2>
+<p>Follow the convention of naming branches as <code class="docutils literal notranslate"><span class="pre">feature/description</span></code> or <code class="docutils literal notranslate"><span class="pre">bugfix/description</span></code>.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Getting started" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="development-environment/index.html" class="btn btn-neutral float-right" title="Development environment" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025 LibreCode coop.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

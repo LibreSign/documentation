@@ -1,0 +1,274 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Release process &mdash; LibreSign Documentation 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/general.css?v=c0a7eb24" />
+      <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/dark.css?v=70edf1c7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=d6b6a36a"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="_static/copybutton.js?v=f281be69"></script>
+      <script src="_static/dark_mode_js/default_dark.js?v=fd565c74"></script>
+      <script src="_static/dark_mode_js/theme_switcher.js?v=358d3910"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Translation" href="translation.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #184c4e" >
+
+          
+          
+          <a href="index.html">
+            
+              <img src="_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="prologue/index.html">Prologue</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting-started/index.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="translation.html">Translation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Release process</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#version-numbers">Version numbers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#stable-branches">Stable branches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#release-checklist">Release checklist</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #184c4e" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">LibreSign Documentation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Release process</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/release-process.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="release-process">
+<h1>Release process<a class="headerlink" href="#release-process" title="Link to this heading"></a></h1>
+<p>Resuming the steps:</p>
+<ol class="arabic">
+<li><p>Identify the next version number of all releases.</p></li>
+<li><dl class="simple">
+<dt>Create the changelog of all branches that will be released.</dt><dd><p>You will need to create the changelog in the <code class="code docutils literal notranslate"><span class="pre">CHANGELOG.md</span></code> file from the <code class="code docutils literal notranslate"><span class="pre">main</span></code> branch and then backport it to the stable branches.</p>
+</dd>
+</dl>
+</li>
+<li><p>Make the necessary changes into the codebase to prepare the release.</p>
+<blockquote>
+<div><div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You can use the <code class="code docutils literal notranslate"><span class="pre">[skip</span> <span class="pre">ci]</span></code> tag in the commit message to skip the CI checks for the backport PRs to make the process faster.</p>
+</div>
+</div></blockquote>
+</li>
+<li><p>Create a pull request to the <cite>main</cite> branch with the changes that you made.</p></li>
+<li><p>After the CI finish with success and the PR is merged, backport the changes to the stable branches that will be released.</p></li>
+<li><p>After the backport PRs are merged, create the releases in GitHub.</p></li>
+<li><p>Verify that the GitHub Action that creates the packages and publish them in the Nextcloud App Store finish with success.</p></li>
+<li><p>Announce the release in the Telegram channel.</p></li>
+</ol>
+<section id="version-numbers">
+<h2>Version numbers<a class="headerlink" href="#version-numbers" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>The version number follows <strong>MAJOR.MINOR.PATCH</strong>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MAJOR</span></code> aligns with the supported Nextcloud Server version.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MINOR</span></code> is used for LibreSign feature releases.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PATCH</span></code> is used for bug fixes or small improvements.</p></li>
+</ul>
+<ol class="arabic">
+<li><p>Go to Milestones in the LibreSign repository:</p>
+<blockquote>
+<div><p><a class="reference external" href="https://github.com/LibreSign/libresign/milestones">https://github.com/LibreSign/libresign/milestones</a></p>
+</div></blockquote>
+</li>
+<li><p>Identify what is the next patch version to be released.</p></li>
+<li><p>Look the closed items to identify if we have new features,</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>If is a major release, increment with <code class="code docutils literal notranslate"><span class="pre">1</span></code> the <code class="code docutils literal notranslate"><span class="pre">MAJOR</span></code> version and reset <code class="code docutils literal notranslate"><span class="pre">MINOR</span></code> and <code class="code docutils literal notranslate"><span class="pre">PATCH</span></code>.</p></li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>We only create a major release when is created a new stable branch for a new Nextcloud major version.</p>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>To new features, increment with <code class="code docutils literal notranslate"><span class="pre">1</span></code> the <code class="docutils literal notranslate"><span class="pre">MINOR</span></code> version and reset <code class="docutils literal notranslate"><span class="pre">PATCH</span></code> to <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p></li>
+<li><p>To bug fixes, increment the <code class="docutils literal notranslate"><span class="pre">PATCH</span></code> version.</p></li>
+</ol>
+</div></blockquote>
+</li>
+</ol>
+</section>
+<section id="stable-branches">
+<h2>Stable branches<a class="headerlink" href="#stable-branches" title="Link to this heading"></a></h2>
+<p>Each <strong>stable branch</strong> in LibreSign corresponds to a specific Nextcloud <strong>MAJOR</strong> version.</p>
+<p>For example: <code class="docutils literal notranslate"><span class="pre">stable21</span></code> is compatible with Nextcloud 21.</p>
+</section>
+<section id="release-checklist">
+<h2>Release checklist<a class="headerlink" href="#release-checklist" title="Link to this heading"></a></h2>
+<p>A new release starts by creating a GitHub issue with one of the following titles:</p>
+<div class="highlight-plain notranslate"><div class="highlight"><pre><span></span>🚀 Release todo v20.1.9
+🚀 Release todo v20.1.9 and v21.1.8
+</pre></div>
+</div>
+<p>In the body, paste and adapt the following template. Replace placeholders
+with the correct values as you progress through the steps.</p>
+<div class="highlight-markdown notranslate"><div class="highlight"><pre><span></span>&lt;!-- 1. Replace &quot;20.1.9&quot; with the version number e.g. &quot;12.2.4&quot; --&gt;
+&lt;!-- Replace &quot;20.1.8&quot; with the previous version number e.g. &quot;12.2.3&quot; --&gt;
+&lt;!-- 2. Replace &quot;stable20&quot; with the LibreSign minor branch name e.g. &quot;stable22&quot; --&gt;
+<span class="gu">## 💺 Preparation</span>
+<span class="k">- [ ]</span> Check there are no pending backports:
+<span class="w">    </span><span class="k">- [ ]</span> https://github.com/LibreSign/libresign/labels/backport-request
+<span class="k">- [ ]</span> Check all milestones don&#39;t have priority issues still open
+    &lt;!-- Add above the link of milestone that will be involved in this release process --&gt;
+    &lt;!-- Get branches/versions to release from https://github.com/LibreSign/libresign/milestones --&gt;
+<span class="w">    </span><span class="k">- [ ]</span> https://github.com/LibreSign/libresign/milestone/&lt;!-- put here the milestone ID e.g. 318 --&gt;
+<span class="w">    </span><span class="k">- [ ]</span> https://github.com/LibreSign/libresign/milestone/&lt;!-- put here the milestone ID e.g. 319 --&gt;
+<span class="k">- [ ]</span> Check there are no important PRs open against the branch
+    &lt;!-- Add above the link with correct base branch of stables that will be involved in this release process --&gt;
+    &lt;!-- Get branches/versions to release from https://github.com/LibreSign/libresign/milestones --&gt;
+<span class="w">    </span><span class="k">- [ ]</span> https://github.com/LibreSign/libresign/pulls?q=is%3Apr+is%3Aopen+base%3Astable20
+<span class="w">    </span><span class="k">- [ ]</span> https://github.com/LibreSign/libresign/pulls?q=is%3Apr+is%3Aopen+base%3Astable22
+<span class="k">- [ ]</span> List all PRs that will be added to the changelog
+<span class="w">    </span><span class="k">- [ ]</span> Go to https://github.com/LibreSign/libresign/releases/new
+<span class="w">    </span><span class="k">- [ ]</span> At the tag field, type the next version number, e.g. <span class="sb">`v20.1.9`</span>
+<span class="w">    </span><span class="k">- [ ]</span> Select the base branch, e.g. <span class="sb">`stable20`</span>
+<span class="w">    </span><span class="k">- [ ]</span> Click at the button to <span class="gs">**Generate release notes**</span>
+<span class="w">    </span><span class="k">- [ ]</span> Save this as a draft
+<span class="k">- [ ]</span> Go to the main branch, pull the latest changes and create a new branch called <span class="sb">`chore/changelog`</span>
+<span class="k">- [ ]</span> Add the changelog entries to the <span class="sb">`CHANGELOG.md`</span> file, following the pattern used in the file.
+<span class="k">- [ ]</span> Make this to all releases that will be done in this process.
+<span class="k">- [ ]</span> Create a PR against <span class="sb">`main`</span> branch at the <span class="sb">`CHANGELOG.md`</span> file with the changelog of all milestones that are subject to the release. Look the pattern used in the file and follow it.
+    You can use the :code:`[skip ci]` tag in the commit message to skip the CI checks for the backport PRs to make the process faster.
+<span class="sb">    ```</span>
+<span class="sb">    name suggestions to commit and pull request:</span>
+<span class="sb">    chore(release): Changelog for 20.1.9</span>
+<span class="sb">    chore(release): Changelog for 20.1.9 and 20.1.8</span>
+<span class="sb">    ```</span>
+<span class="k">- [ ]</span> Merge the PR
+&lt;!-- Duplicate the follow steps for each version that will be released, starting with the oldest version. --&gt;
+&lt;!-- Pay attention to start with the <span class="gs">**oldest**</span> version here, so the appstore and github releases show the newest version as &quot;Last release&quot; and them. --&gt;
+&lt;!-- Replace &quot;XX&quot; with the Nextcloud stable branch number e.g. &quot;22&quot; for &quot;stable22&quot; --&gt;
+&lt;!-- 1. Replace &quot;20.1.9&quot; with the version number e.g. &quot;12.2.4&quot; --&gt;
+&lt;!-- Replace &quot;20.1.8&quot; with the previous version number e.g. &quot;12.2.3&quot; --&gt;
+&lt;!-- 2. Replace &quot;stable20&quot; with the LibreSign minor branch name e.g. &quot;stable22&quot; --&gt;
+<span class="gu">## 🚀 v20.1.9</span>
+<span class="k">- [ ]</span> Backport the changelog from main to the stable branches
+<span class="w">    </span><span class="k">- [ ]</span> &lt;!-- Add link to PR here --&gt;
+&lt;!-- At the backport PR, do the following steps: --&gt;
+<span class="k">- [ ]</span> Remove changelog entries in <span class="sb">`CHANGELOG.md`</span> of higher versions
+<span class="k">- [ ]</span> Bump the version in <span class="sb">`appinfo/info.xml`</span>
+<span class="k">- [ ]</span> Bump the version in <span class="sb">`package.json`</span> and in <span class="sb">`package-lock.json`</span>. The following command will return a new version name, make sure it matches what you expect:
+<span class="sb">```sh</span>
+<span class="c1"># Make sure the printed version matches the info.xml version</span>
+npm<span class="w"> </span>version<span class="w"> </span>--no-git-tag-version<span class="w"> </span><span class="k">$(</span>xmllint<span class="w"> </span>--xpath<span class="w"> </span><span class="s1">&#39;/info/version/text()&#39;</span><span class="w"> </span>appinfo/info.xml<span class="k">)</span>
+<span class="sb">```</span>
+<span class="k">- [ ]</span> Merge the backport
+<span class="k">- [ ]</span> Do a quick smoke test signing documents with:
+<span class="w">    </span><span class="k">- [ ]</span> Chrome
+<span class="w">    </span><span class="k">- [ ]</span> Edge
+<span class="w">    </span><span class="k">- [ ]</span> Firefox
+<span class="w">    </span><span class="k">- [ ]</span> Safari
+<span class="k">- [ ]</span> Create the new milestone
+<span class="w">    </span><span class="k">- [ ]</span> Rename milestone <span class="sb">`💚 Next Patch (XX)`</span> to <span class="sb">`v20.1.9`</span> in https://github.com/LibreSign/libresign/milestones
+    Unless last release of the stable branch:
+<span class="w">    </span><span class="k">- [ ]</span> Create a follow up milestone for <span class="sb">`💚 Next Patch (XX)`</span> (Due date in ~4 weeks, ~4 days for beta/RC)
+<span class="w">    </span><span class="k">- [ ]</span> Move all open issuesfrom milestone <span class="sb">`v20.1.9`</span> to <span class="sb">`💚 Next Patch (XX)`</span>: https://github.com/LibreSign/libresign/issues?q=is%3Aissue%20state%3Aopen%20milestone%3Av20.1.9
+<span class="w">    </span><span class="k">- [ ]</span> Move all open PRs from milestone <span class="sb">`v20.1.9`</span> to <span class="sb">`💚 Next Patch (XX)`</span>: https://github.com/LibreSign/libresign/issues?q=is%3Apr%20state%3Aopen%20milestone%3Av20.1.9
+<span class="w">    </span><span class="k">- [ ]</span> Close the <span class="sb">`v20.1.9`</span> milestone
+<span class="k">- [ ]</span> Archive all issues and PRs that were merged in this release
+<span class="w">    </span><span class="k">- [ ]</span> https://github.com/orgs/LibreSign/projects/2/views/4
+<span class="k">- [ ]</span> Create a new release
+<span class="w">    </span><span class="k">- [ ]</span> Prepare a (pre-)release in https://github.com/LibreSign/libresign/releases/new?tag=v20.1.9&amp;target=stable20
+<span class="w">    </span><span class="k">- [ ]</span> Make sure that chosen tag is v20.1.9, target is stable20, and previous tag is v20.1.8
+<span class="w">    </span><span class="k">- [ ]</span> Add the content of respective <span class="sb">`CHANGELOG.md`</span> section from merged PR
+<span class="w">    </span><span class="k">- [ ]</span> Use the <span class="gs">**Generate release notes**</span> button and wrap the output result into
+    ```
+    ## What&#39;s Changed
+    &lt;!-- Add the content of the changelog section here --&gt;
+
+    Milestone: [<span class="nt">v20.1.9</span>](<span class="na">&lt;!-- Add the link to the closed milestone here --&gt;?closed=1</span>)
+    <span class="gs">**Full Changelog**</span>: https://github.com/LibreSign/libresign/compare/v20.1.8...v20.1.9
+<span class="k">- [ ]</span> Publish release
+<span class="k">- [ ]</span> Check that the GitHub Action started: https://github.com/LibreSign/libresign/actions
+<span class="k">- [ ]</span> Ensure that the GitHub Action finished successfully: https://github.com/LibreSign/libresign/actions
+<span class="k">- [ ]</span> Post the changelog in [<span class="nt">💬 LibreSign team public 👥</span>](<span class="na">https://t.me/LibreSign</span>)
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="translation.html" class="btn btn-neutral float-left" title="Translation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025 LibreCode coop.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

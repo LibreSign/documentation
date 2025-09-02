@@ -1,0 +1,179 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Frontend &mdash; LibreSign Documentation 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/dark_mode_css/general.css?v=c0a7eb24" />
+      <link rel="stylesheet" type="text/css" href="../../_static/dark_mode_css/dark.css?v=70edf1c7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=d6b6a36a"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+      <script src="../../_static/dark_mode_js/default_dark.js?v=fd565c74"></script>
+      <script src="../../_static/dark_mode_js/theme_switcher.js?v=358d3910"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Coding standards" href="coding-standards.html" />
+    <link rel="prev" title="Updating" href="updating.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #184c4e" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../prologue/index.html">Prologue</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Getting started</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../branch-policies.html">Branch policies</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Development environment</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="setup.html">Setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="updating.html">Updating</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Frontend</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#building-server-for-development">Building server for development</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#reverting-the-server-build">Reverting the server build</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="coding-standards.html">Coding standards</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../tests.html">Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../commits.html">Commits</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../translation.html">Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../release-process.html">Release process</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #184c4e" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">LibreSign Documentation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Getting started</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Development environment</a></li>
+      <li class="breadcrumb-item active">Frontend</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/getting-started/development-environment/frontend.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="frontend">
+<h1>Frontend<a class="headerlink" href="#frontend" title="Link to this heading"></a></h1>
+<p>By default, the Nextcloud server repository ships with the frontend already built for production.
+For development purposes, you may want to rebuild it in <strong>development mode</strong>.
+This allows you, for example, to inspect server components using the Vue Devtools browser extension.</p>
+<section id="building-server-for-development">
+<h2>Building server for development<a class="headerlink" href="#building-server-for-development" title="Link to this heading"></a></h2>
+<p>To rebuild the frontend in development mode:</p>
+<ol class="arabic">
+<li><p>Access the Nextcloud container:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-u<span class="w"> </span>www-data<span class="w"> </span>nextcloud<span class="w"> </span>bash
+</pre></div>
+</div>
+</li>
+<li><p>Go to the root folder of the Nextcloud server:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>/var/www/html
+</pre></div>
+</div>
+</li>
+<li><p>Install dependencies and build in dev mode:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>npm<span class="w"> </span>ci<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>npm<span class="w"> </span>run<span class="w"> </span>dev
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="reverting-the-server-build">
+<h2>Reverting the server build<a class="headerlink" href="#reverting-the-server-build" title="Link to this heading"></a></h2>
+<p>If you build the frontend in development mode, you must revert the changes before pulling new updates from the Nextcloud <strong>master</strong> branch.
+Otherwise, you may run into conflicts.</p>
+<p>To revert the build:</p>
+<ol class="arabic">
+<li><p>Exit the container.</p></li>
+<li><p>From your host machine, go to the Nextcloud server root folder.</p></li>
+<li><p>Remove the <code class="docutils literal notranslate"><span class="pre">dist</span></code> folder and restore it from Git:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rm<span class="w"> </span>-rf<span class="w"> </span>dist
+git<span class="w"> </span>checkout<span class="w"> </span>--<span class="w"> </span>dist
+</pre></div>
+</div>
+</li>
+</ol>
+<p>After pulling the latest changes, you can rebuild the frontend in development mode again if needed.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="updating.html" class="btn btn-neutral float-left" title="Updating" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="coding-standards.html" class="btn btn-neutral float-right" title="Coding standards" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025 LibreCode coop.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
