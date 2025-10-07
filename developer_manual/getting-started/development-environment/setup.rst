@@ -54,7 +54,14 @@ If it is not, run ``docker ps`` and look for the ``nextcloud`` container (or ``g
 If you cannot find it, the setup likely failed; please repeat the previous step.
 
 Once Nextcloud is running, go to the setup folder and locate ``volumes/nextcloud/apps-extra``.  
-Clone the LibreSign repository into this folder.
+Clone the LibreSign repository into this folder .
+
+.. code-block:: bash
+
+    git clone https://github.com/LibreCodeCoop/libresign.git
+    cd libresign
+    git submodule update --init
+
 
 Open a bash session in the Nextcloud container:
 
