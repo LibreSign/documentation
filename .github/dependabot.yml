@@ -5,7 +5,6 @@ updates:
     schedule:
       interval: "weekly"
 
-  # Maintain dependencies for pip (Python)
   - package-ecosystem: "pip"
     directory: "/"
     schedule:
