@@ -1,0 +1,258 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Setup &mdash; LibreSign Documentation 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/dark_mode_css/general.css?v=c0a7eb24" />
+      <link rel="stylesheet" type="text/css" href="../../_static/dark_mode_css/dark.css?v=70edf1c7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=d6b6a36a"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+      <script src="../../_static/dark_mode_js/default_dark.js?v=fd565c74"></script>
+      <script src="../../_static/dark_mode_js/theme_switcher.js?v=358d3910"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Updating" href="updating.html" />
+    <link rel="prev" title="Development environment" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #184c4e" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../prologue/index.html">Prologue</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Getting started</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../branch-policies.html">Branch policies</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Development environment</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Setup</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#setting-up-nextcloud">Setting up Nextcloud</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#configuring-libresign">Configuring LibreSign</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#extra-apps">Extra apps</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="updating.html">Updating</a></li>
+<li class="toctree-l3"><a class="reference internal" href="frontend.html">Frontend</a></li>
+<li class="toctree-l3"><a class="reference internal" href="coding-standards.html">Coding standards</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../tests.html">Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../commits.html">Commits</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../translation.html">Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../release-process.html">Release process</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #184c4e" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">LibreSign Documentation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Getting started</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Development environment</a></li>
+      <li class="breadcrumb-item active">Setup</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/getting-started/development-environment/setup.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="setup">
+<h1>Setup<a class="headerlink" href="#setup" title="Link to this heading"></a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If the project does not have an issue for what you want to work on, please create one first.</p>
+</div>
+<p>If you would like to start contributing code, you may wish to begin with our list of good first issues.
+See the respective sections below for further instructions.</p>
+<section id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading"></a></h2>
+<section id="php">
+<h3>PHP<a class="headerlink" href="#php" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>The PHP version must match the minimum required by the current Nextcloud <strong>master</strong> branch.</p></li>
+<li><p>You can verify this in the <code class="docutils literal notranslate"><span class="pre">composer.json</span></code> of the Nextcloud server:
+<a class="reference external" href="https://github.com/nextcloud/server/blob/master/composer.json">Nextcloud Server composer.json</a>
+(see the <code class="docutils literal notranslate"><span class="pre">config.platform.php</span></code> entry).</p></li>
+<li><p>At the time of writing this documentation, the minimum required version is <strong>8.1</strong>.</p></li>
+<li><p>Docker image suggestion: <code class="docutils literal notranslate"><span class="pre">php-fpm</span></code></p></li>
+</ul>
+</section>
+<section id="node-js">
+<h3>Node.js<a class="headerlink" href="#node-js" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>The Node.js version must match the engine required by the current Nextcloud <strong>master</strong> branch.</p></li>
+<li><p>You can verify this in the <code class="docutils literal notranslate"><span class="pre">package.json</span></code> of the Nextcloud server:
+<a class="reference external" href="https://github.com/nextcloud/server/blob/master/package.json">Nextcloud Server package.json</a>
+(see the <code class="docutils literal notranslate"><span class="pre">engines.node</span></code> entry).</p></li>
+<li><p>At the time of writing this documentation, the required version is <strong>^22.0.0</strong> (with npm <strong>^10.5.0</strong>).</p></li>
+</ul>
+</section>
+<section id="additional-dependencies">
+<h3>Additional dependencies<a class="headerlink" href="#additional-dependencies" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">poppler-utils</span></code></p></li>
+<li><p>System locale configured with UTF-8 charset</p></li>
+</ul>
+</section>
+</section>
+<section id="setting-up-nextcloud">
+<h2>Setting up Nextcloud<a class="headerlink" href="#setting-up-nextcloud" title="Link to this heading"></a></h2>
+<p>This project depends on Nextcloud. To start writing code, you need a working Nextcloud environment.
+We recommend using Docker, but you may use another method if you prefer.</p>
+<p>Suggested setups:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/LibreCodeCoop/nextcloud-docker-development/">LibreCode Coop Setup</a></p></li>
+<li><p><a class="reference external" href="https://github.com/juliushaertl/nextcloud-docker-dev/">Julius Härtl Nextcloud Setup</a></p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you encounter problems with these setups, please open an issue in the corresponding repository.</p>
+</div>
+<p>After running the Docker setup, check if Nextcloud is available at <code class="docutils literal notranslate"><span class="pre">http://localhost</span></code>.
+If it is not, run <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">ps</span></code> and look for the <code class="docutils literal notranslate"><span class="pre">nextcloud</span></code> container (or <code class="docutils literal notranslate"><span class="pre">ghcr.io/juliushaertl/nextcloud-dev-php**</span></code>).
+If you cannot find it, the setup likely failed; please repeat the previous step.</p>
+<p>Once Nextcloud is running, go to the setup folder and locate <code class="docutils literal notranslate"><span class="pre">volumes/nextcloud/apps-extra</span></code>.
+Clone the LibreSign repository into this folder .</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/LibreCodeCoop/libresign.git
+<span class="nb">cd</span><span class="w"> </span>libresign
+git<span class="w"> </span>submodule<span class="w"> </span>update<span class="w"> </span>--init
+</pre></div>
+</div>
+<p>Open a bash session in the Nextcloud container:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-u<span class="w"> </span>www-data<span class="w"> </span>nextcloud<span class="w"> </span>bash
+</pre></div>
+</div>
+<p>Inside the container, go to <code class="docutils literal notranslate"><span class="pre">apps-extra/libresign</span></code> and run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Download composer dependencies</span>
+composer<span class="w"> </span>install
+
+<span class="c1"># Download JS dependencies</span>
+npm<span class="w"> </span>ci
+
+<span class="c1"># Build and watch JS changes</span>
+npm<span class="w"> </span>run<span class="w"> </span>watch
+</pre></div>
+</div>
+</section>
+<section id="configuring-libresign">
+<h2>Configuring LibreSign<a class="headerlink" href="#configuring-libresign" title="Link to this heading"></a></h2>
+<p>After setting up the environment and installing LibreSign, open
+<code class="docutils literal notranslate"><span class="pre">Administration</span> <span class="pre">Settings</span> <span class="pre">&gt;</span> <span class="pre">LibreSign</span></code> in Nextcloud and:</p>
+<ul class="simple">
+<li><p>Click the <strong>Download binaries</strong> button.</p></li>
+<li><p>Once all items show status <strong>successful</strong> (except “root certificate not configured”),
+continue to the next section to configure the root certificate.</p></li>
+</ul>
+</section>
+<section id="extra-apps">
+<h2>Extra apps<a class="headerlink" href="#extra-apps" title="Link to this heading"></a></h2>
+<p>LibreSign also integrates with the following Nextcloud apps:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 80.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>App</strong></p></th>
+<th class="head"><p><strong>Description</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference external" href="https://apps.nextcloud.com/apps/guests">guests</a></p></td>
+<td><p>Allows inviting guest users to sign documents.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://github.com/nextcloud/notifications">notifications</a></p></td>
+<td><p>Sends notifications about signature requests and updates.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="https://github.com/nextcloud/activity">activity</a></p></td>
+<td><p>Logs activities such as signature requests and confirmations.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://github.com/nextcloud/viewer">viewer</a></p></td>
+<td><p>Enables PDF viewing inside LibreSign without leaving the app.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="https://apps.nextcloud.com/apps/files_pdfviewer">files_pdfviewer</a></p></td>
+<td><p>Required in combination with <em>viewer</em> for proper PDF rendering.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Development environment" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="updating.html" class="btn btn-neutral float-right" title="Updating" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025 LibreCode coop.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

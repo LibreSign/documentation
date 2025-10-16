@@ -1,0 +1,225 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Commits &mdash; LibreSign Documentation 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../_static/dark_mode_css/general.css?v=c0a7eb24" />
+      <link rel="stylesheet" type="text/css" href="../_static/dark_mode_css/dark.css?v=70edf1c7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=d6b6a36a"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=f281be69"></script>
+      <script src="../_static/dark_mode_js/default_dark.js?v=fd565c74"></script>
+      <script src="../_static/dark_mode_js/theme_switcher.js?v=358d3910"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="API Documentation" href="../api/index.html" />
+    <link rel="prev" title="Testing" href="tests.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #184c4e" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../prologue/index.html">Prologue</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Getting started</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="branch-policies.html">Branch policies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="development-environment/index.html">Development environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tests.html">Testing</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Commits</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#conventional-commits">Conventional commits</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dco">DCO</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#fixing-dco-errors-and-commit-messages">Fixing DCO errors and commit messages</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../translation.html">Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../release-process.html">Release process</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #184c4e" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">LibreSign Documentation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Getting started</a></li>
+      <li class="breadcrumb-item active">Commits</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/getting-started/commits.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="commits">
+<h1>Commits<a class="headerlink" href="#commits" title="Link to this heading"></a></h1>
+<section id="conventional-commits">
+<h2>Conventional commits<a class="headerlink" href="#conventional-commits" title="Link to this heading"></a></h2>
+<p>LibreSign follows the <a class="reference external" href="https://www.conventionalcommits.org/en/v1.0.0/">Conventional Commits</a> specification.
+This makes commit history more readable and allows automatic tools to generate changelogs.</p>
+<p><strong>Commit title format:</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>feat: add button to open files
+</pre></div>
+</div>
+<p><strong>Commit description format:</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Short description of the pull request
+
+Related issue: #830
+Type: Feature
+
+Checklist:
+- [x] Add &quot;Open file&quot; button
+- [x] Add action to the button
+</pre></div>
+</div>
+</section>
+<section id="dco">
+<h2>DCO<a class="headerlink" href="#dco" title="Link to this heading"></a></h2>
+<p>LibreSign also requires commits to be signed off with the
+<a class="reference external" href="https://developercertificate.org/">DCO (Developer Certificate of Origin)</a>.</p>
+<p>If you see the error message:</p>
+<p><code class="docutils literal notranslate"><span class="pre">You</span> <span class="pre">must</span> <span class="pre">sign</span> <span class="pre">off</span> <span class="pre">your</span> <span class="pre">commits</span> <span class="pre">with</span> <span class="pre">a</span> <span class="pre">DCO</span> <span class="pre">signoff</span></code></p>
+<p>it means your commits are missing the <code class="docutils literal notranslate"><span class="pre">Signed-off-by</span></code> line.</p>
+<section id="fixing-dco-errors-and-commit-messages">
+<h3>Fixing DCO errors and commit messages<a class="headerlink" href="#fixing-dco-errors-and-commit-messages" title="Link to this heading"></a></h3>
+<p>There are two common issues to fix:</p>
+<ol class="arabic simple">
+<li><p>Sign off your commits (DCO).</p></li>
+<li><p>Use the <a class="reference external" href="https://www.conventionalcommits.org/">Conventional Commits</a> format.</p></li>
+</ol>
+<section id="example-rebasing-two-commits">
+<h4>Example: rebasing two commits<a class="headerlink" href="#example-rebasing-two-commits" title="Link to this heading"></a></h4>
+<ol class="arabic">
+<li><p>Start an interactive rebase for the last 2 commits:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>rebase<span class="w"> </span>-i<span class="w"> </span>HEAD~2
+</pre></div>
+</div>
+</li>
+<li><p>Change <code class="docutils literal notranslate"><span class="pre">pick</span></code> to <code class="docutils literal notranslate"><span class="pre">edit</span></code> for both commits:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>edit e49199874 App metadata: Add donation link to appear on Nextcloud appstore
+edit 1ed4561ad doc: add donation links to Github Sponsors and Stripe
+</pre></div>
+</div>
+</li>
+<li><p>Amend the first commit:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>commit<span class="w"> </span>--amend<span class="w"> </span>--signoff
+</pre></div>
+</div>
+<p>Change the title from:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>App metadata: Add donation link to appear on Nextcloud appstore
+</pre></div>
+</div>
+<p>To:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>docs: add donation link to appear on Nextcloud appstore
+</pre></div>
+</div>
+<p>Save and close, then continue the rebase:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>rebase<span class="w"> </span>--continue
+</pre></div>
+</div>
+</li>
+<li><p>Amend the second commit:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>commit<span class="w"> </span>--amend<span class="w"> </span>--signoff
+</pre></div>
+</div>
+<p>Change the title from:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>doc: add donation links to Github Sponsors and Stripe
+</pre></div>
+</div>
+<p>To:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>docs: add donation links to GitHub Sponsors and Stripe
+</pre></div>
+</div>
+<p>Save and close, then continue:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>rebase<span class="w"> </span>--continue
+</pre></div>
+</div>
+</li>
+<li><p>Push your branch with force (since commit history has changed):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>push<span class="w"> </span>--force-with-lease<span class="w"> </span>origin<span class="w"> </span>patch-2
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="tests.html" class="btn btn-neutral float-left" title="Testing" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../api/index.html" class="btn btn-neutral float-right" title="API Documentation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025 LibreCode coop.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
