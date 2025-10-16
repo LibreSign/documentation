@@ -6,4 +6,4 @@ sphinxcontrib-redoc
 sphinx-autobuild
 sphinx-copybutton
 sphinx-notfound-page
-docutils==0.21.2
+docutils==0.22.2
