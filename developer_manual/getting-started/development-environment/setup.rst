@@ -67,7 +67,7 @@ Open a bash session in the Nextcloud container:
 
 .. code-block:: bash
 
-    docker compose exec -u www-data nextcloud bash
+    docker compose exec nextcloud bash
 
 Inside the container, go to ``apps-extra/libresign`` and run:
 
