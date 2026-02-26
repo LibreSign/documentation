@@ -58,7 +58,7 @@ Clone the LibreSign repository into this folder .
 
 .. code-block:: bash
 
-    git clone https://github.com/LibreCodeCoop/libresign.git
+    git clone https://github.com/LibreSign/libresign.git
     cd libresign
     git submodule update --init
 
