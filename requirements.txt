@@ -6,4 +6,5 @@ sphinxcontrib-redoc
 sphinx-autobuild
 sphinx-copybutton
 sphinx-notfound-page
-docutils==0.22.2
+# docutils version is managed by Sphinx, do not pin unless required
+#docutils==0.22.2
