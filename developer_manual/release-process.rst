@@ -202,22 +202,26 @@ The :code:`CHANGELOG.md` file uses a specific format to document releases. Follo
 
 .. code-block:: markdown
 
-    ## [13.0.1] (stable33) - 2025-02-18
-    ### Fixed
-    - #6944 fix: docmdp first signature allow
-    - #6945 fix: signature status propfind
-    - #6940 fix: avoid empty crl engine default
+    ## 13.2.4 - 2026-04-25
+    ### Changed
+    - Update translations
 
-    ## [12.2.1] (stable32) - 2025-02-18
-    ### Fixed
-    - #6943 fix: docmdp first signature allow
-    - #6946 fix: signature status propfind
-    - #6939 fix: avoid empty crl engine default
+    ### Fixes
+    - harden signed file validation handling [#7601](https://github.com/LibreSign/libresign/pull/7601)
+    - simplify signer tsa and crl validation messaging [#7614](https://github.com/LibreSign/libresign/pull/7614)
+
+    ## 12.4.4 - 2026-04-26
+    ### Changed
+    - Update translations
+
+    ### Fixes
+    - harden signed file validation handling [#7600](https://github.com/LibreSign/libresign/pull/7600)
+    - simplify signer tsa and crl validation messaging [#7613](https://github.com/LibreSign/libresign/pull/7613)
 
 **Key format rules:**
 
-- Use semantic versioning: ``[MAJOR.MINOR.PATCH]``
-- Include the stable branch in parentheses: ``(stableXX)``
+- Use semantic versioning: ``MAJOR.MINOR.PATCH``
+- Do not include stable branch names in the changelog heading.
 - Add the release date: ``YYYY-MM-DD``
 - Group changes by type: ``Added``, ``Changed``, ``Fixed``, ``Removed``, etc.
 - List PR number with hash: ``#XXXX`` followed by a colon and description
@@ -330,7 +334,7 @@ with the correct values as you progress through the steps.
         ```
         Unless last release of the stable branch:
         - [ ] Create a follow up milestone for `💚 Next Patch (XX)` (Due date in ~4 weeks, ~4 days for beta/RC)
-        - [ ] Move all open issuesfrom milestone `v20.1.9` to `💚 Next Patch (XX)`: https://github.com/LibreSign/libresign/issues?q=is%3Aissue%20state%3Aopen%20milestone%3Av20.1.9
+        - [ ] Move all open issues from milestone `v20.1.9` to `💚 Next Patch (XX)`: https://github.com/LibreSign/libresign/issues?q=is%3Aissue%20state%3Aopen%20milestone%3Av20.1.9
         - [ ] Move all open PRs from milestone `v20.1.9` to `💚 Next Patch (XX)`: https://github.com/LibreSign/libresign/issues?q=is%3Apr%20state%3Aopen%20milestone%3Av20.1.9
         - [ ] Close the `v20.1.9` milestone
     - [ ] Archive all issues and PRs that were merged in this release
@@ -351,6 +355,8 @@ with the correct values as you progress through the steps.
 
         Milestone: [v20.1.9](<!-- Add the link to the closed milestone here -->?closed=1)
         **Full Changelog**: https://github.com/LibreSign/libresign/compare/v20.1.8...v20.1.9
+        ```
+    - [ ] Keep `**Full Changelog**` as the last line of the release description.
     - [ ] Publish release
     - [ ] Check that the GitHub Action started: https://github.com/LibreSign/libresign/actions
     - [ ] Ensure that the GitHub Action finished successfully: https://github.com/LibreSign/libresign/actions
