@@ -1,7 +1,7 @@
 Sphinx==9.1.0
 sphinx-rtd-theme==3.1.0
 sphinx-rtd-dark-mode==1.3.0
-sphinxcontrib-openapi==0.8.4
+sphinxcontrib-openapi==0.9.0
 sphinxcontrib-redoc
 sphinx-autobuild
 sphinx-copybutton
