@@ -1,0 +1,705 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>API Usage &mdash; LibreSign Documentation 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../_static/dark_mode_css/general.css?v=c0a7eb24" />
+      <link rel="stylesheet" type="text/css" href="../_static/dark_mode_css/dark.css?v=70edf1c7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=d6b6a36a"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=f281be69"></script>
+      <script src="../_static/dark_mode_js/default_dark.js?v=fd565c74"></script>
+      <script src="../_static/dark_mode_js/theme_switcher.js?v=358d3910"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="OCS OpenAPI" href="openapi.html" />
+    <link rel="prev" title="API Documentation" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #184c4e" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../prologue/index.html">Prologue</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/index.html">Getting started</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">API Documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">API Usage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview">Overview</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#why-ocs">Why OCS?</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#guide-scope-vs-reference">Guide scope vs reference</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#core-concepts">Core Concepts</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#account-signer-vs-external-signer">Account signer vs external signer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#why-file-uuid-and-sign-request-uuid-are-different">Why file UUID and sign request UUID are different</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#status-lifecycle">Status lifecycle</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#quick-start-account-based-signing">Quick Start (Account-based signing)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#minimal-complete-integration-flow">Minimal complete integration flow</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#integration-constraints">Integration constraints</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#server-settings-that-affect-behavior">Server settings that affect behavior</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api-level-constraints">API-level constraints</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pagination-note">Pagination note</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#retry-behavior">Retry behavior</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#authentication">Authentication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#request-conventions">Request conventions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#reusable-shell-variables">Reusable shell variables</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#guide-account-based-signing-workflow">Guide: Account-based signing workflow</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#sequence-diagram">Sequence diagram</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#create-signature-request-with-minimal-payload">1. Create signature request with minimal payload</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#get-signer-uuids-for-each-account-signer">2. Get signer UUIDs for each account signer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sign-as-each-signer-account">3. Sign as each signer account</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#check-when-file-is-fully-signed">4. Check when file is fully signed</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#guide-multi-signer-workflow">Guide: Multi-signer workflow</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">Sequence diagram</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#guide-notification-workflow">Guide: Notification workflow</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id2">Sequence diagram</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#notify-signers-optional-api-triggered-distribution">5. Notify signers (optional API-triggered distribution)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#endpoints-used-in-this-guide">Endpoints used in this guide</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#alternative-account-related-endpoints">Alternative account-related endpoints</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#common-errors">Common errors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#security-considerations">Security considerations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#related-docs">Related docs</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="openapi.html">OCS OpenAPI</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../translation.html">Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../release-process.html">Release process</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #184c4e" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">LibreSign Documentation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">API Documentation</a></li>
+      <li class="breadcrumb-item active">API Usage</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/guide-api.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="api-usage">
+<h1>API Usage<a class="headerlink" href="#api-usage" title="Link to this heading"></a></h1>
+<p>LibreSign exposes endpoints via <strong>REST</strong> and <strong>`OCS (Open Collaboration Services) &lt;https://docs.nextcloud.com/server/latest/developer_manual/client_apis/OCS/index.html&gt;`__</strong>.
+This guide focuses on integration flows, with minimal requests and payloads.</p>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>LibreSign APIs are designed for end-to-end signing integrations: request signatures, track signing status, validate signed documents, and integrate signing into external systems.</p>
+<ul class="simple">
+<li><p><strong>OCS base URL</strong>: <code class="docutils literal notranslate"><span class="pre">https://cloud.example.com/ocs/v2.php/apps/libresign/api/v1</span></code></p></li>
+<li><p><strong>Response format</strong>: JSON in OCS envelope (<code class="docutils literal notranslate"><span class="pre">ocs.meta</span></code> and <code class="docutils literal notranslate"><span class="pre">ocs.data</span></code>)</p></li>
+<li><p><strong>Versioning</strong>: breaking changes result in a new major version (validate critical flows during upgrades)</p></li>
+</ul>
+<section id="why-ocs">
+<h3>Why OCS?<a class="headerlink" href="#why-ocs" title="Link to this heading"></a></h3>
+<p>LibreSign runs inside Nextcloud and uses OCS to keep integration behavior consistent with the ecosystem:</p>
+<ul class="simple">
+<li><p>Standard auth behavior (Basic/App Password, Bearer token, session)</p></li>
+<li><p>Standard response envelope (<code class="docutils literal notranslate"><span class="pre">ocs.meta</span></code> + <code class="docutils literal notranslate"><span class="pre">ocs.data</span></code>)</p></li>
+<li><p>Same authentication and permission checks used by other Nextcloud OCS APIs</p></li>
+</ul>
+</section>
+<section id="guide-scope-vs-reference">
+<h3>Guide scope vs reference<a class="headerlink" href="#guide-scope-vs-reference" title="Link to this heading"></a></h3>
+<p>This page is an integration guide (workflow-first).
+For exhaustive endpoint schemas and all fields, use <a class="reference internal" href="openapi.html"><span class="doc">OCS OpenAPI</span></a>.</p>
+</section>
+</section>
+<section id="core-concepts">
+<h2>Core Concepts<a class="headerlink" href="#core-concepts" title="Link to this heading"></a></h2>
+<p>Use this model when designing your integration:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>File
+|-- Signers
+|   `-- Sign Request UUID
+|-- Elements
+`-- Status
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><strong>File</strong>: document in the signature workflow (has <code class="docutils literal notranslate"><span class="pre">file</span> <span class="pre">UUID</span></code>).</p></li>
+<li><p><strong>Signer</strong>: actor that signs. Can be an account signer or an external signer.</p></li>
+<li><p><strong>Sign request UUID</strong>: signer-scoped UUID used in <code class="docutils literal notranslate"><span class="pre">POST</span> <span class="pre">/sign/uuid/{uuid}</span></code>.</p></li>
+<li><p><strong>File UUID</strong>: file-scoped UUID used for file-level operations (for example validate endpoints).</p></li>
+<li><p><strong>Elements</strong>: visible signature elements associated with sign requests.</p></li>
+<li><p><strong>Signature workflow</strong>: one file, one or more signers, independent signer sessions.</p></li>
+</ul>
+<section id="account-signer-vs-external-signer">
+<h3>Account signer vs external signer<a class="headerlink" href="#account-signer-vs-external-signer" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Account signer</strong>: identified by Nextcloud account (<code class="docutils literal notranslate"><span class="pre">method:</span> <span class="pre">account</span></code>).</p></li>
+<li><p><strong>External signer</strong>: identified by email/other method depending on instance settings.</p></li>
+</ul>
+</section>
+<section id="why-file-uuid-and-sign-request-uuid-are-different">
+<h3>Why file UUID and sign request UUID are different<a class="headerlink" href="#why-file-uuid-and-sign-request-uuid-are-different" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>The <strong>file UUID</strong> identifies the shared document workflow.</p></li>
+<li><p>The <strong>sign request UUID</strong> identifies one signer session in that workflow.</p></li>
+<li><p>Multiple signers interact with the same file independently, each using their own sign request UUID.</p></li>
+<li><p><strong>Terminology</strong>: this guide uses <strong>signature request workflow</strong> for document-level flow and <strong>sign request UUID</strong> for signer-level signing session.</p></li>
+</ul>
+</section>
+</section>
+<section id="status-lifecycle">
+<h2>Status lifecycle<a class="headerlink" href="#status-lifecycle" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Status</p></th>
+<th class="head"><p>Meaning</p></th>
+<th class="head"><p>Terminal</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>Draft</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>Able to sign</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>Partially signed</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="row-odd"><td><p>3</p></td>
+<td><p>Signed</p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="row-even"><td><p>4</p></td>
+<td><p>Deleted</p></td>
+<td><p>Yes</p></td>
+</tr>
+</tbody>
+</table>
+<p>Transitions in practice:</p>
+<ul class="simple">
+<li><p>Create signature request: <code class="docutils literal notranslate"><span class="pre">0</span></code> or <code class="docutils literal notranslate"><span class="pre">1</span></code> (depends on request/config)</p></li>
+<li><p>First signer signs: often <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">-&gt;</span> <span class="pre">2</span></code></p></li>
+<li><p>Last required signer signs: <code class="docutils literal notranslate"><span class="pre">2</span> <span class="pre">-&gt;</span> <span class="pre">3</span></code> (final signed state)</p></li>
+<li><p>Deletion: <code class="docutils literal notranslate"><span class="pre">*</span> <span class="pre">-&gt;</span> <span class="pre">4</span></code> (terminal for active workflow)</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Final states are <code class="docutils literal notranslate"><span class="pre">3</span></code> (signed) and <code class="docutils literal notranslate"><span class="pre">4</span></code> (deleted).</p>
+</div>
+</section>
+<section id="quick-start-account-based-signing">
+<h2>Quick Start (Account-based signing)<a class="headerlink" href="#quick-start-account-based-signing" title="Link to this heading"></a></h2>
+<p>Goal: create a sign request, include account signers, sign, and fetch final signed file metadata.</p>
+<section id="minimal-complete-integration-flow">
+<h3>Minimal complete integration flow<a class="headerlink" href="#minimal-complete-integration-flow" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p>Create signature request</p></li>
+<li><p>Retrieve signer UUIDs</p></li>
+<li><p>Sign document</p></li>
+<li><p>Track workflow status</p></li>
+<li><p>Fetch signed document metadata</p></li>
+</ol>
+<p>Prerequisites:</p>
+<ul class="simple">
+<li><p>LibreSign enabled in Nextcloud</p></li>
+<li><p>Authentication with a user allowed to request signatures</p></li>
+<li><p>Account identify method enabled in LibreSign settings</p></li>
+<li><p>Signature method available to account signers (for the minimal flow below, <code class="docutils literal notranslate"><span class="pre">clickToSign</span></code>)</p></li>
+</ul>
+</section>
+</section>
+<section id="integration-constraints">
+<h2>Integration constraints<a class="headerlink" href="#integration-constraints" title="Link to this heading"></a></h2>
+<section id="server-settings-that-affect-behavior">
+<h3>Server settings that affect behavior<a class="headerlink" href="#server-settings-that-affect-behavior" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>File size limits</strong>: controlled by Nextcloud/server limits (for example upload-related configuration).</p></li>
+<li><p><strong>Instance behavior</strong>: identify methods, signature methods, and some transitions depend on Nextcloud/LibreSign admin settings.</p></li>
+</ul>
+</section>
+<section id="api-level-constraints">
+<h3>API-level constraints<a class="headerlink" href="#api-level-constraints" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Authentication</strong>: required by default for most operations.</p></li>
+<li><p><strong>Upload input</strong>: request accepts file references such as <code class="docutils literal notranslate"><span class="pre">url</span></code>, <code class="docutils literal notranslate"><span class="pre">nodeId</span></code>, <code class="docutils literal notranslate"><span class="pre">path</span></code>, or <code class="docutils literal notranslate"><span class="pre">base64</span></code> according to endpoint contract.</p></li>
+<li><p><strong>Workflow expectations</strong>: create request first, then sign using signer-scoped sign request UUIDs.</p></li>
+<li><p><strong>Signing behavior</strong>: sign operations are signer-session based, not file-UUID based.</p></li>
+</ul>
+</section>
+<section id="pagination-note">
+<h3>Pagination note<a class="headerlink" href="#pagination-note" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Large integrations should implement pagination when listing workflows.</p></li>
+<li><p>Pagination behavior depends on endpoint implementation and server configuration.</p></li>
+<li><p>Do not assume unbounded result sets.</p></li>
+</ul>
+</section>
+<section id="retry-behavior">
+<h3>Retry behavior<a class="headerlink" href="#retry-behavior" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">POST</span></code> operations may not be idempotent.</p></li>
+<li><p>Avoid blind retries after unknown outcomes.</p></li>
+<li><p>Retry mainly after transport/network failures.</p></li>
+<li><p>Before retrying, verify current workflow state (for example with <code class="docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/file/list?details=1</span></code>).</p></li>
+</ul>
+</section>
+</section>
+<section id="authentication">
+<h2>Authentication<a class="headerlink" href="#authentication" title="Link to this heading"></a></h2>
+<p>Supported methods:</p>
+<ul class="simple">
+<li><p><strong>Basic Auth</strong> (App Password or Username/Password)</p></li>
+<li><p><strong>OIDC Access Token</strong> (<code class="docutils literal notranslate"><span class="pre">Authorization:</span> <span class="pre">Bearer</span> <span class="pre">&lt;ACCESS_TOKEN&gt;</span></code>)</p></li>
+<li><p><strong>Session cookies</strong> (for non-OCS endpoints, may require CSRF token)</p></li>
+</ul>
+<p>OIDC considerations:</p>
+<ul class="simple">
+<li><p>OIDC support depends on Nextcloud instance configuration.</p></li>
+<li><p>Identity providers may vary across deployments.</p></li>
+<li><p>Validate provider configuration and token requirements with instance administrators.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Prefer using an <strong>App Password</strong> for Basic Auth (and <strong>Access Tokens</strong> for OIDC).
+App Password is safer than your regular password and usually performs better.</p>
+<p>To create an App Password in Nextcloud:</p>
+<ul class="simple">
+<li><p>Log in to the Nextcloud web interface.</p></li>
+<li><p>Click your avatar.</p></li>
+<li><p>Open <strong>Personal settings</strong> &gt; <strong>Security</strong>.</p></li>
+<li><p>At the bottom of the page, create an app password.</p></li>
+<li><p>You can revoke it later without changing your main password.</p></li>
+</ul>
+</div>
+</section>
+<section id="request-conventions">
+<h2>Request conventions<a class="headerlink" href="#request-conventions" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Include header <code class="docutils literal notranslate"><span class="pre">OCS-APIRequest:</span> <span class="pre">true</span></code> in all OCS calls</p></li>
+<li><p>For requests with body, include <code class="docutils literal notranslate"><span class="pre">Content-Type:</span> <span class="pre">application/json</span></code></p></li>
+</ul>
+<section id="reusable-shell-variables">
+<h3>Reusable shell variables<a class="headerlink" href="#reusable-shell-variables" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">BASE_URL</span><span class="o">=</span><span class="s2">&quot;https://cloud.example.com&quot;</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">API_BASE</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$BASE_URL</span><span class="s2">/ocs/v2.php/apps/libresign/api/v1&quot;</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">AUTH</span><span class="o">=</span><span class="s2">&quot;username:app-password&quot;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="guide-account-based-signing-workflow">
+<h2>Guide: Account-based signing workflow<a class="headerlink" href="#guide-account-based-signing-workflow" title="Link to this heading"></a></h2>
+<section id="sequence-diagram">
+<h3>Sequence diagram<a class="headerlink" href="#sequence-diagram" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Client App
+    |
+    | POST /request-signature
+    v
+LibreSign
+    |
+    | returns file UUID + file id
+    v
+Client App
+    |
+    | GET /file/list?details=1
+    | (extract signer sign request UUIDs)
+    v
+Signer account
+    |
+    | POST /sign/uuid/{sign_request_uuid}
+    v
+LibreSign
+    |
+    | file status -&gt; signed
+    v
+Client App
+    |
+    | GET /file/list?details=1&amp;status[]=3
+    v
+Signed workflow detected
+</pre></div>
+</div>
+</section>
+<section id="create-signature-request-with-minimal-payload">
+<h3>1. Create signature request with minimal payload<a class="headerlink" href="#create-signature-request-with-minimal-payload" title="Link to this heading"></a></h3>
+<p>Intent: create one file workflow and attach signers.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-sS<span class="w"> </span>-u<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$AUTH</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-H<span class="w"> </span><span class="s2">&quot;Accept: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-H<span class="w"> </span><span class="s2">&quot;OCS-APIRequest: true&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-X<span class="w"> </span>POST<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$API_BASE</span><span class="s2">/request-signature&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-d<span class="w"> </span><span class="s1">&#39;{</span>
+<span class="s1">        &quot;name&quot;: &quot;Contract A&quot;,</span>
+<span class="s1">        &quot;file&quot;: { &quot;url&quot;: &quot;https://example.com/contract-a.pdf&quot; },</span>
+<span class="s1">        &quot;signers&quot;: [</span>
+<span class="s1">            {</span>
+<span class="s1">                &quot;identifyMethods&quot;: [</span>
+<span class="s1">                    { &quot;method&quot;: &quot;account&quot;, &quot;value&quot;: &quot;signer1&quot;, &quot;mandatory&quot;: 1 }</span>
+<span class="s1">                ]</span>
+<span class="s1">            },</span>
+<span class="s1">            {</span>
+<span class="s1">                &quot;identifyMethods&quot;: [</span>
+<span class="s1">                    { &quot;method&quot;: &quot;account&quot;, &quot;value&quot;: &quot;signer2&quot;, &quot;mandatory&quot;: 1 }</span>
+<span class="s1">                ]</span>
+<span class="s1">            }</span>
+<span class="s1">        ]</span>
+<span class="s1">    }&#39;</span>
+</pre></div>
+</div>
+<p>Minimal response example:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;ocs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;meta&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ok&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;statuscode&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;OK&quot;</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">123</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;uuid&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;f3f5c9d4-6f4e-4d0a-a8ce-7db35a5f9d27&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;statusText&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;able to sign&quot;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Important fields from response:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ocs.data.id</span></code> (LibreSign file id)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ocs.data.uuid</span></code> (file UUID)</p></li>
+</ul>
+</section>
+<section id="get-signer-uuids-for-each-account-signer">
+<h3>2. Get signer UUIDs for each account signer<a class="headerlink" href="#get-signer-uuids-for-each-account-signer" title="Link to this heading"></a></h3>
+<p>Intent: retrieve signer-specific sessions used by the sign endpoint.</p>
+<section id="headless-integration-no-libresign-ui">
+<h4>Headless integration (no LibreSign UI)<a class="headerlink" href="#headless-integration-no-libresign-ui" title="Link to this heading"></a></h4>
+<p>If your product does not expose LibreSign pages, keep the flow fully API-driven:</p>
+<ol class="arabic simple">
+<li><p>Your backend creates the signature request.</p></li>
+<li><dl class="simple">
+<dt>Your backend calls <code class="docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/file/list?details=1</span></code> using the authenticated context of the signer.</dt><dd><p>Do not call this step only as the requester, because signer session and authorization context may not match the signer action.</p>
+</dd>
+</dl>
+</li>
+<li><p>Your backend maps each business signer to <code class="docutils literal notranslate"><span class="pre">sign_request_uuid</span></code>.</p></li>
+<li><p>Your backend calls <code class="docutils literal notranslate"><span class="pre">POST</span> <span class="pre">/sign/uuid/{sign_request_uuid}</span></code> in the same signer context.</p></li>
+</ol>
+<p>In this model, the signer UUID retrieval is mandatory and intentional: it is the signer session identifier required by the sign endpoint.</p>
+<p>Why this is required:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">POST</span> <span class="pre">/sign/uuid/{uuid}</span></code> expects a <strong>sign request UUID</strong>, not a file UUID.</p></li>
+<li><p>Each signer has an independent signing session on the same file workflow.</p></li>
+<li><p>This separation allows multiple signers to progress independently while sharing one file lifecycle.</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-sS<span class="w"> </span>-u<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$AUTH</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-H<span class="w"> </span><span class="s2">&quot;Accept: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-H<span class="w"> </span><span class="s2">&quot;OCS-APIRequest: true&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span><span class="s2">&quot;</span><span class="nv">$API_BASE</span><span class="s2">/file/list?details=1&quot;</span>
+</pre></div>
+</div>
+<p>Minimal response example:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;ocs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;meta&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ok&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;statuscode&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;OK&quot;</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">                </span><span class="p">{</span>
+<span class="w">                    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">123</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;uuid&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;f3f5c9d4-6f4e-4d0a-a8ce-7db35a5f9d27&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;signers&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">                        </span><span class="p">{</span>
+<span class="w">                            </span><span class="nt">&quot;sign_request_uuid&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;6e8e3c9f-0ef7-4f24-a9d3-4f5f0a45a3fd&quot;</span>
+<span class="w">                        </span><span class="p">},</span>
+<span class="w">                        </span><span class="p">{</span>
+<span class="w">                            </span><span class="nt">&quot;sign_request_uuid&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;e1f3e2c6-c8f2-4fae-9969-d6f8f2f6e6fd&quot;</span>
+<span class="w">                        </span><span class="p">}</span>
+<span class="w">                    </span><span class="p">]</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">            </span><span class="p">]</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Pick values from:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ocs.data.data[0].signers[*].sign_request_uuid</span></code></p></li>
+</ul>
+</section>
+</section>
+<section id="sign-as-each-signer-account">
+<h3>3. Sign as each signer account<a class="headerlink" href="#sign-as-each-signer-account" title="Link to this heading"></a></h3>
+<p>Intent: complete signer actions using signer-scoped UUIDs.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">SIGNER1_AUTH</span><span class="o">=</span><span class="s2">&quot;signer1:app-password&quot;</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">SIGN_REQUEST_UUID_1</span><span class="o">=</span><span class="s2">&quot;&lt;from-step-2&gt;&quot;</span>
+
+curl<span class="w"> </span>-sS<span class="w"> </span>-u<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$SIGNER1_AUTH</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-H<span class="w"> </span><span class="s2">&quot;Accept: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-H<span class="w"> </span><span class="s2">&quot;OCS-APIRequest: true&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-X<span class="w"> </span>POST<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$API_BASE</span><span class="s2">/sign/uuid/</span><span class="nv">$SIGN_REQUEST_UUID_1</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-d<span class="w"> </span><span class="s1">&#39;{ &quot;method&quot;: &quot;clickToSign&quot; }&#39;</span>
+</pre></div>
+</div>
+<p>Minimal response example:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;ocs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;meta&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ok&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;statuscode&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;OK&quot;</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;action&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Signed with success&quot;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Repeat for each signer account.</p>
+</section>
+<section id="check-when-file-is-fully-signed">
+<h3>4. Check when file is fully signed<a class="headerlink" href="#check-when-file-is-fully-signed" title="Link to this heading"></a></h3>
+<p>Intent: detect completed workflows.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># status[]=3 means signed documents</span>
+curl<span class="w"> </span>-sS<span class="w"> </span>-u<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$AUTH</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-H<span class="w"> </span><span class="s2">&quot;Accept: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-H<span class="w"> </span><span class="s2">&quot;OCS-APIRequest: true&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span><span class="s2">&quot;</span><span class="nv">$API_BASE</span><span class="s2">/file/list?details=1&amp;status[]=3&quot;</span>
+</pre></div>
+</div>
+<p>Useful response fields:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ocs.data.data[*].status</span></code> and <code class="docutils literal notranslate"><span class="pre">ocs.data.data[*].statusText</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ocs.data.data[*].file.url</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ocs.data.data[*].file.signedNodeId</span></code></p></li>
+</ul>
+<p>Tracking strategy note:</p>
+<ul class="simple">
+<li><p>Polling is acceptable for simple integrations.</p></li>
+<li><p>Webhook-based tracking is usually preferable in production environments.</p></li>
+<li><p>Webhook-focused documentation can be added as a dedicated guide.</p></li>
+</ul>
+</section>
+</section>
+<section id="guide-multi-signer-workflow">
+<h2>Guide: Multi-signer workflow<a class="headerlink" href="#guide-multi-signer-workflow" title="Link to this heading"></a></h2>
+<section id="id1">
+<h3>Sequence diagram<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Client</span> <span class="n">App</span>
+    <span class="o">|</span>
+    <span class="o">|</span> <span class="n">POST</span> <span class="o">/</span><span class="n">request</span><span class="o">-</span><span class="n">signature</span> <span class="p">(</span><span class="n">signer1</span><span class="p">,</span> <span class="n">signer2</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+    <span class="n">v</span>
+<span class="n">LibreSign</span>
+    <span class="o">|</span>
+    <span class="o">|</span> <span class="n">one</span> <span class="n">file</span> <span class="n">UUID</span> <span class="o">+</span> <span class="n">multiple</span> <span class="n">sign</span> <span class="n">request</span> <span class="n">UUIDs</span>
+    <span class="n">v</span>
+<span class="n">Signer1</span> <span class="o">-&gt;</span> <span class="n">POST</span> <span class="o">/</span><span class="n">sign</span><span class="o">/</span><span class="n">uuid</span><span class="o">/</span><span class="p">{</span><span class="n">uuid1</span><span class="p">}</span>
+<span class="n">Signer2</span> <span class="o">-&gt;</span> <span class="n">POST</span> <span class="o">/</span><span class="n">sign</span><span class="o">/</span><span class="n">uuid</span><span class="o">/</span><span class="p">{</span><span class="n">uuid2</span><span class="p">}</span>
+<span class="o">...</span>
+    <span class="o">|</span>
+    <span class="n">v</span>
+<span class="n">LibreSign</span> <span class="n">status</span><span class="p">:</span> <span class="mi">1</span> <span class="o">-&gt;</span> <span class="mi">2</span> <span class="o">-&gt;</span> <span class="mi">3</span>
+</pre></div>
+</div>
+<p>Each signer uses a different sign request UUID, but all signers update the same file workflow.</p>
+</section>
+</section>
+<section id="guide-notification-workflow">
+<h2>Guide: Notification workflow<a class="headerlink" href="#guide-notification-workflow" title="Link to this heading"></a></h2>
+<section id="id2">
+<h3>Sequence diagram<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Client</span> <span class="n">App</span>
+    <span class="o">|</span>
+    <span class="o">|</span> <span class="n">POST</span> <span class="o">/</span><span class="n">notify</span><span class="o">/</span><span class="n">signers</span>
+    <span class="n">v</span>
+<span class="n">LibreSign</span>
+    <span class="o">|</span>
+    <span class="o">|</span> <span class="n">dispatches</span> <span class="n">signer</span> <span class="n">notifications</span>
+    <span class="n">v</span>
+<span class="n">Signers</span> <span class="n">receive</span> <span class="n">message</span><span class="o">/</span><span class="n">channel</span> <span class="n">delivery</span>
+</pre></div>
+</div>
+</section>
+<section id="notify-signers-optional-api-triggered-distribution">
+<h3>5. Notify signers (optional API-triggered distribution)<a class="headerlink" href="#notify-signers-optional-api-triggered-distribution" title="Link to this heading"></a></h3>
+<p>If you need to explicitly trigger notifications after signing, call:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-sS<span class="w"> </span>-u<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$AUTH</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-H<span class="w"> </span><span class="s2">&quot;Accept: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-H<span class="w"> </span><span class="s2">&quot;OCS-APIRequest: true&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-X<span class="w"> </span>POST<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$API_BASE</span><span class="s2">/notify/signers&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-d<span class="w"> </span><span class="s1">&#39;{</span>
+<span class="s1">        &quot;fileId&quot;: 123,</span>
+<span class="s1">        &quot;signers&quot;: [</span>
+<span class="s1">            { &quot;email&quot;: &quot;signer1@domain.test&quot; },</span>
+<span class="s1">            { &quot;email&quot;: &quot;signer2@domain.test&quot; }</span>
+<span class="s1">        ]</span>
+<span class="s1">    }&#39;</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This endpoint requires <code class="docutils literal notranslate"><span class="pre">fileId</span></code> and signer emails. Use it when you want an explicit notification trigger.</p>
+</div>
+</section>
+</section>
+<section id="endpoints-used-in-this-guide">
+<h2>Endpoints used in this guide<a class="headerlink" href="#endpoints-used-in-this-guide" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">POST</span> <span class="pre">/request-signature</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/file/list?details=1</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">POST</span> <span class="pre">/sign/uuid/{uuid}</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/file/list?details=1&amp;status[]=3</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">POST</span> <span class="pre">/notify/signers</span></code> (optional)</p></li>
+</ul>
+</section>
+<section id="alternative-account-related-endpoints">
+<h2>Alternative account-related endpoints<a class="headerlink" href="#alternative-account-related-endpoints" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/identify-account/search?search=&lt;term&gt;</span></code>: search valid account identifiers</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/account/me</span></code>: retrieve authenticated account data</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">POST</span> <span class="pre">/account/signature</span></code>: create signer certificate (for password/certificate flows)</p></li>
+</ul>
+</section>
+<section id="common-errors">
+<h2>Common errors<a class="headerlink" href="#common-errors" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">401</span> <span class="pre">Unauthorized</span></code></dt><dd><p>Cause: invalid credentials, missing/invalid app password, or unauthenticated request.
+Quick fix: verify auth method and credentials; prefer app password for Basic Auth.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">412</span> <span class="pre">Precondition</span> <span class="pre">Failed</span></code></dt><dd><p>Cause: missing <code class="docutils literal notranslate"><span class="pre">OCS-APIRequest:</span> <span class="pre">true</span></code> header in OCS requests.
+Quick fix: always include the header for OCS endpoints.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">400</span> <span class="pre">Bad</span> <span class="pre">Request</span></code></dt><dd><p>Cause: invalid JSON/payload, missing identify method data, wrong field names.
+Quick fix: send minimal valid payload and validate required fields from OpenAPI.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">404</span> <span class="pre">Not</span> <span class="pre">Found</span></code></dt><dd><p>Cause: invalid or expired sign request UUID in <code class="docutils literal notranslate"><span class="pre">/sign/uuid/{uuid}</span></code>.
+Quick fix: refresh signer UUID from <code class="docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/file/list?details=1</span></code> and retry.</p>
+</dd>
+</dl>
+</section>
+<section id="security-considerations">
+<h2>Security considerations<a class="headerlink" href="#security-considerations" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Prefer app passwords over account passwords for API integrations.</p></li>
+<li><p>Use HTTPS only.</p></li>
+<li><p>Do not expose sign request UUIDs in public channels.</p></li>
+<li><p>Rotate credentials periodically.</p></li>
+<li><p>Use least-privilege API accounts/roles when possible.</p></li>
+</ul>
+</section>
+<section id="related-docs">
+<h2>Related docs<a class="headerlink" href="#related-docs" title="Link to this heading"></a></h2>
+<ul>
+<li><p>See OpenAPI explorer in <a class="reference internal" href="openapi.html"><span class="doc">OCS OpenAPI</span></a> for full schema and all endpoints.</p></li>
+<li><p>Behat integration reference (real implementation flows):</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Account-based signing request (real scenario): <a class="reference external" href="https://github.com/LibreSign/libresign/blob/main/tests/integration/features/sign/request.feature#L242">sign/request.feature#L242</a></p></li>
+<li><p>Validation after account-based signing (real scenario): <a class="reference external" href="https://github.com/LibreSign/libresign/blob/main/tests/integration/features/file/validate.feature#L2">file/validate.feature#L2</a></p></li>
+<li><p>Multi-signer parallel signing (real scenario): <a class="reference external" href="https://github.com/LibreSign/libresign/blob/main/tests/integration/features/sign/sequential_signing.feature#L13">sign/sequential_signing.feature#L13</a></p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="API Documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="openapi.html" class="btn btn-neutral float-right" title="OCS OpenAPI" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026 LibreCode coop.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
