@@ -96,7 +96,7 @@ Backporting means applying the same change to another branch (Git calls this *ch
 Before requesting a backport:
 
 -   Check that the target branch is still maintained (see `Maintained stable branches`_).
--   Check that the cherry-pick applies to each target branch. The backport bot fails when the files changed by the PR differ between ``main`` and the target branch, for example when a test file only exists in ``main``.
+-   Check that the change applies correctly to each target branch. Differences between branches can make the generated backport incomplete or different from the original change, so review the resulting backport before merging it.
 -   If the change adds a dependency or raises a runtime requirement (for example, the minimum PHP version), backport it only to the stable branches that satisfy it.
 
 Automatic backport
@@ -104,11 +104,16 @@ Automatic backport
 If the cherry-pick applies cleanly and only small conflicts need to be resolved, the backport bot can be used.
 In LibreSign repositories the bot runs as ``backportbot-libresign`` and accepts the same commands as the `Nextcloud backport bot <https://github.com/nextcloud/backportbot>`_.
 
-Comment on the pull request, one line per target branch:
+Comment on the pull request with the target branch. The bot reads only the first line of each comment, so request one branch per comment:
 
 .. code-block:: text
 
     /backport to stable34
+
+Then, in a separate comment:
+
+.. code-block:: text
+
     /backport to stable33
 
 See the `bot usage <https://github.com/nextcloud/backportbot#usage>`_ for available commands.
