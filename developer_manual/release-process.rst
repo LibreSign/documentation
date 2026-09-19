@@ -184,7 +184,7 @@ The repository validates the release CLI and workflow orchestration with:
 - ``dry_run`` in **Release 10 - Prepare release PR** for integration checks against real
   repository history without changing GitHub state.
 
-Run the planner tests locally with:
+Run the release automation tests locally with:
 
 .. code-block:: bash
 
