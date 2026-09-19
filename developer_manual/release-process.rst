@@ -49,7 +49,7 @@ LibreSign follows :code:`MAJOR.MINOR.PATCH`.
 - ``MINOR`` is incremented when a release contains user-facing features.
 - ``PATCH`` is incremented for fixes and small improvements.
 
-The release workflow uses the version already prepared in the stable branch.
+The Prepare stable release workflow uses the version already prepared in the stable branch.
 The following files must contain the same version before publication:
 
 - :code:`appinfo/info.xml`
@@ -94,19 +94,6 @@ Keep the newest release first.
 Prefer user-visible changes. Pure test, refactor, or dependency maintenance
 entries should only be included when relevant to users, compatibility, or
 support.
-
-Release Drafter
----------------
-
-Release Drafter is a preview tool. It is not the source of truth for release
-versioning or publication.
-
-It may be used to review merged changes on a stable branch and help curate the
-changelog, but:
-
-- it does not decide the final version;
-- it does not publish the release;
-- a Release Drafter failure must not block the normal release workflow.
 
 Milestones
 ----------
