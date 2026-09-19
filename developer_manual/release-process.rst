@@ -10,12 +10,12 @@ release commands.
 Normal release flow
 -------------------
 
-1. Open **Actions -> Release 10 - Release 10 - Prepare release PR**.
+1. Open **Actions -> Release 10 - Prepare release PR**.
 2. Select the target stable branch and keep ``dry_run`` enabled for the first
    run.
 3. Review the generated plan: pull requests, version bump, changelog, target
    commit, and milestone.
-4. Run **Release 10 - Release 10 - Prepare release PR** again with ``dry_run`` disabled when the plan is
+4. Run **Release 10 - Prepare release PR** again with ``dry_run`` disabled when the plan is
    correct.
 5. Review and merge the generated release preparation pull request.
 6. Wait for **Release 20 - Finalize preparation** to update the milestone state.
@@ -28,9 +28,9 @@ Normal release flow
 12. Confirm the GitHub release asset and the version in the Nextcloud App Store.
 
 Release 10 - Prepare release PR
-------------------
+-------------------------------
 
-**Release 10 - Release 10 - Prepare release PR** analyzes commits since the previous stable release and
+**Release 10 - Prepare release PR** analyzes commits since the previous stable release and
 resolves the pull requests associated with those commits.
 
 It then:
@@ -92,7 +92,7 @@ Milestones
 
 Each stable branch maps to its ``Next Patch (XX)`` milestone.
 
-After the generated release pull request is merged, **Finalize release
+After the generated release pull request is merged, **Release 20 - Finalize
 preparation**:
 
 1. verifies that the release pull request changed only the allowed release
@@ -104,11 +104,11 @@ preparation**:
 5. closes the release milestone.
 
 For the final release of a stable branch, select ``final_stable_release`` in
-**Release 10 - Release 10 - Prepare release PR**. No follow-up patch milestone is created and
+**Release 10 - Prepare release PR**. No follow-up patch milestone is created and
 finalization fails if the release milestone still contains open items.
 
 Release 30 - Prepare draft
-----------------------
+--------------------------
 
 **Release 30 - Prepare draft** runs after the release preparation pull request has
 been merged and its milestone has been finalized.
@@ -181,7 +181,7 @@ The repository validates the release CLI and workflow orchestration with:
   file mutation, Git/GitHub command composition, draft handling, and milestone
   rules;
 - ``actionlint`` and ShellCheck for release workflow syntax and embedded shell;
-- ``dry_run`` in **Release 10 - Release 10 - Prepare release PR** for integration checks against real
+- ``dry_run`` in **Release 10 - Prepare release PR** for integration checks against real
   repository history without changing GitHub state.
 
 Run the planner tests locally with:
@@ -216,8 +216,8 @@ Nightly releases are independent from stable publication.
 Future automation
 -----------------
 
-After this process has been validated through real release cycles, **Prepare
-release PR** can gain a weekly schedule. Scheduled execution should create or
+After this process has been validated through real release cycles, **Release 10 -
+Prepare release PR** can gain a weekly schedule. Scheduled execution should create or
 update release preparation pull requests only; final publication remains an
 explicit maintainer action.
 
