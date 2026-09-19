@@ -10,27 +10,27 @@ release commands.
 Normal release flow
 -------------------
 
-1. Open **Actions -> Prepare release PR**.
+1. Open **Actions -> Release 10 - Release 10 - Prepare release PR**.
 2. Select the target stable branch and keep ``dry_run`` enabled for the first
    run.
 3. Review the generated plan: pull requests, version bump, changelog, target
    commit, and milestone.
-4. Run **Prepare release PR** again with ``dry_run`` disabled when the plan is
+4. Run **Release 10 - Release 10 - Prepare release PR** again with ``dry_run`` disabled when the plan is
    correct.
 5. Review and merge the generated release preparation pull request.
-6. Wait for **Finalize release preparation** to update the milestone state.
-7. Open **Actions -> Prepare stable release** and select the same stable branch.
+6. Wait for **Release 20 - Finalize preparation** to update the milestone state.
+7. Open **Actions -> Release 30 - Prepare draft** and select the same stable branch.
 8. Review the generated GitHub Release draft.
 9. Review the release title, changelog, description, target commit, and Full
    Changelog link.
 10. Click **Publish release** when the draft is ready.
-11. Wait for **Build, sign and publish App Store release** to finish.
+11. Wait for **Release 40 - Build, sign and publish App Store** to finish.
 12. Confirm the GitHub release asset and the version in the Nextcloud App Store.
 
-Prepare release PR
+Release 10 - Prepare release PR
 ------------------
 
-**Prepare release PR** analyzes commits since the previous stable release and
+**Release 10 - Release 10 - Prepare release PR** analyzes commits since the previous stable release and
 resolves the pull requests associated with those commits.
 
 It then:
@@ -104,13 +104,13 @@ preparation**:
 5. closes the release milestone.
 
 For the final release of a stable branch, select ``final_stable_release`` in
-**Prepare release PR**. No follow-up patch milestone is created and
+**Release 10 - Release 10 - Prepare release PR**. No follow-up patch milestone is created and
 finalization fails if the release milestone still contains open items.
 
-Prepare stable release
+Release 30 - Prepare draft
 ----------------------
 
-**Prepare stable release** runs after the release preparation pull request has
+**Release 30 - Prepare draft** runs after the release preparation pull request has
 been merged and its milestone has been finalized.
 
 It verifies version consistency and the changelog, performs the frontend and
@@ -125,7 +125,7 @@ Publishing
 
 A maintainer reviews the draft and explicitly clicks **Publish release**.
 
-Publishing triggers **Build, sign and publish App Store release**, which is
+Publishing triggers **Release 40 - Build, sign and publish App Store**, which is
 derived from the Nextcloud organization workflow. It performs the final build,
 signs the package, attaches the release asset, and publishes the version to the
 Nextcloud App Store.
@@ -143,18 +143,45 @@ Security releases
 Security advisories should be published only after all fixed versions referenced
 by the advisory are publicly available.
 
+Release automation implementation
+---------------------------------
+
+The release workflows are intentionally thin. Release-specific rules and GitHub
+operations live in :code:`scripts/release/` and are exposed through
+:code:`scripts/release/release.php`.
+
+The workflow files are sequenced by name so their order is visible in GitHub and
+IDEs:
+
+.. code-block:: text
+
+   release-00-tests.yml
+   release-10-prepare-pr.yml
+   release-20-finalize-preparation.yml
+   release-30-prepare-draft.yml
+   release-40-publish-appstore.yml
+
+The numeric gaps are intentional, allowing future stages to be inserted without
+renaming every workflow.
+
+The App Store publisher remains derived from the Nextcloud organization
+template. The release CLI owns LibreSign-specific release policy and state
+transitions, while GitHub Actions primarily orchestrates checked-in commands and
+third-party actions.
+
 Release automation tests
 ------------------------
 
 Release planning rules are implemented outside workflow YAML so they can be
 tested independently.
 
-The repository validates release automation with:
+The repository validates the release CLI and workflow orchestration with:
 
-- PHPUnit tests for version bumping, changelog categories, exclusions, and
-  stable-release rules;
+- PHPUnit tests for version bumping, changelog categories, exclusions, release
+  file mutation, Git/GitHub command composition, draft handling, and milestone
+  rules;
 - ``actionlint`` and ShellCheck for release workflow syntax and embedded shell;
-- ``dry_run`` in **Prepare release PR** for integration checks against real
+- ``dry_run`` in **Release 10 - Release 10 - Prepare release PR** for integration checks against real
   repository history without changing GitHub state.
 
 Run the planner tests locally with:
@@ -176,7 +203,7 @@ If a release must be recreated after a publication fix:
 1. delete the incorrect GitHub release;
 2. delete the incorrect tag;
 3. confirm the exact stable branch commit to publish;
-4. rerun **Prepare stable release** from the corrected branch state.
+4. rerun **Release 30 - Prepare draft** from the corrected branch state.
 
 Do not rerun a workflow tied to an obsolete tag. The tag must point to the
 corrected commit.
@@ -196,15 +223,15 @@ explicit maintainer action.
 
 .. code-block:: text
 
-   Prepare release PR
+   Release 10 - Prepare release PR
            |
          review
            |
          merge
            |
-   Finalize release preparation
+   Release 20 - Finalize preparation
            |
-   Prepare stable release
+   Release 30 - Prepare draft
            |
    GitHub Release draft
            |
@@ -212,4 +239,4 @@ explicit maintainer action.
            |
      Publish release
            |
-   Build, sign and publish App Store release
+   Release 40 - Build, sign and publish App Store
