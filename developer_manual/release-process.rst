@@ -16,13 +16,13 @@ Normal release flow
    :code:`CHANGELOG.md`, :code:`appinfo/info.xml`,
    :code:`package.json`, and :code:`package-lock.json`.
 4. Merge the release preparation pull request.
-5. Open **Actions -> Release** in the LibreSign repository.
+5. Open **Actions -> Create stable release** in the LibreSign repository.
 6. Run the workflow and provide the target stable branch, for example
    :code:`stable35`.
 7. Wait for the workflow to finish.
 8. Confirm the GitHub release and the version in the Nextcloud App Store.
 
-The Release workflow performs the publication checks before creating a public
+The Create stable release workflow performs the publication checks before creating a public
 release. It validates the version files and changelog, builds the frontend,
 creates and verifies the App Store package, signs it, and only then creates the
 GitHub release and uploads it to the App Store.
@@ -179,7 +179,7 @@ The next automation stage is release preparation.
              merge
                |
                v
-      Actions -> Release
+      Actions -> Create stable release
                |
                v
      GitHub + Nextcloud App Store
