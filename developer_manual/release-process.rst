@@ -16,21 +16,29 @@ Normal release flow
    :code:`CHANGELOG.md`, :code:`appinfo/info.xml`,
    :code:`package.json`, and :code:`package-lock.json`.
 4. Merge the release preparation pull request.
-5. Open **Actions -> Create stable release** in the LibreSign repository.
+5. Open **Actions -> Prepare stable release** in the LibreSign repository.
 6. Run the workflow and provide the target stable branch, for example
    :code:`stable35`.
-7. Wait for the workflow to finish.
-8. Confirm the GitHub release and the version in the Nextcloud App Store.
+7. Wait for the workflow to finish and review the generated draft release.
+8. Review the release title, changelog, description, target branch, and Full Changelog link.
+9. Click **Publish release** when the draft is ready.
+10. Wait for **Build, sign and publish App Store release** to finish.
+11. Confirm the GitHub release asset and the version in the Nextcloud App Store.
 
-The Create stable release workflow performs the publication checks before creating a public
-release. It validates the version files and changelog, builds the frontend,
-creates and verifies the App Store package, signs it, and only then creates the
-GitHub release and uploads it to the App Store.
+The Prepare stable release workflow performs the release checks before creating a draft.
+It validates the version files and changelog, builds the frontend, and creates
+and verifies the App Store package. Only after these checks pass does it create
+a draft GitHub release for human review.
+
+Publishing the draft triggers **Build, sign and publish App Store release**,
+which performs the final build, signs the package, attaches the release asset,
+and publishes it to the Nextcloud App Store.
 
 .. important::
 
-   A failed build or package verification must not create a public release.
-   Publishing is the last stage of the workflow, not the trigger for the build.
+   A failed preflight build or package verification must not create a release draft.
+   The release remains unpublished until a maintainer explicitly reviews the draft
+   and clicks **Publish release**.
 
 Version numbers
 ---------------
@@ -125,10 +133,12 @@ oldest supported stable first.
 
 For each branch:
 
-1. run the Release workflow;
-2. wait for it to succeed;
-3. confirm the release in the Nextcloud App Store;
-4. only then continue with the next newer stable branch.
+1. run **Prepare stable release**;
+2. review the generated draft;
+3. publish the draft;
+4. wait for **Build, sign and publish App Store release** to succeed;
+5. confirm the release in the Nextcloud App Store;
+6. only then continue with the next newer stable branch.
 
 Security releases
 -----------------
@@ -146,7 +156,7 @@ If a release must be recreated after a publication fix:
 1. delete the incorrect GitHub release;
 2. delete the incorrect tag;
 3. confirm the exact stable branch commit to publish;
-4. rerun the Release workflow from the corrected branch state.
+4. rerun **Prepare stable release** from the corrected branch state.
 
 Do not only rerun a workflow tied to an obsolete tag. The tag must point to the
 corrected commit.
@@ -179,7 +189,14 @@ The next automation stage is release preparation.
              merge
                |
                v
-      Actions -> Create stable release
+      Actions -> Prepare stable release
+               |
+               v
+        GitHub release draft
+               |
+          human review
+               |
+        Publish release
                |
                v
      GitHub + Nextcloud App Store
