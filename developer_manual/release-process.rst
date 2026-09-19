@@ -20,7 +20,7 @@ Normal release flow
 6. Run the workflow and provide the target stable branch, for example
    :code:`stable35`.
 7. Wait for the workflow to finish and review the generated draft release.
-8. Review the release title, changelog, description, target branch, and Full Changelog link.
+8. Review the release title, changelog, description, target commit, and Full Changelog link.
 9. Click **Publish release** when the draft is ready.
 10. Wait for **Build, sign and publish App Store release** to finish.
 11. Confirm the GitHub release asset and the version in the Nextcloud App Store.
