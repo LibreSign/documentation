@@ -1,44 +1,59 @@
 Release process
 ===============
 
-The normal LibreSign release process is driven from GitHub Actions.
+The normal LibreSign release process is driven by GitHub Actions.
 
-The goal is to keep release preparation reviewable while making publication a
-single, reproducible operation. A normal release should not require local
-commands.
+The goal is to keep release preparation reviewable while making the technical
+steps deterministic and reproducible. A normal release should not require local
+release commands.
 
 Normal release flow
 -------------------
 
-1. Review the target stable branch and its milestone.
-2. Confirm all intended backports are merged.
-3. Prepare the release files in the stable branch:
-   :code:`CHANGELOG.md`, :code:`appinfo/info.xml`,
-   :code:`package.json`, and :code:`package-lock.json`.
-4. Merge the release preparation pull request.
-5. Open **Actions -> Prepare stable release** in the LibreSign repository.
-6. Run the workflow and provide the target stable branch, for example
-   :code:`stable35`.
-7. Wait for the workflow to finish and review the generated draft release.
-8. Review the release title, changelog, description, target commit, and Full Changelog link.
-9. Click **Publish release** when the draft is ready.
-10. Wait for **Build, sign and publish App Store release** to finish.
-11. Confirm the GitHub release asset and the version in the Nextcloud App Store.
+1. Open **Actions -> Prepare release PR**.
+2. Select the target stable branch and keep ``dry_run`` enabled for the first
+   run.
+3. Review the generated plan: pull requests, version bump, changelog, target
+   commit, and milestone.
+4. Run **Prepare release PR** again with ``dry_run`` disabled when the plan is
+   correct.
+5. Review and merge the generated release preparation pull request.
+6. Wait for **Finalize release preparation** to update the milestone state.
+7. Open **Actions -> Prepare stable release** and select the same stable branch.
+8. Review the generated GitHub Release draft.
+9. Review the release title, changelog, description, target commit, and Full
+   Changelog link.
+10. Click **Publish release** when the draft is ready.
+11. Wait for **Build, sign and publish App Store release** to finish.
+12. Confirm the GitHub release asset and the version in the Nextcloud App Store.
 
-The Prepare stable release workflow performs the release checks before creating a draft.
-It validates the version files and changelog, builds the frontend, and creates
-and verifies the App Store package. Only after these checks pass does it create
-a draft GitHub release for human review.
+Prepare release PR
+------------------
 
-Publishing the draft triggers **Build, sign and publish App Store release**,
-which performs the final build, signs the package, attaches the release asset,
-and publishes it to the Nextcloud App Store.
+**Prepare release PR** analyzes commits since the previous stable release and
+resolves the pull requests associated with those commits.
 
-.. important::
+It then:
 
-   A failed preflight build or package verification must not create a release draft.
-   The release remains unpublished until a maintainer explicitly reviews the draft
-   and clicks **Publish release**.
+- verifies that the stable branch version still matches its latest release tag;
+- blocks preparation while ``backport-request`` pull requests are pending;
+- verifies that the matching ``Next Patch (XX)`` milestone exists;
+- classifies the release as patch or minor;
+- generates the changelog section;
+- updates :code:`appinfo/info.xml`, :code:`package.json`, and
+  :code:`package-lock.json`;
+- creates or updates a scoped release preparation pull request.
+
+The workflow defaults to ``dry_run``. A dry run analyzes the real repository
+state but does not create a branch or pull request and does not alter
+milestones or releases.
+
+The generated release pull request is limited to:
+
+- :code:`CHANGELOG.md`;
+- :code:`appinfo/info.xml`;
+- :code:`package.json`;
+- :code:`package-lock.json`.
 
 Version numbers
 ---------------
@@ -46,97 +61,115 @@ Version numbers
 LibreSign follows :code:`MAJOR.MINOR.PATCH`.
 
 - ``MAJOR`` aligns with the supported Nextcloud Server version.
-- ``MINOR`` is incremented when a release contains user-facing features.
-- ``PATCH`` is incremented for fixes and small improvements.
+- ``MINOR`` is used when the release contains features.
+- ``PATCH`` is used for fixes and maintenance changes.
 
-The Prepare stable release workflow uses the version already prepared in the stable branch.
-The following files must contain the same version before publication:
+Stable release preparation never infers a major bump. A ``major`` label or a
+breaking conventional-commit marker causes preparation to fail because major
+versions are part of the new stable branch lifecycle.
 
-- :code:`appinfo/info.xml`
-- :code:`package.json`
-- :code:`package-lock.json`
+The generated release files must contain the same version in:
 
-Development, alpha, beta, and release-candidate versions are rejected by the
-normal release workflow.
-
-Release preparation pull request
---------------------------------
-
-Release preparation remains reviewable through a pull request.
-
-The release pull request must stay strictly scoped to:
-
-- the new :code:`CHANGELOG.md` section;
-- the version in :code:`appinfo/info.xml`;
-- the version in :code:`package.json`;
-- the version in :code:`package-lock.json`.
-
-Do not mix release automation, workflow refactoring, dependency maintenance, or
-unrelated fixes into a release preparation pull request.
+- :code:`appinfo/info.xml`;
+- :code:`package.json`;
+- :code:`package-lock.json`.
 
 Changelog
 ---------
 
-The changelog is the source used for the GitHub release description.
+The changelog is generated from pull requests associated with commits since the
+previous release tag.
 
-Each release section must follow this format:
+Release planning ignores ``skip-changelog`` entries and dependency-bot pull
+requests. Dependency changes are collapsed into a single changelog item and
+translation updates are represented as a single user-facing entry.
 
-.. code-block:: markdown
-
-   ## 15.0.1 - 2026-09-21
-
-   ### Fixed
-
-   - fix signing flow validation [#0000](https://github.com/LibreSign/libresign/pull/0000)
-
-Keep the newest release first.
-
-Prefer user-visible changes. Pure test, refactor, or dependency maintenance
-entries should only be included when relevant to users, compatibility, or
-support.
+The generated changelog remains reviewable in the release preparation pull
+request before publication.
 
 Milestones
 ----------
 
-Every pull request must have the correct milestone before merge.
+Each stable branch maps to its ``Next Patch (XX)`` milestone.
 
-- PRs targeting :code:`main` use the current ``Next Major (XX)`` milestone.
-- PRs targeting a stable branch use the corresponding ``Next Patch (XX)``
-  milestone.
+After the generated release pull request is merged, **Finalize release
+preparation**:
 
-Before preparing a release:
+1. verifies that the release pull request changed only the allowed release
+   files;
+2. renames ``Next Patch (XX)`` to the released version;
+3. creates the next ``Next Patch (XX)`` milestone when the stable branch remains
+   supported;
+4. moves remaining open issues and pull requests to the new milestone;
+5. closes the release milestone.
 
-1. Review open issues and pull requests in the milestone.
-2. Move work that is not part of the release to the next milestone.
-3. Rename the release milestone to the final version.
-4. Close the milestone after the release contents are final.
-5. Create the next patch milestone when the stable branch remains supported.
+For the final release of a stable branch, select ``final_stable_release`` in
+**Prepare release PR**. No follow-up patch milestone is created and
+finalization fails if the release milestone still contains open items.
+
+Prepare stable release
+----------------------
+
+**Prepare stable release** runs after the release preparation pull request has
+been merged and its milestone has been finalized.
+
+It verifies version consistency and the changelog, performs the frontend and
+App Store package preflight, and creates or updates a GitHub Release draft only
+after those checks pass.
+
+The draft is pinned to the exact commit that passed preflight. Re-running the
+workflow updates the same draft instead of creating a competing release.
+
+Publishing
+----------
+
+A maintainer reviews the draft and explicitly clicks **Publish release**.
+
+Publishing triggers **Build, sign and publish App Store release**, which is
+derived from the Nextcloud organization workflow. It performs the final build,
+signs the package, attaches the release asset, and publishes the version to the
+Nextcloud App Store.
 
 Multiple stable releases
 ------------------------
 
-When publishing multiple stable branches in the same release cycle, publish the
-oldest supported stable first.
-
-For each branch:
-
-1. run **Prepare stable release**;
-2. review the generated draft;
-3. publish the draft;
-4. wait for **Build, sign and publish App Store release** to succeed;
-5. confirm the release in the Nextcloud App Store;
-6. only then continue with the next newer stable branch.
+When several stable branches are released in the same cycle, process the oldest
+supported stable first. Do not publish the next stable release until the
+previous one has completed successfully and is visible in the App Store.
 
 Security releases
 -----------------
 
-For security releases, publish security advisories only after all fixed
-versions referenced by the advisory are publicly available.
+Security advisories should be published only after all fixed versions referenced
+by the advisory are publicly available.
+
+Release automation tests
+------------------------
+
+Release planning rules are implemented outside workflow YAML so they can be
+tested independently.
+
+The repository validates release automation with:
+
+- PHPUnit tests for version bumping, changelog categories, exclusions, and
+  stable-release rules;
+- ``actionlint`` and ShellCheck for release workflow syntax and embedded shell;
+- ``dry_run`` in **Prepare release PR** for integration checks against real
+  repository history without changing GitHub state.
+
+Run the planner tests locally with:
+
+.. code-block:: bash
+
+   composer install --working-dir=vendor-bin/phpunit
+   composer test:release
+
+A local ``act`` run can help while developing workflow orchestration, but it is
+not treated as authoritative because it does not completely reproduce GitHub
+events, permissions, or API behavior.
 
 Recovery and exceptional releases
 ---------------------------------
-
-The manual process is reserved for exceptional situations.
 
 If a release must be recreated after a publication fix:
 
@@ -145,50 +178,38 @@ If a release must be recreated after a publication fix:
 3. confirm the exact stable branch commit to publish;
 4. rerun **Prepare stable release** from the corrected branch state.
 
-Do not only rerun a workflow tied to an obsolete tag. The tag must point to the
+Do not rerun a workflow tied to an obsolete tag. The tag must point to the
 corrected commit.
-
-For an exceptional release that intentionally targets a specific commit instead
-of the current stable branch head, document the reason and verify that the
-selected commit contains the complete release preparation.
 
 Nightly releases
 ----------------
 
-Nightly releases are independent from stable publication. They may share build
-and packaging implementation with stable releases, but must never be treated as
-a stable release.
+Nightly releases are independent from stable publication.
 
 Future automation
 -----------------
 
-The next automation stage is release preparation.
+After this process has been validated through real release cycles, **Prepare
+release PR** can gain a weekly schedule. Scheduled execution should create or
+update release preparation pull requests only; final publication remains an
+explicit maintainer action.
 
 .. code-block:: text
 
-   scheduled or manual preparation
-               |
-               v
-      release preparation PR
-               |
-            review
-               |
-             merge
-               |
-               v
-      Actions -> Prepare stable release
-               |
-               v
-        GitHub release draft
-               |
-          human review
-               |
-        Publish release
-               |
-               v
-     GitHub + Nextcloud App Store
-
-Once release preparation is reliably automated, a weekly schedule may create or
-update release preparation pull requests for supported stable branches. Final
-publication should remain explicit until the automated process has been
-validated through multiple release cycles.
+   Prepare release PR
+           |
+         review
+           |
+         merge
+           |
+   Finalize release preparation
+           |
+   Prepare stable release
+           |
+   GitHub Release draft
+           |
+      human review
+           |
+     Publish release
+           |
+   Build, sign and publish App Store release
