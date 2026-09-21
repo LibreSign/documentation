@@ -1,0 +1,10 @@
+.. SPDX-FileCopyrightText: 2026 LibreCode coop and contributors
+.. SPDX-License-Identifier: AGPL-3.0-or-later
+
+.. This file is generated from LibreSign/libresign release history.
+
+13.0.3 - 2026-02-20
+===================
+
+Fixes
+-----
