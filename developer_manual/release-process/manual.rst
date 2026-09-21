@@ -32,7 +32,7 @@ Manual equivalent
 9. Create a GitHub Release draft for the finalized SHA and released changelog section.
 10. Publish it and let the existing publisher build/sign/upload the package.
 11. Verify publisher success, artifact identity/content and App Store visibility.
-12. Synchronize the released section to public documentation only after publication verification.
+12. Keep the released changelog in ``LibreSign/libresign`` as the canonical history; do not duplicate it in the documentation repository.
 
 Recovery rules
 --------------

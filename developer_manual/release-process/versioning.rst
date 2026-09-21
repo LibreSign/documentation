@@ -24,4 +24,4 @@ Canonical release text lives in ``docs/changelogs/changelog-<major>.md`` in ``Li
 
 For packaging, the selected per-major file is copied to package-root ``CHANGELOG.md``. The package does not fetch this documentation repository.
 
-GitHub Release notes and public release-history pages are derived presentations of the same released section; they are not separate sources of truth.
+GitHub Release notes are derived from the same released section. The changelog itself is maintained only in ``LibreSign/libresign``; this documentation repository does not duplicate it.

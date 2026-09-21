@@ -26,9 +26,9 @@ After publication, the workflow waits for the existing publisher and validates:
 
 Verification is independently rerunnable. Bounded retries handle eventual consistency only; they do not replace release validation rules.
 
-Release history
----------------
+Changelog source
+----------------
 
-Only after publication verification succeeds does automation create or update the documentation release-history PR.
+The released changelog remains in ``LibreSign/libresign`` under ``docs/changelogs/changelog-<major>.md``. This documentation repository does not copy or maintain a second release-history dataset.
 
-For security releases, only public-safe released text may reach this step; advisory-private text is never used as public release content.
+For security releases, advisory-private text must never be added to the public changelog or documentation.

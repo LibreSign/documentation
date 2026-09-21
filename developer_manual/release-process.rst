@@ -20,7 +20,7 @@ Maintainer journey
 7. Publish the draft.
 8. The existing packaging/signing/App Store workflow runs.
 9. Publication verification confirms release identity, publisher run, artifact and App Store visibility.
-10. After verification succeeds, release history is synchronized to this documentation repository through a generated PR.
+10. The released changelog remains in ``LibreSign/libresign`` as the single canonical release-history source.
 
 There are only two semantic human release gates: merging the generated release PR and publishing the generated GitHub Release draft.
 
