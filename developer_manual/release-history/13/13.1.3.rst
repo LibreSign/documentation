@@ -5,3 +5,9 @@
 
 13.1.3 - 2026-03-06
 ===================
+
+Fixes
+-----
+
+* fix: avoid router resolution in request signature tab modal
+* test: cover modal urls in request signature tab
