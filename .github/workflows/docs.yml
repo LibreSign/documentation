@@ -3,6 +3,8 @@
 
 name: Documentation
 
+# Validate the complete documentation tree for pull requests.
+
 on:
   pull_request:
 
