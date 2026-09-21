@@ -5,3 +5,26 @@
 
 13.2.5 - 2026-06-12
 ===================
+
+💝 **SUPPORT LIBRESIGN** — If you find this project useful, please consider supporting its development: https://github.com/sponsors/LibreSign
+
+🏢 **ENTERPRISE SUPPORT** — Need help with migration or custom implementations? Contact us: contact@librecode.coop
+
+Changed
+-------
+
+* update translations
+* bump dependencies `#7634 <https://github.com/LibreSign/libresign/pull/7634>`_ `#7637 <https://github.com/LibreSign/libresign/pull/7637>`_ `#7639 <https://github.com/LibreSign/libresign/pull/7639>`_
+
+Fixed
+-----
+
+* align getArchitectures typing with main `#7683 <https://github.com/LibreSign/libresign/pull/7683>`_
+* keep groups_request_sign JSON unicode serialization consistent `#7681 <https://github.com/LibreSign/libresign/pull/7681>`_
+* use default DataResponse success constructor in id docs `#7663 <https://github.com/LibreSign/libresign/pull/7663>`_
+* harden openapi contracts for sdk generators `#7665 <https://github.com/LibreSign/libresign/pull/7665>`_
+* align openapi file metadata contract with runtime payloads `#7660 <https://github.com/LibreSign/libresign/pull/7660>`_
+* expose ValidationURL and qrcode in signature stamp templates `#7658 <https://github.com/LibreSign/libresign/pull/7658>`_
+* render envelope validation data correctly for multi-file requests `#7649 <https://github.com/LibreSign/libresign/pull/7649>`_
+* remove stale addStyle icons call from TemplateLoader `#7642 <https://github.com/LibreSign/libresign/pull/7642>`_
+* support Twig date filter for ServerSignatureDate in JSign `#7646 <https://github.com/LibreSign/libresign/pull/7646>`_
