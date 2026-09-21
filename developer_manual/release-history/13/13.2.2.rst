@@ -5,3 +5,21 @@
 
 13.2.2 - 2026-04-08
 ===================
+
+💝 **SUPPORT LIBRESIGN** — If you find this project useful, please consider supporting its development: https://github.com/sponsors/LibreSign
+
+🏢 **ENTERPRISE SUPPORT** — Need help with migration or custom implementations? Contact us: contact@librecode.coop
+
+Changed
+-------
+
+* Update translations
+* Bump dependencies `#7452 <https://github.com/LibreSign/libresign/pull/7452>`_ `#7453 <https://github.com/LibreSign/libresign/pull/7453>`_ `#7456 <https://github.com/LibreSign/libresign/pull/7456>`_ `#7459 <https://github.com/LibreSign/libresign/pull/7459>`_ `#7457 <https://github.com/LibreSign/libresign/pull/7457>`_ `#7461 <https://github.com/LibreSign/libresign/pull/7461>`_ `#7463 <https://github.com/LibreSign/libresign/pull/7463>`_ `#7469 <https://github.com/LibreSign/libresign/pull/7469>`_ `#7471 <https://github.com/LibreSign/libresign/pull/7471>`_
+
+Fixes
+-----
+
+* fix: improve TSA DNS/network error guidance `#7430 <https://github.com/LibreSign/libresign/pull/7430>`_
+* fix: align signer and file UUID contracts `#7441 <https://github.com/LibreSign/libresign/pull/7441>`_
+* fix(validation): harden unified files contract `#7445 <https://github.com/LibreSign/libresign/pull/7445>`_
+* fix(Sign): submit each envelope file independently with its UUID `#7448 <https://github.com/LibreSign/libresign/pull/7448>`_
