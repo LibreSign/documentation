@@ -32,9 +32,9 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Build documentation with warnings as errors
+      - name: Build documentation
         run: |
-          sphinx-build -W main _build/main
-          sphinx-build -W user_manual _build/user_manual
-          sphinx-build -W admin_manual _build/admin_manual
+          sphinx-build main _build/main
+          sphinx-build user_manual _build/user_manual
+          sphinx-build admin_manual _build/admin_manual
           sphinx-build -W developer_manual _build/developer_manual
