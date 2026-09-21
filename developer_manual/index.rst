@@ -32,3 +32,4 @@ Here you will find all the documentation for developers.
    api/index
    translation
    release-process
+   release-history/index
