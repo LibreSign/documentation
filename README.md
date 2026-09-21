@@ -1,6 +1,6 @@
 <!--
 SPDX-FileCopyrightText: 2026 LibreCode coop and contributors
-SPDX-License-Identifier: CC-BY-4.0
+SPDX-License-Identifier: CC-BY-3.0
 -->
 
 # LibreSign documentation
