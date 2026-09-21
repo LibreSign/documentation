@@ -15,7 +15,7 @@ Follow these steps to request a feature:
 
 2 - Go to the "Issues" tab.
  
-    .. figure:: images/issue_screen.png
+    .. figure:: images/choose_issue_screen.png
         :alt: Main screen.
 
     * 1 - Issue tab
