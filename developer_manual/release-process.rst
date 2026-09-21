@@ -30,15 +30,18 @@ Normal release flow
 Release 10 - Prepare release PR
 -------------------------------
 
-**Release 10 - Prepare release PR** analyzes commits since the previous stable release and
-resolves the pull requests associated with those commits.
+**Release 10 - Prepare release PR** is started manually for one selected stable
+branch. It analyzes repository activity since the previous stable release and
+resolves the pull requests associated with that release range.
 
 It then:
 
-- verifies that the stable branch version still matches its latest release tag;
-- blocks preparation while ``backport-request`` pull requests are pending;
+- verifies the selected stable branch and release state;
+- blocks preparation when an open backport pull request is still pending for
+  that stable branch, unless the maintainer explicitly overrides that blocker;
 - verifies that the matching ``Next Patch (XX)`` milestone exists;
-- classifies the release as patch or minor;
+- classifies the release from merged pull request titles, using the same
+  Conventional Commit convention required by LibreSign;
 - generates the changelog section;
 - updates :code:`appinfo/info.xml`, :code:`package.json`, and
   :code:`package-lock.json`;
@@ -60,13 +63,35 @@ Version numbers
 
 LibreSign follows :code:`MAJOR.MINOR.PATCH`.
 
-- ``MAJOR`` aligns with the supported Nextcloud Server version.
-- ``MINOR`` is used when the release contains features.
-- ``PATCH`` is used for fixes and maintenance changes.
+- ``MAJOR`` changes when a new LibreSign release line is created for a new
+  Nextcloud/framework generation.
+- ``MINOR`` is used when at least one merged pull request included in the
+  release has a ``feat`` Conventional Commit title.
+- ``PATCH`` is used when the release has new releasable activity but no
+  feature pull request. This includes bug fixes, translations, dependency
+  updates, documentation, tests, refactors, CI and other maintenance changes.
 
-Stable release preparation never infers a major bump. A ``major`` label or a
-breaking conventional-commit marker causes preparation to fail because major
-versions are part of the new stable branch lifecycle.
+The pull request title is the release-level classification source. Internal
+commits inside a pull request do not change the release type. For example, a
+``feat:`` commit inside a pull request titled ``fix:`` does not promote the
+release to a minor version.
+
+A feature exceptionally backported to a released stable branch still promotes
+that stable line to the next minor version.
+
+Dependency version semantics do not propagate to LibreSign. A dependency
+changing from 1.x to 2.x remains a LibreSign patch-level change unless the
+LibreSign pull request itself is a feature.
+
+Stable release preparation never infers a major bump from Conventional
+Commits. Major releases belong to the new stable branch lifecycle. When a
+stable branch has no previous release, the version declared by
+``appinfo/info.xml`` identifies the new release line.
+
+Development and prerelease suffixes such as ``-dev``, ``-alpha``,
+``-beta`` or ``-rc`` may exist before the first final release. Release
+preparation must normalize that prerelease value to the intended final semantic
+version instead of treating the branch as invalid.
 
 The generated release files must contain the same version in:
 
@@ -77,12 +102,21 @@ The generated release files must contain the same version in:
 Changelog
 ---------
 
-The changelog is generated from pull requests associated with commits since the
-previous release tag.
+The changelog is generated primarily from merged pull requests associated with
+the selected release range. Pull request titles are used for Conventional
+Commit classification; internal commits inside a pull request are not used to
+promote the release type.
 
-Release planning ignores ``skip-changelog`` entries and dependency-bot pull
-requests. Dependency changes are collapsed into a single changelog item and
-translation updates are represented as a single user-facing entry.
+Release planning ignores ``skip-changelog`` entries. Dependency-bot pull
+requests are not listed one by one: dependency changes are collapsed into a
+single changelog item.
+
+Translations are a special case because translation syncs can be direct commits
+without a pull request. Release preparation detects translation activity
+separately and adds one user-facing translation update entry.
+
+A release containing only translations, dependencies or other maintenance work
+is valid and uses a patch version.
 
 The generated changelog remains reviewable in the release preparation pull
 request before publication.
@@ -103,9 +137,14 @@ preparation**:
 4. moves remaining open issues and pull requests to the new milestone;
 5. closes the release milestone.
 
-For the final release of a stable branch, select ``final_stable_release`` in
-**Release 10 - Prepare release PR**. No follow-up patch milestone is created and
-finalization fails if the release milestone still contains open items.
+Milestones are rotated for every normal patch-line release. For the final
+release of a stable branch, the maintainer explicitly selects that no follow-up
+``Next Patch (XX)`` milestone should be created.
+
+The Nextcloud Server Maintenance and Release Schedule is the normal source for
+stable lifecycle/EOL information. The workflow does not decide EOL
+automatically because LibreSign may intentionally maintain a line longer, for
+example under an enterprise support commitment.
 
 Release 30 - Prepare draft
 --------------------------
