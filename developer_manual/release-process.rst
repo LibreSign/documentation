@@ -27,6 +27,7 @@ There are only two semantic human release gates: merging the generated release P
 .. toctree::
    :maxdepth: 2
 
+   release-process/configuration
    release-process/preparing
    release-process/versioning
    release-process/milestones
