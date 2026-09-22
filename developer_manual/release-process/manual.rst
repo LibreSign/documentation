@@ -14,7 +14,7 @@ Download the verified ``release-tool.phar`` version used by ``LibreCodeCoop/gith
 .. code-block:: bash
 
    php release-tool.phar config:validate --config .nextcloud-release.yml --root . --json
-   php release-tool.phar release:plan --config .nextcloud-release.yml --root . --branch stableXX --channel final --mode normal --json
+   php release-tool.phar release:plan --config .nextcloud-release.yml --root . --branch stableXX --channel final --json
 
 The plan output should identify the previous reachable release tag, exact planning SHA, proposed version, target per-major changelog, milestone and blockers.
 
@@ -42,4 +42,4 @@ Recovery rules
 * If the release branch advances after the release PR merge, do not create the draft from the old finalized state.
 * If publication fails, fix the publisher problem and rerun verification. Do not reinterpret or regenerate release notes.
 * If a tag/release points to the wrong commit, repair the GitHub Release/tag identity before publication verification can succeed.
-* For security mode, never put advisory-private details in workflow inputs, changelog text, artifacts or public documentation.
+* Security fixes are classified by the ``security`` pull request label. Keep the pull request title public-safe and never put advisory-private details in pull request titles, workflow inputs, changelog text, artifacts or public documentation.
