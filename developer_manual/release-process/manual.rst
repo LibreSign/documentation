@@ -42,4 +42,4 @@ Recovery rules
 * If the release branch advances after the release PR merge, do not create the draft from the old finalized state.
 * If publication fails, fix the publisher problem and rerun verification. Do not reinterpret or regenerate release notes.
 * If a tag/release points to the wrong commit, repair the GitHub Release/tag identity before publication verification can succeed.
-* Security fixes are classified by the ``security`` pull request label. Keep the pull request title public-safe and never put advisory-private details in pull request titles, workflow inputs, changelog text, artifacts or public documentation.
+* Keep confidential security work in the repository security advisory temporary private fork. Once the fix is public, its Conventional Commit / pull request title must be safe to publish; never put advisory-private details in public pull request titles, workflow inputs, changelog text, artifacts or public documentation.
