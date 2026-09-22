@@ -29,11 +29,14 @@ Inputs
 ``create_follow_up_milestone``
    Whether a follow-up milestone should be created during the post-merge transition.
 
-``mode``
-   ``normal`` or ``security``.
+Security fixes
+--------------
 
-``safe_public_text``
-   Public-safe wording for security mode. Advisory-private details must not be put in public release text.
+Security fixes must be developed through the repository security advisory flow and, while confidential, in its temporary private fork.
+
+When the fix reaches the public repository, its Conventional Commit / pull request title must already be safe to publish. The release tool treats that public title like any other release activity, so a ``fix: ...`` entry remains under ``Fixed`` and does not require a special release mode or a public security label.
+
+Do not put advisory-private details in public pull request titles, changelog text, workflow inputs, artifacts or public documentation. Publish the advisory according to the coordinated disclosure plan once the patched release is ready.
 
 Generated PR
 ------------
