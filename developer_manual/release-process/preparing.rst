@@ -32,11 +32,11 @@ Inputs
 Security fixes
 --------------
 
-Security is classified per pull request, not per release.
+Security fixes must be developed through the repository security advisory flow and, while confidential, in its temporary private fork.
 
-A pull request that fixes a security issue must have a public-safe Conventional Commit title and the ``security`` label. The release tool places that pull request under the ``Security`` changelog category while preserving all other public release activity normally.
+When the fix reaches the public repository, its Conventional Commit / pull request title must already be safe to publish. The release tool treats that public title like any other release activity, so a ``fix: ...`` entry remains under ``Fixed`` and does not require a special release mode or a public security label.
 
-Do not put advisory-private details in the pull request title, changelog text, workflow inputs, artifacts or public documentation. The advisory remains the source for private vulnerability details until disclosure.
+Do not put advisory-private details in public pull request titles, changelog text, workflow inputs, artifacts or public documentation. Publish the advisory according to the coordinated disclosure plan once the patched release is ready.
 
 Generated PR
 ------------
