@@ -8,6 +8,8 @@ The normal LibreSign release path is driven from the **Prepare release** GitHub 
 
 The reusable policy and contracts live in ``LibreCodeCoop/release-tool`` and orchestration lives in ``LibreCodeCoop/github-workflows``. ``LibreSign/libresign`` carries the consumer configuration and repository-specific packaging rules.
 
+The release tooling is intentionally reusable by other Nextcloud apps. LibreSign is the reference consumer, not a hard-coded dependency. Maintainers evaluating the same model for another app should start with the reusable release tooling page.
+
 Maintainer journey
 ------------------
 
@@ -27,6 +29,7 @@ There are only two semantic human release gates: merging the generated release P
 .. toctree::
    :maxdepth: 2
 
+   release-process/reusable-tooling
    release-process/configuration
    release-process/preparing
    release-process/versioning
