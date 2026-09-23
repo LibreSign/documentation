@@ -6,7 +6,7 @@ Release process
 
 The normal LibreSign release path is driven from the **Prepare release** GitHub Actions workflow.
 
-The reusable policy and contracts live in ``LibreCodeCoop/release-tool`` and orchestration lives in ``LibreCodeCoop/github-workflows``. ``LibreSign/libresign`` carries the consumer configuration and repository-specific packaging rules.
+The reusable policy lives in ``LibreCodeCoop/release-tool`` and orchestration in ``LibreCodeCoop/github-workflows``. ``LibreSign/libresign`` supplies the consumer configuration and publisher.
 
 Maintainer journey
 ------------------
@@ -27,6 +27,7 @@ There are only two semantic human release gates: merging the generated release P
 .. toctree::
    :maxdepth: 2
 
+   release-process/reusable-tooling
    release-process/configuration
    release-process/preparing
    release-process/versioning
