@@ -67,6 +67,7 @@ The generic documentation lives with the tooling:
 * `Consumer configuration <https://github.com/LibreCodeCoop/release-tool/blob/main/docs/consumer-configuration.md>`_
 * `Release lifecycle <https://github.com/LibreCodeCoop/release-tool/blob/main/docs/release-lifecycle.md>`_
 * `GitHub Actions integration <https://github.com/LibreCodeCoop/release-tool/blob/main/docs/github-actions.md>`_
+* `GitHub App setup <https://github.com/LibreCodeCoop/release-tool/blob/main/docs/github-app.md>`_
 * `Shared workflow adoption <https://github.com/LibreCodeCoop/github-workflows/blob/main/docs/release-automation.md>`_
 
 LibreSign's remaining release-process pages document the concrete reference implementation.
@@ -89,6 +90,6 @@ Security model
 
 Mutation credentials are not shared between organizations.
 
-The LibreCode GitHub App is part of LibreSign's deployment environment. Maintainers of another organization should create and install their own GitHub App and store its private key as an Actions secret.
+The LibreCode GitHub App is part of LibreSign's deployment environment. Maintainers of another organization should create and install their own GitHub App and store its private key as an Actions secret. The generic GitHub App setup guide documents the exact permissions, installation scope, private-key generation and Actions secret configuration.
 
 The reusable actions use short-lived installation tokens and the consumer workflow grants permissions per job.
