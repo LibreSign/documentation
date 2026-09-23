@@ -6,9 +6,7 @@ Release process
 
 The normal LibreSign release path is driven from the **Prepare release** GitHub Actions workflow.
 
-The reusable policy and contracts live in ``LibreCodeCoop/release-tool`` and orchestration lives in ``LibreCodeCoop/github-workflows``. ``LibreSign/libresign`` carries the consumer configuration and repository-specific packaging rules.
-
-The release tooling is intentionally reusable by other Nextcloud apps. LibreSign is the reference consumer, not a hard-coded dependency. Maintainers evaluating the same model for another app should start with the reusable release tooling page.
+The reusable policy lives in ``LibreCodeCoop/release-tool`` and orchestration in ``LibreCodeCoop/github-workflows``. ``LibreSign/libresign`` supplies the consumer configuration and publisher.
 
 Maintainer journey
 ------------------
