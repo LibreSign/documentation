@@ -9,7 +9,7 @@ The automated workflow is the normal path. Manual commands are useful for diagno
 Read-only planning
 ------------------
 
-Download the verified ``release-tool.phar`` version used by ``LibreCodeCoop/github-workflows`` and its SHA-256 file, verify the checksum, then run:
+Download the verified ``release-tool.phar`` version published by ``LibreCodeCoop/release-tool`` and pinned by the LibreSign release workflow, together with its SHA-256 file. Verify the checksum, then run:
 
 .. code-block:: bash
 
