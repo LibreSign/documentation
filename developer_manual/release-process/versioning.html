@@ -1,0 +1,151 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Versioning and prereleases &mdash; LibreSign Documentation 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../_static/dark_mode_css/general.css?v=c0a7eb24" />
+      <link rel="stylesheet" type="text/css" href="../_static/dark_mode_css/dark.css?v=70edf1c7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=d6b6a36a"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=f281be69"></script>
+      <script src="../_static/dark_mode_js/default_dark.js?v=fd565c74"></script>
+      <script src="../_static/dark_mode_js/theme_switcher.js?v=358d3910"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Milestones and backports" href="milestones.html" />
+    <link rel="prev" title="Preparing a release" href="preparing.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #184c4e" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../prologue/index.html">Prologue</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/index.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../translation.html">Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../requesting-features.html">Requesting features</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../release-process.html">Release process</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../release-process.html#maintainer-journey">Maintainer journey</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="configuration.html">Release tool and consumer configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="preparing.html">Preparing a release</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Versioning and prereleases</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#prerelease-channels">Prerelease channels</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#per-major-changelogs">Per-major changelogs</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="milestones.html">Milestones and backports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="publishing.html">Publishing and verification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="manual.html">Manual procedure and troubleshooting</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #184c4e" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">LibreSign Documentation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../release-process.html">Release process</a></li>
+      <li class="breadcrumb-item active">Versioning and prereleases</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/release-process/versioning.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="versioning-and-prereleases">
+<h1>Versioning and prereleases<a class="headerlink" href="#versioning-and-prereleases" title="Link to this heading"></a></h1>
+<p>LibreSign versions follow <code class="docutils literal notranslate"><span class="pre">MAJOR.MINOR.PATCH</span></code>. The app major tracks the supported Nextcloud major used by the corresponding stable line.</p>
+<p>Normal version selection is derived from release activity since the previous reachable release tag. Feature-level activity advances the minor line; fixes and maintenance advance the patch line. Translation-only activity does not create a feature bump.</p>
+<p>An explicit version override is supported for recovery or deliberate release decisions, but the release tool validates it against the selected branch and configured release files.</p>
+<section id="prerelease-channels">
+<h2>Prerelease channels<a class="headerlink" href="#prerelease-channels" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">alpha</span></code> and <code class="docutils literal notranslate"><span class="pre">beta</span></code> are prerelease channels for incomplete release lines. <code class="docutils literal notranslate"><span class="pre">rc</span></code> is a release candidate. <code class="docutils literal notranslate"><span class="pre">final</span></code> is the normal stable publication.</p>
+<p>The selected channel is carried through the release contracts and determines whether the generated GitHub Release is marked as a prerelease.</p>
+</section>
+<section id="per-major-changelogs">
+<h2>Per-major changelogs<a class="headerlink" href="#per-major-changelogs" title="Link to this heading"></a></h2>
+<p>Canonical release text lives in <code class="docutils literal notranslate"><span class="pre">docs/changelogs/changelog-&lt;major&gt;.md</span></code> in <code class="docutils literal notranslate"><span class="pre">LibreSign/libresign</span></code>. Each major has its own file, avoiding conflicts between stable branches.</p>
+<p>For packaging, the selected per-major file is copied to package-root <code class="docutils literal notranslate"><span class="pre">CHANGELOG.md</span></code>. The package does not fetch this documentation repository.</p>
+<p>GitHub Release notes are derived from the same released section. The changelog itself is maintained only in <code class="docutils literal notranslate"><span class="pre">LibreSign/libresign</span></code>; this documentation repository does not duplicate it.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="preparing.html" class="btn btn-neutral float-left" title="Preparing a release" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="milestones.html" class="btn btn-neutral float-right" title="Milestones and backports" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026 LibreCode coop.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

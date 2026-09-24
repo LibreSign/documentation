@@ -1,0 +1,186 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Release tool and consumer configuration &mdash; LibreSign Documentation 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../_static/dark_mode_css/general.css?v=c0a7eb24" />
+      <link rel="stylesheet" type="text/css" href="../_static/dark_mode_css/dark.css?v=70edf1c7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=d6b6a36a"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=f281be69"></script>
+      <script src="../_static/dark_mode_js/default_dark.js?v=fd565c74"></script>
+      <script src="../_static/dark_mode_js/theme_switcher.js?v=358d3910"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Preparing a release" href="preparing.html" />
+    <link rel="prev" title="Release process" href="../release-process.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #184c4e" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../prologue/index.html">Prologue</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/index.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../translation.html">Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../requesting-features.html">Requesting features</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../release-process.html">Release process</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../release-process.html#maintainer-journey">Maintainer journey</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Release tool and consumer configuration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#local-installation">Local installation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#consumer-configuration">Consumer configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#validation">Validation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="preparing.html">Preparing a release</a></li>
+<li class="toctree-l3"><a class="reference internal" href="versioning.html">Versioning and prereleases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="milestones.html">Milestones and backports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="publishing.html">Publishing and verification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="manual.html">Manual procedure and troubleshooting</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #184c4e" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">LibreSign Documentation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../release-process.html">Release process</a></li>
+      <li class="breadcrumb-item active">Release tool and consumer configuration</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/release-process/configuration.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="release-tool-and-consumer-configuration">
+<h1>Release tool and consumer configuration<a class="headerlink" href="#release-tool-and-consumer-configuration" title="Link to this heading"></a></h1>
+<p>LibreSign release policy is executed by the versioned <code class="docutils literal notranslate"><span class="pre">release-tool.phar</span></code> distributed by <code class="docutils literal notranslate"><span class="pre">LibreCodeCoop/release-tool</span></code>.
+The LibreSign workflow pins the public Release Tool Actions to an immutable commit from a published release. Those Actions resolve the same repository <code class="docutils literal notranslate"><span class="pre">VERSION</span></code> and verify the published PHAR SHA-256 checksum before execution. Do not replace the immutable Action pin or verified PHAR with a floating <code class="docutils literal notranslate"><span class="pre">latest</span></code> reference.</p>
+<section id="local-installation">
+<h2>Local installation<a class="headerlink" href="#local-installation" title="Link to this heading"></a></h2>
+<p>For diagnostics or manual recovery, download the same <code class="docutils literal notranslate"><span class="pre">release-tool.phar</span></code> and <code class="docutils literal notranslate"><span class="pre">release-tool.phar.sha256</span></code> release pinned by the LibreSign release workflow.
+Verify the checksum before running the PHAR:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sha256sum<span class="w"> </span>--check<span class="w"> </span>release-tool.phar.sha256
+php<span class="w"> </span>release-tool.phar<span class="w"> </span>--version
+</pre></div>
+</div>
+<p>The reported version must match the Release Tool version associated with the immutable Action commit used by the workflow.</p>
+</section>
+<section id="consumer-configuration">
+<h2>Consumer configuration<a class="headerlink" href="#consumer-configuration" title="Link to this heading"></a></h2>
+<p>LibreSign keeps its release configuration in <code class="docutils literal notranslate"><span class="pre">.nextcloud-release.yml</span></code>. The configuration is validated by the release tool before planning or mutation.</p>
+<p>The main sections are:</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">repository</span></code> and <code class="docutils literal notranslate"><span class="pre">app</span></code></dt><dd><p>Repository identity, app id and main branch.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">branches</span></code></dt><dd><p>Stable branch naming pattern and release-line mapping.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">version</span></code></dt><dd><p>Authoritative version source, mirrors and Git tag prefix.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">history</span></code></dt><dd><p>How the previous released baseline is selected.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">changelog</span></code></dt><dd><p>Per-major source path and the package-root changelog destination.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">milestones</span></code></dt><dd><p>Stable and prerelease milestone naming templates.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">authorization</span></code></dt><dd><p>Minimum repository permissions required to start mutating preparation and to merge a generated release PR.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">package</span></code></dt><dd><p>Package build command plus required and forbidden archive paths used by artifact validation.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">publication</span></code></dt><dd><p>Existing publisher workflow, expected GitHub Release asset name and Nextcloud App Store API used by post-publication verification.</p>
+</dd>
+</dl>
+</section>
+<section id="validation">
+<h2>Validation<a class="headerlink" href="#validation" title="Link to this heading"></a></h2>
+<p>Validate the configuration without changing repository state:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>php<span class="w"> </span>release-tool.phar<span class="w"> </span>config:validate<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--config<span class="w"> </span>.nextcloud-release.yml<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--root<span class="w"> </span>.<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--json
+</pre></div>
+</div>
+<p>Unknown keys and invalid values fail closed. Repository-specific behavior should be expressed through this configuration or a release-tool adapter, not copied into workflow YAML.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../release-process.html" class="btn btn-neutral float-left" title="Release process" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="preparing.html" class="btn btn-neutral float-right" title="Preparing a release" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026 LibreCode coop.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
