@@ -6,7 +6,7 @@ Release process
 
 The normal LibreSign release path is driven from the **Prepare release** GitHub Actions workflow.
 
-The reusable policy and contracts live in ``LibreCodeCoop/release-tool`` and orchestration lives in ``LibreCodeCoop/github-workflows``. ``LibreSign/libresign`` carries the consumer configuration and repository-specific packaging rules.
+Release policy, contracts, the PHP runtime, and the three public lifecycle Actions live in ``LibreCodeCoop/release-tool``. LibreCode's managed workflow catalog and synchronization helper live in ``LibreCodeCoop/.github``. ``LibreSign/libresign`` carries the consumer configuration and repository-specific packaging rules.
 
 Maintainer journey
 ------------------
