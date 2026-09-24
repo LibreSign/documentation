@@ -5,12 +5,12 @@ Release tool and consumer configuration
 =======================================
 
 LibreSign release policy is executed by the versioned ``release-tool.phar`` distributed by ``LibreCodeCoop/release-tool``.
-The reusable workflow pins an exact release-tool version and verifies its published SHA-256 checksum before execution. Do not replace that pin with a floating ``latest`` download.
+The LibreSign workflow pins the public Release Tool Actions to an immutable commit from a published release. Those Actions resolve the same repository ``VERSION`` and verify the published PHAR SHA-256 checksum before execution. Do not replace the immutable Action pin or verified PHAR with a floating ``latest`` reference.
 
 Local installation
 ------------------
 
-For diagnostics or manual recovery, download the same ``release-tool.phar`` and ``release-tool.phar.sha256`` release used by ``LibreCodeCoop/github-workflows``.
+For diagnostics or manual recovery, download the same ``release-tool.phar`` and ``release-tool.phar.sha256`` release pinned by the LibreSign release workflow.
 Verify the checksum before running the PHAR:
 
 .. code-block:: bash
@@ -18,7 +18,7 @@ Verify the checksum before running the PHAR:
    sha256sum --check release-tool.phar.sha256
    php release-tool.phar --version
 
-The reported version must match the version pinned by the reusable setup action.
+The reported version must match the Release Tool version associated with the immutable Action commit used by the workflow.
 
 Consumer configuration
 ----------------------
