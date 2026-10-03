@@ -13,21 +13,22 @@ Prerequisites
 PHP
 +++
 
-- The PHP version must match the minimum required by the current Nextcloud **master** branch.  
-- You can verify this in the ``composer.json`` of the Nextcloud server:  
-  `Nextcloud Server composer.json <https://github.com/nextcloud/server/blob/master/composer.json>`__  
-  (see the ``config.platform.php`` entry).  
-- At the time of writing this documentation, the minimum required version is **8.1**.  
-- Docker image suggestion: ``php-fpm``  
+Use the PHP version declared by LibreSign's current ``composer.json``
+platform configuration and make sure it is also supported by the target
+Nextcloud branch.
 
-Node.js
-+++++++
+Do not copy a PHP version from this manual into automation. The repository
+manifests and CI matrix are the source of truth and change as supported
+Nextcloud versions move forward.
 
-- The Node.js version must match the engine required by the current Nextcloud **master** branch.  
-- You can verify this in the ``package.json`` of the Nextcloud server:  
-  `Nextcloud Server package.json <https://github.com/nextcloud/server/blob/master/package.json>`__  
-  (see the ``engines.node`` entry).  
-- At the time of writing this documentation, the required version is **^22.0.0** (with npm **^10.5.0**).  
+Node.js and npm
++++++++++++++++
+
+Use the Node.js and npm versions declared in LibreSign's current
+``package.json`` ``engines`` section.
+
+Do not hard-code the versions from this manual in development tooling. The
+application manifest is the source of truth.
 
 Additional dependencies
 +++++++++++++++++++++++
@@ -49,9 +50,16 @@ Suggested setups:
 .. note::
    If you encounter problems with these setups, please open an issue in the corresponding repository.
 
-After running the Docker setup, check if Nextcloud is available at ``http://localhost``.  
-If it is not, run ``docker ps`` and look for the ``nextcloud`` container (or ``ghcr.io/juliushaertl/nextcloud-dev-php**``).  
-If you cannot find it, the setup likely failed; please repeat the previous step.
+When using `LibreCodeCoop/nextcloud-docker-development
+<https://github.com/LibreCodeCoop/nextcloud-docker-development/>`__, follow
+that repository's current quick-start and hostname documentation. Its shared
+development proxy exposes each Compose project through its own
+``*.localhost`` HTTPS hostname instead of requiring a fixed application
+port.
+
+If the environment does not become ready, use its documented diagnostics and
+``docker compose ps``/logs rather than assuming a fixed container name or
+URL.
 
 Once Nextcloud is running, go to the setup folder and locate ``volumes/nextcloud/apps-extra``.  
 Clone the LibreSign repository into this folder .
