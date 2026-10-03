@@ -41,6 +41,7 @@ For professional services or partnerships,
    :maxdepth: 2
    :hidden:
 
+   prologue/index
    architecture
    getting-started/index
    development-workflow
