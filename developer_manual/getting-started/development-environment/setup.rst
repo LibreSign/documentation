@@ -62,8 +62,13 @@ For an isolated worktree, open that worktree itself in VS Code. Its Dev
 Container uses its own Compose project and runtime state, so multiple worktrees
 can coexist without fixed application or database host ports.
 
-The setup output prints the HTTPS hostname for the environment. NCDD exposes
-the corresponding Mailpit endpoint through the same shared development proxy.
+The setup output prints the canonical HTTPS hostname for the environment.
+Nextcloud must be accessed through NCDD's shared proxy using that hostname;
+do not bypass it by forwarding the nginx HTTP port directly, because NCDD
+configures Nextcloud's trusted domain and overwrite host for the proxy URL.
+
+Mailpit may be forwarded directly by the Dev Container and is also available
+through NCDD's shared development proxy.
 
 When closing or rebuilding an environment, use the Dev Container lifecycle or
 project-scoped Compose commands. Do not stop every Docker container on the host
