@@ -62,13 +62,19 @@ For an isolated worktree, open that worktree itself in VS Code. Its Dev
 Container uses its own Compose project and runtime state, so multiple worktrees
 can coexist without fixed application or database host ports.
 
-The setup output prints the canonical HTTPS hostname for the environment.
-Nextcloud must be accessed through NCDD's shared proxy using that hostname;
-do not bypass it by forwarding the nginx HTTP port directly, because NCDD
-configures Nextcloud's trusted domain and overwrite host for the proxy URL.
+For local Docker/VS Code development, the setup output prints the canonical
+HTTPS hostname exposed by NCDD's shared proxy.
 
-Mailpit may be forwarded directly by the Dev Container and is also available
-through NCDD's shared development proxy.
+GitHub Codespaces uses a different access path because its browser URLs are
+based on forwarded ports. The LibreSign adapter detects Codespaces, asks NCDD
+to publish that worker's nginx on a dedicated loopback port and configures
+Nextcloud's public hostname from ``CODESPACE_NAME`` and
+``GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN``. GitHub then exposes that port
+through the corresponding ``https://<codespace>-<port>.<domain>`` URL.
+
+This keeps Nextcloud's trusted domain and overwrite host aligned with the URL
+the browser actually uses instead of forwarding nginx under an unrelated
+hostname.
 
 When closing or rebuilding an environment, use the Dev Container lifecycle or
 project-scoped Compose commands. Do not stop every Docker container on the host
