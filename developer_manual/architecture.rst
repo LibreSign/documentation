@@ -25,11 +25,14 @@ The main application areas are:
 ``src/``
    Vue and TypeScript frontend code.
 
-``tests/php/``
-   PHP unit tests.
+``tests/php/Unit/``
+   Isolated PHP unit tests.
+
+``tests/php/Api/`` and ``tests/php/Integration/``
+   PHPUnit tests that exercise a bootstrapped Nextcloud runtime.
 
 ``tests/integration/``
-   Integration scenarios and their support code.
+   Behat behavior/integration scenarios and their support code.
 
 ``src/tests/``
    Frontend unit tests.
