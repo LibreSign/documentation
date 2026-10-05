@@ -65,16 +65,18 @@ can coexist without fixed application or database host ports.
 For local Docker/VS Code development, the setup output prints the canonical
 HTTPS hostname exposed by NCDD's shared proxy.
 
-GitHub Codespaces uses a different access path because its browser URLs are
-based on forwarded ports. The LibreSign adapter detects Codespaces, asks NCDD
-to publish that worker's nginx on a dedicated loopback port and configures
-Nextcloud's public hostname from ``CODESPACE_NAME`` and
-``GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN``. GitHub then exposes that port
-through the corresponding ``https://<codespace>-<port>.<domain>`` URL.
+GitHub Codespaces uses the same shared NCDD proxy. The Dev Container forwards
+``host.docker.internal:443``, which is the Docker host port owned by that
+proxy, and configures Nextcloud's public hostname from ``CODESPACE_NAME``
+and ``GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN``. GitHub exposes forwarded
+port 443 through the corresponding
+``https://<codespace>-443.<domain>`` URL.
+
+Mailpit is forwarded directly from its Compose service on port 8025.
 
 This keeps Nextcloud's trusted domain and overwrite host aligned with the URL
-the browser actually uses instead of forwarding nginx under an unrelated
-hostname.
+the browser actually uses while preserving the proxy as the single HTTP entry
+point for Nextcloud.
 
 When closing or rebuilding an environment, use the Dev Container lifecycle or
 project-scoped Compose commands. Do not stop every Docker container on the host
