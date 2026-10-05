@@ -1,0 +1,199 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Development workflow &mdash; LibreSign Documentation 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/general.css?v=c0a7eb24" />
+      <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/dark.css?v=70edf1c7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=d6b6a36a"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="_static/copybutton.js?v=f281be69"></script>
+      <script src="_static/dark_mode_js/default_dark.js?v=fd565c74"></script>
+      <script src="_static/dark_mode_js/theme_switcher.js?v=358d3910"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="API Documentation" href="api/index.html" />
+    <link rel="prev" title="Commits" href="getting-started/commits.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #184c4e" >
+
+          
+          
+          <a href="index.html">
+            
+              <img src="_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="prologue/index.html">Prologue</a></li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Architecture and code map</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting-started/index.html">Getting started</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Development workflow</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#choose-and-understand-the-work">Choose and understand the work</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#prepare-the-environment">Prepare the environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#implement-a-focused-change">Implement a focused change</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#validate-the-behavior">Validate the behavior</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#review-the-final-diff">Review the final diff</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#commit-and-open-the-pull-request">Commit and open the pull request</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#after-review-or-ci-feedback">After review or CI feedback</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="translation.html">Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="requesting-features.html">Requesting features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release-process.html">Release process</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #184c4e" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">LibreSign Documentation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Development workflow</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/development-workflow.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="development-workflow">
+<h1>Development workflow<a class="headerlink" href="#development-workflow" title="Link to this heading"></a></h1>
+<p>This page describes the durable contribution workflow for LibreSign. Repository
+instructions such as <code class="docutils literal notranslate"><span class="pre">AGENTS.md</span></code> may add operational constraints for a
+particular tool, but they should point back to this documentation instead of
+duplicating it.</p>
+<section id="choose-and-understand-the-work">
+<h2>Choose and understand the work<a class="headerlink" href="#choose-and-understand-the-work" title="Link to this heading"></a></h2>
+<p>Start from a GitHub issue whenever possible. Before implementing it:</p>
+<ul class="simple">
+<li><p>verify that the issue still matches the current code;</p></li>
+<li><p>check for existing pull requests or duplicate work;</p></li>
+<li><p>identify acceptance criteria, exclusions and real prerequisites;</p></li>
+<li><p>keep unrelated improvements out of the same change.</p></li>
+</ul>
+<p>Large outcomes should be split into independently reviewable issues when useful.
+Use blocking relationships only for real prerequisites.</p>
+</section>
+<section id="prepare-the-environment">
+<h2>Prepare the environment<a class="headerlink" href="#prepare-the-environment" title="Link to this heading"></a></h2>
+<p>Use the supported development environment described in
+<a class="reference internal" href="getting-started/development-environment/index.html"><span class="doc">Development environment</span></a>.</p>
+<p>The environment implementation may evolve, but contributors should not need to
+maintain multiple independent Nextcloud Docker topologies for the same project.</p>
+</section>
+<section id="implement-a-focused-change">
+<h2>Implement a focused change<a class="headerlink" href="#implement-a-focused-change" title="Link to this heading"></a></h2>
+<p>Prefer the smallest coherent change that satisfies the issue.</p>
+<p>Follow the current application architecture and contribution rules from the
+base branch. Avoid unrelated refactors, dependency upgrades and formatting
+churn unless they are required for the requested outcome.</p>
+</section>
+<section id="validate-the-behavior">
+<h2>Validate the behavior<a class="headerlink" href="#validate-the-behavior" title="Link to this heading"></a></h2>
+<p>Use <a class="reference internal" href="getting-started/tests.html"><span class="doc">Testing</span></a> to choose the relevant test path.</p>
+<p>Prefer a focused regression test that fails under the unwanted behavior when
+practical. Run narrow checks first, then broaden according to the changed
+surface and current CI requirements.</p>
+<p>Record which commands actually ran and which checks could not be run. A focused
+test does not prove the whole project is green.</p>
+</section>
+<section id="review-the-final-diff">
+<h2>Review the final diff<a class="headerlink" href="#review-the-final-diff" title="Link to this heading"></a></h2>
+<p>Before opening a pull request:</p>
+<ul class="simple">
+<li><p>inspect every changed file for unrelated changes;</p></li>
+<li><p>compare the result with the issue acceptance criteria;</p></li>
+<li><p>check error paths, permissions and compatibility where relevant;</p></li>
+<li><p>verify generated files and documentation when the changed contract requires
+them.</p></li>
+</ul>
+</section>
+<section id="commit-and-open-the-pull-request">
+<h2>Commit and open the pull request<a class="headerlink" href="#commit-and-open-the-pull-request" title="Link to this heading"></a></h2>
+<p>Follow <a class="reference internal" href="getting-started/commits.html"><span class="doc">Commits</span></a> for commit requirements and DCO.</p>
+<p>Keep the pull request focused and make validation evidence easy to review:
+reference the issue, summarize material implementation choices, list checks that
+actually ran and describe known limitations when relevant.</p>
+<p>A pull request remains subject to the repository’s current review, CI and
+branch policies.</p>
+</section>
+<section id="after-review-or-ci-feedback">
+<h2>After review or CI feedback<a class="headerlink" href="#after-review-or-ci-feedback" title="Link to this heading"></a></h2>
+<p>Re-evaluate feedback against the latest branch state before changing code.
+When CI fails, identify the causal failure before adding retries, sleeps,
+dependency pins or suppressions.</p>
+<p>Follow-up work that is useful but not required for the current issue should be
+tracked separately instead of expanding the pull request indefinitely.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="getting-started/commits.html" class="btn btn-neutral float-left" title="Commits" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="api/index.html" class="btn btn-neutral float-right" title="API Documentation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026 LibreCode coop.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,271 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Testing &mdash; LibreSign Documentation 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../_static/dark_mode_css/general.css?v=c0a7eb24" />
+      <link rel="stylesheet" type="text/css" href="../_static/dark_mode_css/dark.css?v=70edf1c7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=d6b6a36a"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=f281be69"></script>
+      <script src="../_static/dark_mode_js/default_dark.js?v=fd565c74"></script>
+      <script src="../_static/dark_mode_js/theme_switcher.js?v=358d3910"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Commits" href="commits.html" />
+    <link rel="prev" title="Coding standards" href="development-environment/coding-standards.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #184c4e" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../prologue/index.html">Prologue</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture and code map</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Getting started</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="branch-policies.html">Branch policies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="development-environment/index.html">Development environment</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Testing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#php-unit-tests">PHP unit tests</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#php-runtime-integration-tests">PHP runtime integration tests</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#behat-scenarios">Behat scenarios</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#frontend-unit-tests">Frontend unit tests</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#browser-end-to-end-tests">Browser/end-to-end tests</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#php-linting-coding-style-and-static-analysis">PHP linting, coding style and static analysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#frontend-linting-and-type-checking">Frontend linting and type checking</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#validation-strategy">Validation strategy</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="commits.html">Commits</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../development-workflow.html">Development workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../translation.html">Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../requesting-features.html">Requesting features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../release-process.html">Release process</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #184c4e" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">LibreSign Documentation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Getting started</a></li>
+      <li class="breadcrumb-item active">Testing</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/getting-started/tests.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="testing">
+<h1>Testing<a class="headerlink" href="#testing" title="Link to this heading"></a></h1>
+<p>LibreSign has several test layers. Choose the narrowest layer that proves the
+behavior you changed, then broaden validation before opening or updating a pull
+request.</p>
+<p>The application repository is the source of truth for current scripts and CI
+jobs. See <code class="docutils literal notranslate"><span class="pre">composer.json</span></code>, <code class="docutils literal notranslate"><span class="pre">package.json</span></code>, <code class="docutils literal notranslate"><span class="pre">tests/</span></code>, <code class="docutils literal notranslate"><span class="pre">playwright/</span></code> and
+<code class="docutils literal notranslate"><span class="pre">.github/workflows</span></code>.</p>
+<section id="php-unit-tests">
+<h2>PHP unit tests<a class="headerlink" href="#php-unit-tests" title="Link to this heading"></a></h2>
+<p>Unit tests live under <code class="docutils literal notranslate"><span class="pre">tests/php/Unit</span></code> and should not depend on a bootstrapped
+Nextcloud runtime.</p>
+<p>Run the unit suite:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>composer<span class="w"> </span>test:unit
+</pre></div>
+</div>
+<p>Run a specific class, method or filter:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>composer<span class="w"> </span>test:unit<span class="w"> </span>--<span class="w"> </span>--filter<span class="w"> </span>CrlServiceTest
+composer<span class="w"> </span>test:unit<span class="w"> </span>--<span class="w"> </span>--filter<span class="w"> </span>testMethodName
+</pre></div>
+</div>
+<p>The double dash <code class="docutils literal notranslate"><span class="pre">--</span></code> separates Composer arguments from PHPUnit arguments.</p>
+</section>
+<section id="php-runtime-integration-tests">
+<h2>PHP runtime integration tests<a class="headerlink" href="#php-runtime-integration-tests" title="Link to this heading"></a></h2>
+<p>PHPUnit tests that require a bootstrapped Nextcloud runtime live under
+<code class="docutils literal notranslate"><span class="pre">tests/php/Api</span></code> and <code class="docutils literal notranslate"><span class="pre">tests/php/Integration</span></code>.</p>
+<p>Run them with:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>composer<span class="w"> </span>test:integration
+</pre></div>
+</div>
+<p>A PHPUnit filter can be forwarded in the same way:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>composer<span class="w"> </span>test:integration<span class="w"> </span>--<span class="w"> </span>--filter<span class="w"> </span>ClassName
+</pre></div>
+</div>
+<p>Do not move tests with hidden runtime requirements such as database services,
+<code class="docutils literal notranslate"><span class="pre">AppData</span></code> or configured Nextcloud services into the unit suite merely to make
+them faster.</p>
+</section>
+<section id="behat-scenarios">
+<h2>Behat scenarios<a class="headerlink" href="#behat-scenarios" title="Link to this heading"></a></h2>
+<p>Behavior/integration scenarios live under <code class="docutils literal notranslate"><span class="pre">tests/integration</span></code> and have their
+own Composer dependencies.</p>
+<p>Install them with:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>composer<span class="w"> </span>--working-dir<span class="o">=</span>tests/integration<span class="w"> </span>install
+</pre></div>
+</div>
+<p>Before creating a new step, inspect the existing vocabulary:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>tests/integration
+vendor/bin/behat<span class="w"> </span>-dl
+</pre></div>
+</div>
+<p>Run a feature or a scenario starting at a specific line:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>vendor/bin/behat<span class="w"> </span>features/account/me.feature<span class="w"> </span>-v
+vendor/bin/behat<span class="w"> </span>features/account/me.feature:5<span class="w"> </span>-v
+</pre></div>
+</div>
+<p>Behat exercises a running Nextcloud environment and can modify application
+state. Prefer the relevant feature or scenario while diagnosing a change.</p>
+</section>
+<section id="frontend-unit-tests">
+<h2>Frontend unit tests<a class="headerlink" href="#frontend-unit-tests" title="Link to this heading"></a></h2>
+<p>Frontend unit tests live under <code class="docutils literal notranslate"><span class="pre">src/tests</span></code> and run with Vitest.</p>
+<p>Run the complete frontend unit suite:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>npm<span class="w"> </span><span class="nb">test</span>
+</pre></div>
+</div>
+<p>Run one test file:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>npx<span class="w"> </span>vitest<span class="w"> </span>run<span class="w"> </span>src/tests/path/to/spec.ts
+</pre></div>
+</div>
+<p>Use <code class="docutils literal notranslate"><span class="pre">npm</span> <span class="pre">run</span> <span class="pre">test:coverage</span></code> when coverage output is needed.</p>
+</section>
+<section id="browser-end-to-end-tests">
+<h2>Browser/end-to-end tests<a class="headerlink" href="#browser-end-to-end-tests" title="Link to this heading"></a></h2>
+<p>Browser tests live under <code class="docutils literal notranslate"><span class="pre">playwright</span></code> and use Playwright.</p>
+<p>Run the configured E2E suite:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>npm<span class="w"> </span>run<span class="w"> </span>test:e2e
+</pre></div>
+</div>
+<p>Run one Playwright test file:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>npx<span class="w"> </span>playwright<span class="w"> </span><span class="nb">test</span><span class="w"> </span>playwright/e2e/path/to/spec.ts
+</pre></div>
+</div>
+<p>These tests require the runtime described by the repository’s current
+Playwright configuration and CI workflow.</p>
+</section>
+<section id="php-linting-coding-style-and-static-analysis">
+<h2>PHP linting, coding style and static analysis<a class="headerlink" href="#php-linting-coding-style-and-static-analysis" title="Link to this heading"></a></h2>
+<p>Check PHP syntax:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>composer<span class="w"> </span>lint
+</pre></div>
+</div>
+<p>Check PHP coding style with PHP-CS-Fixer without changing files:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>composer<span class="w"> </span>cs:check
+</pre></div>
+</div>
+<p>Apply PHP-CS-Fixer changes:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>composer<span class="w"> </span>cs:fix
+</pre></div>
+</div>
+<p>Run Psalm:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>composer<span class="w"> </span>psalm
+</pre></div>
+</div>
+<p>Update the Psalm baseline only when the remaining findings are intentionally
+accepted and reviewed:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>composer<span class="w"> </span>psalm:update-baseline
+</pre></div>
+</div>
+</section>
+<section id="frontend-linting-and-type-checking">
+<h2>Frontend linting and type checking<a class="headerlink" href="#frontend-linting-and-type-checking" title="Link to this heading"></a></h2>
+<p>Check ESLint, Stylelint and TypeScript:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>npm<span class="w"> </span>run<span class="w"> </span>lint
+npm<span class="w"> </span>run<span class="w"> </span>stylelint
+npm<span class="w"> </span>run<span class="w"> </span>ts:check
+</pre></div>
+</div>
+<p>Apply the available frontend lint fixes:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>npm<span class="w"> </span>run<span class="w"> </span>lint:fix
+npm<span class="w"> </span>run<span class="w"> </span>stylelint:fix
+</pre></div>
+</div>
+</section>
+<section id="validation-strategy">
+<h2>Validation strategy<a class="headerlink" href="#validation-strategy" title="Link to this heading"></a></h2>
+<p>During implementation, run the smallest test that can fail for the behavior
+being changed. Before declaring work complete, broaden validation according to
+the changed surface and inspect the relevant GitHub Actions results.</p>
+<p>A green rerun alone is not evidence that an earlier failure was flaky. Diagnose
+the first causal failure before adding retries, sleeps, suppressions or pins.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="development-environment/coding-standards.html" class="btn btn-neutral float-left" title="Coding standards" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="commits.html" class="btn btn-neutral float-right" title="Commits" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026 LibreCode coop.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
