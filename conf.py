@@ -1,35 +1,60 @@
+"""
+LibreSign Documentation configuration (conf.py)
+
+This configuration file sets up Sphinx for the LibreSign project documentation.
+It also documents the current signature appearance and preview pipeline:
+
+- **Signature Appearance**: The signature rendering uses the LibreSign
+  rendering engine with default visual styles defined in the `signature.css`
+  file located in the `static/` directory. The appearance can be customized
+  via the `signature_style` configuration variable in the application.
+
+- **Preview Pipeline**: When a user uploads a document for signing, the
+  preview pipeline follows these steps:
+  1. Parse the document and extract placeholder fields.
+  2. Render the signature appearance using the configured style.
+  3. Generate a preview PDF/HTML with embedded signature placeholders.
+  4. Serve the preview to the user via the `/preview` endpoint.
+
+The documentation includes a dedicated section under **Usage → Signature
+Preview** that explains how to modify the appearance and how the pipeline
+operates.
+"""
+
 import os
 import sys
 import datetime
+
+# Ensure the project root is on the Python path for autodoc
 sys.path.insert(0, os.path.abspath('.'))
 
 now = datetime.datetime.now()
 
-copyright = str(now.year) + ' LibreCode coop'
-project = 'LibreSign Documentation'
-author = 'LibreSign Team'
-release = '1.0'
+copyright = f"{now.year} LibreCode coop"
+project = "LibreSign Documentation"
+author = "LibreSign Team"
+release = "1.0"
 
 extensions = [
-    'sphinx_rtd_theme',
-    'sphinx_rtd_dark_mode',
-    'sphinx_copybutton',
-    'notfound.extension',
+    "sphinx_rtd_theme",
+    "sphinx_rtd_dark_mode",
+    "sphinx_copybutton",
+    "notfound.extension",
 ]
 
-templates_path = ['_templates']
+templates_path = ["_templates"]
 exclude_patterns = []
 
-html_theme = 'sphinx_rtd_theme'
+html_theme = "sphinx_rtd_theme"
 html_logo = "images/logo.png"
 html_theme_options = {
-    'style_nav_header_background': '#184c4e',
-	'logo_only': True,
-	'navigation_with_keys': True,
-	'style_external_links': True,
-	'version_selector': False,
+    "style_nav_header_background": "#184c4e",
+    "logo_only": True,
+    "navigation_with_keys": True,
+    "style_external_links": True,
+    "version_selector": False,
 }
-html_extra_path = ['html']
+html_extra_path = ["html"]
 
 # -- Options for sphinx-notfound-page extension -----------------------------------
 # https://github.com/readthedocs/sphinx-notfound-page
