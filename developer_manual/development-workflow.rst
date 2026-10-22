@@ -23,11 +23,13 @@ Start from a GitHub issue whenever possible. Before implementing it:
   active work;
 - keep unrelated improvements out of the same change.
 
-A ``good first issue`` is intended to be approachable for newcomers, but
+A `good first issue`_ is intended to be approachable for newcomers, but
 this does not guarantee that its prerequisites are ready. If an available
 blocking task matches your skills, consider offering to work on that first.
 Otherwise, choose another issue instead of guessing unfinished contracts or
 duplicating someone else's changes.
+
+.. _good first issue: https://github.com/search?q=org%3ALibreSign+is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22&type=issues
 
 Leave a short comment explaining what you intend to work on so maintainers
 can confirm the scope and help avoid conflicts. Commenting before starting
