@@ -14,10 +14,26 @@ Choose and understand the work
 
 Start from a GitHub issue whenever possible. Before implementing it:
 
-- verify that the issue still matches the current code;
-- check for existing pull requests or duplicate work;
-- identify acceptance criteria, exclusions and real prerequisites;
+- verify that the issue still matches the current code and understand its
+  acceptance criteria and exclusions;
+- follow GitHub's ``Blocked by`` relationships to identify unfinished
+  prerequisites, including blockers of blockers;
+- check assignees, recent comments and related pull requests on the chosen
+  issue and its prerequisites; an issue without an assignee may still have
+  active work;
 - keep unrelated improvements out of the same change.
+
+A `good first issue`_ is intended to be approachable for newcomers, but
+this does not guarantee that its prerequisites are ready. If an available
+blocking task matches your skills, consider offering to work on that first.
+Otherwise, choose another issue instead of guessing unfinished contracts or
+duplicating someone else's changes.
+
+.. _good first issue: https://github.com/search?q=org%3ALibreSign+is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22&type=issues
+
+Leave a short comment explaining what you intend to work on so maintainers
+can confirm the scope and help avoid conflicts. Commenting before starting
+is recommended, not required for submitting a valid pull request.
 
 Large outcomes should be split into independently reviewable issues when useful.
 Use blocking relationships only for real prerequisites.
