@@ -52,6 +52,46 @@ Do not move tests with hidden runtime requirements such as database services,
 ``AppData`` or configured Nextcloud services into the unit suite merely to make
 them faster.
 
+PHPUnit test naming convention
+------------------------------
+
+Tests focused on a single production PHP class should mirror
+the source directory structure under ``tests/php/Unit/`` or
+``tests/php/Integration/``, depending on their runtime requirements.
+
+The test file and class should use the production class name
+followed by the ``Test`` suffix.
+
+For example:
+
+.. code-block:: text
+
+   lib/Db/CrlMapper.php
+     -> tests/php/Integration/Db/CrlMapperTest.php
+
+   lib/Service/FolderService.php
+     -> tests/php/Integration/Service/FolderServiceTest.php
+
+   lib/BackgroundJob/SignFileJob.php
+     -> tests/php/Integration/BackgroundJob/SignFileJobTest.php
+
+   lib/BackgroundJob/SignSingleFileJob.php
+     -> tests/php/Integration/BackgroundJob/SignSingleFileJobTest.php
+
+This convention makes tests easier to locate, understand and
+maintain as the project grows.
+
+Different behaviors of the same production class should be
+covered using separate test methods or data providers.
+
+Unit and integration tests may share the same short class
+name when they belong to different namespaces.
+
+Tests covering cross-component contracts or configuration
+artifacts may use descriptive names when no single production
+class is responsible. Shared test base classes are excluded
+from this convention.
+
 Behat scenarios
 ---------------
 
