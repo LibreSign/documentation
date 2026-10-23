@@ -41,3 +41,53 @@ Updating LibreSign
      git pull upstream main
 
 - Then create your feature or fix branch from the updated ``main``.
+
+LibreSign - Host installation update
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Use this flow when LibreSign is installed directly on the host in custom apps.
+
+Go to the custom apps folder
+++++++++++++++++++++++++++++
+
+  .. code-block:: bash
+
+     cd /path/to/custom_apps
+
+Switch to the target version branch
++++++++++++++++++++++++++++++++++++
+
+  .. code-block:: bash
+
+     git clone https://github.com/LibreSign/libresign.git
+     cd libresign
+     git submodule update --init --recursive
+
+     chown -R www-data: .
+     git fetch origin stable32
+     git checkout stable32
+
+Composer
+++++++++
+
+  .. code-block:: bash
+
+     docker run -it -v $PWD:/app --workdir /app composer composer install --no-dev --ignore-platform-req=ext-gd --ignore-platform-req=ext-bcmath --ignore-platform-req=ext-intl
+
+npm
++++
+
+- Install dependencies defined in ``package.json``:
+
+    .. code-block:: bash
+
+     docker run -it -v $PWD:/app --workdir /app node npm ci
+     docker run -it -v $PWD:/app --workdir /app node npm run build
+
+Update the app in Nextcloud
++++++++++++++++++++++++++++
+
+  .. code-block:: bash
+
+     occ app:enable libresign
+     occ libresign:install --all
