@@ -86,6 +86,7 @@ Where to go next
 - :doc:`getting-started/development-environment/index` for setting up a
   development runtime.
 - :doc:`getting-started/tests` for testing and validation.
+- :doc:`error-handling` for exception types, error codes and HTTP status.
 - :doc:`development-workflow` for the normal issue-to-pull-request workflow.
 - :doc:`api/index` for the public API.
 - :doc:`release-process` for release operations.
