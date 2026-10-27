@@ -1,0 +1,200 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Error handling &mdash; LibreSign Documentation 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/general.css?v=c0a7eb24" />
+      <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/dark.css?v=70edf1c7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=d6b6a36a"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="_static/copybutton.js?v=f281be69"></script>
+      <script src="_static/dark_mode_js/default_dark.js?v=fd565c74"></script>
+      <script src="_static/dark_mode_js/theme_switcher.js?v=358d3910"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Getting started" href="getting-started/index.html" />
+    <link rel="prev" title="Architecture and code map" href="architecture.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #184c4e" >
+
+          
+          
+          <a href="index.html">
+            
+              <img src="_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="prologue/index.html">Prologue</a></li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Architecture and code map</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Error handling</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#choose-an-exception">Choose an exception</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#keep-http-status-separate">Keep HTTP status separate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#preserve-public-contracts">Preserve public contracts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#test-observable-behavior">Test observable behavior</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="getting-started/index.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="development-workflow.html">Development workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="translation.html">Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="requesting-features.html">Requesting features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release-process.html">Release process</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #184c4e" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">LibreSign Documentation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Error handling</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/error-handling.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="error-handling">
+<h1>Error handling<a class="headerlink" href="#error-handling" title="Link to this heading"></a></h1>
+<p>Use these rules when changing PHP exceptions and related API/frontend
+behavior. The application repository is the source of truth for actual throw
+sites, catch blocks, and consumers.</p>
+<section id="choose-an-exception">
+<h2>Choose an exception<a class="headerlink" href="#choose-an-exception" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Prefer an existing PHP, Nextcloud OCP, or LibreSign exception when it already
+represents the condition.</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">LibresignException</span></code> for an expected LibreSign error converted to an
+API/frontend response. New public typed exceptions must extend it so
+existing catch paths continue to work.</p></li>
+<li><p>Introduce a typed subclass for a meaningful condition that callers need to
+distinguish. Do not create a class solely to replace a test assertion.</p></li>
+<li><p>Use a semantic code only when a client, frontend, or other caller needs a
+stable programmatic identifier. Define its constant near the producer.</p></li>
+<li><p>For LibreSign-owned errors, do not identify a condition by its message;
+prefer a meaningful exception type or a consumed semantic code. For external
+errors with only text diagnostics, isolate and test any necessary matching.</p></li>
+</ul>
+</section>
+<section id="keep-http-status-separate">
+<h2>Keep HTTP status separate<a class="headerlink" href="#keep-http-status-separate" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>For new HTTP-facing errors, set <code class="docutils literal notranslate"><span class="pre">httpStatus:</span></code> explicitly on
+<code class="docutils literal notranslate"><span class="pre">LibresignException</span></code>. <code class="docutils literal notranslate"><span class="pre">InjectionMiddleware</span></code> reads <code class="docutils literal notranslate"><span class="pre">getHttpStatus()</span></code>.</p></li>
+<li><p>Do not derive HTTP statuses from <code class="docutils literal notranslate"><span class="pre">getCode()</span></code> in new code. Legacy codes
+may contain HTTP statuses, semantic identifiers, or frontend action markers;
+set <code class="docutils literal notranslate"><span class="pre">httpStatus:</span></code> separately.</p></li>
+<li><p>For compatibility, <code class="docutils literal notranslate"><span class="pre">getHttpStatus()</span></code> still falls back to <code class="docutils literal notranslate"><span class="pre">getCode()</span></code>
+(or HTTP 422 when the code is <code class="docutils literal notranslate"><span class="pre">0</span></code>). This legacy rule can propagate invalid
+statuses such as <code class="docutils literal notranslate"><span class="pre">1</span></code>; do not copy it into new call sites.</p></li>
+</ul>
+<div class="highlight-php notranslate"><div class="highlight"><pre><span></span><span class="x">throw new LibresignException(</span>
+<span class="x">    message: $message,</span>
+<span class="x">    httpStatus: Http::STATUS_UNPROCESSABLE_ENTITY,</span>
+<span class="x">);</span>
+</pre></div>
+</div>
+</section>
+<section id="preserve-public-contracts">
+<h2>Preserve public contracts<a class="headerlink" href="#preserve-public-contracts" title="Link to this heading"></a></h2>
+<p>Existing exception codes can also drive frontend actions:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">SigningErrorHandler</span></code> maps code <code class="docutils literal notranslate"><span class="pre">400</span></code> to the create-signing-password
+action. <code class="docutils literal notranslate"><span class="pre">PasswordToSignNotDefinedException</span></code> must retain this code until
+its consumers are deliberately migrated. Moving it only to <code class="docutils literal notranslate"><span class="pre">httpStatus:</span></code>
+would break the signing-password action.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">JSActions::ACTION_SIGN_ID_DOC</span></code> is passed to the frontend through signing
+errors to identify the required identification-document action.</p></li>
+</ul>
+<p>Before migrating a legacy code, follow its throw and catch paths and inspect
+consumers such as <code class="docutils literal notranslate"><span class="pre">SigningErrorHandler</span></code>, <code class="docutils literal notranslate"><span class="pre">ErrorPayloadBuilder</span></code> and frontend
+action mapping. Preserve messages, response payloads, HTTP/OCS statuses and
+frontend actions unless a contract change is explicitly agreed and tested.
+Migrate the legacy status fallback separately, with regression tests.</p>
+</section>
+<section id="test-observable-behavior">
+<h2>Test observable behavior<a class="headerlink" href="#test-observable-behavior" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Assert meaningful exception types with <code class="docutils literal notranslate"><span class="pre">expectException()</span></code> and stable
+consumed semantic codes with <code class="docutils literal notranslate"><span class="pre">expectExceptionCode()</span></code>.</p></li>
+<li><p>Keep message assertions when the text itself is the behavior being tested,
+such as a user-visible fallback or a TSA diagnostic.</p></li>
+<li><p>For HTTP/OCS behavior, verify the final response contract for the supported
+OCS version, not only the input to a mocked response builder. For signing,
+test the frontend action contract.</p></li>
+<li><p>Include a negative case showing that an unrelated error is not mistaken for
+the intended one, and a successful control when relevant.</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="architecture.html" class="btn btn-neutral float-left" title="Architecture and code map" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="getting-started/index.html" class="btn btn-neutral float-right" title="Getting started" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026 LibreCode coop.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
