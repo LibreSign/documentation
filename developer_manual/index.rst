@@ -13,6 +13,7 @@ Start here
 ----------
 
 - :doc:`architecture` — understand the application boundaries and code map.
+- :doc:`error-handling` — handle exceptions, statuses and errors safely.
 - :doc:`getting-started/development-environment/index` — prepare a development
   runtime.
 - :doc:`development-workflow` — follow work from an issue to a reviewed pull
@@ -43,6 +44,7 @@ For professional services or partnerships,
 
    prologue/index
    architecture
+   error-handling
    getting-started/index
    development-workflow
    api/index
