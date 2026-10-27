@@ -20,16 +20,18 @@ Choose an exception
   distinguish. Do not create a class solely to replace a test assertion.
 - Use a semantic code only when a client, frontend, or other caller needs a
   stable programmatic identifier. Define its constant near the producer.
-- Never compare exception messages to decide application behavior. Messages
-  can change or be translated.
+- For LibreSign-owned errors, do not identify a condition by its message;
+  prefer a meaningful exception type or a consumed semantic code. For external
+  errors with only text diagnostics, isolate and test any necessary matching.
 
 Keep HTTP status separate
 -------------------------
 
 - For new HTTP-facing errors, set ``httpStatus:`` explicitly on
   ``LibresignException``. ``InjectionMiddleware`` reads ``getHttpStatus()``.
-- Do not use ``getCode()`` as the HTTP status in new code. It identifies a
-  semantic error when a consumer needs one.
+- Do not derive HTTP statuses from ``getCode()`` in new code. Legacy codes
+  may contain HTTP statuses, semantic identifiers, or frontend action markers;
+  set ``httpStatus:`` separately.
 - For compatibility, ``getHttpStatus()`` still falls back to ``getCode()``
   (or HTTP 422 when the code is ``0``). This legacy rule can propagate invalid
   statuses such as ``1``; do not copy it into new call sites.
@@ -48,7 +50,8 @@ Existing exception codes can also drive frontend actions:
 
 - ``SigningErrorHandler`` maps code ``400`` to the create-signing-password
   action. ``PasswordToSignNotDefinedException`` must retain this code until
-  its consumers are deliberately migrated.
+  its consumers are deliberately migrated. Moving it only to ``httpStatus:``
+  would break the signing-password action.
 - ``JSActions::ACTION_SIGN_ID_DOC`` is passed to the frontend through signing
   errors to identify the required identification-document action.
 
@@ -65,7 +68,8 @@ Test observable behavior
   consumed semantic codes with ``expectExceptionCode()``.
 - Keep message assertions when the text itself is the behavior being tested,
   such as a user-visible fallback or a TSA diagnostic.
-- For HTTP/OCS behavior, test the final status and payload, not only the data
-  passed to a mocked response builder. For signing, test the action contract.
+- For HTTP/OCS behavior, verify the final response contract for the supported
+  OCS version, not only the input to a mocked response builder. For signing,
+  test the frontend action contract.
 - Include a negative case showing that an unrelated error is not mistaken for
   the intended one, and a successful control when relevant.
