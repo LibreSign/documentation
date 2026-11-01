@@ -31,6 +31,16 @@ html_theme_options = {
 }
 html_extra_path = ['html']
 
+# "Edit on GitHub" link shown at the top of each page by sphinx_rtd_theme.
+# Each manual overrides conf_py_path with its own directory.
+html_context = {
+    'display_github': True,
+    'github_user': 'LibreSign',
+    'github_repo': 'documentation',
+    'github_version': 'main',
+    'conf_py_path': '/',
+}
+
 # -- Options for sphinx-notfound-page extension -----------------------------------
 # https://github.com/readthedocs/sphinx-notfound-page
 
