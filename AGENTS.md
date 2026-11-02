@@ -30,6 +30,11 @@ Keep changes in the appropriate manual:
 
 Build the affected Sphinx manuals. Pull requests should pass the Documentation workflow; developer documentation is built with warnings treated as errors.
 
+For each changed or added rendered documentation page, include a screenshot of
+the Sphinx output in the PR. Screenshots are review evidence, not source files;
+do not include sensitive information. For tooling-only changes that affect no
+rendered page, state `Not applicable` and explain why.
+
 ## Licensing
 
 Preserve the documentation-specific Creative Commons licensing and existing SPDX conventions. Do not silently relicense documentation under the application/code license.
