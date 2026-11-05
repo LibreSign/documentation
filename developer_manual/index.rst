@@ -20,6 +20,7 @@ Start here
   request.
 - :doc:`getting-started/tests` — choose and run the appropriate validation.
 - :doc:`api/index` — work with the public API.
+- :doc:`translation` — contribute translations and document source-string context.
 - :doc:`release-process` — maintain and publish releases.
 
 There are many ways to help the project:
