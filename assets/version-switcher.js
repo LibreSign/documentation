@@ -1,16 +1,17 @@
-/* Version chooser for all Sphinx manuals. No main-branch fallback for stable URLs. */
+/* Version chooser for all Sphinx manuals; safe in production and PR previews. */
 (() => {
   "use strict";
   document.addEventListener("DOMContentLoaded", async () => {
     const picker = document.getElementById("libresign-version-select");
     if (!picker) return;
+    const wrapper = picker.closest("[data-version]");
+    const current = wrapper?.dataset.version || "main";
+    const root = wrapper?.dataset.siteRoot || "";
     const notice = document.getElementById("libresign-version-notice");
-    const current = picker.closest("[data-version]")?.dataset.version || "main";
 
-    // Read the deployed catalog: an independent release deployment must not
-    // advertise unpublished revisions of other majors.
+    // The catalog and all versions must stay inside the same preview, if any.
     try {
-      const response = await fetch("/versions.json", {cache: "no-store"});
+      const response = await fetch(root + "/versions.json", { cache: "no-store" });
       if (response.ok) {
         const catalog = await response.json();
         picker.replaceChildren();
@@ -31,21 +32,23 @@
         picker.value = current;
       }
     } catch (_) {
-      // Server-rendered options remain usable without the catalog request.
+      // Keep the server-rendered options if the catalog request fails.
     }
 
     picker.addEventListener("change", async () => {
       const wanted = picker.value;
       if (!/^(main|[1-9][0-9]*)$/.test(wanted)) return;
-      const match = location.pathname.match(/^\/(main|[1-9][0-9]*)(\/.*)?$/);
-      const suffix = match ? (match[2] || "/") : "/";
-      const samePage = "/" + wanted + suffix;
+      const currentPrefix = root + "/" + current;
+      const suffix = location.pathname.startsWith(currentPrefix + "/")
+        ? location.pathname.slice(currentPrefix.length)
+        : "/";
+      const samePage = root + "/" + wanted + suffix;
       let destination = samePage;
       try {
-        const response = await fetch(samePage, {method: "HEAD", cache: "no-store"});
+        const response = await fetch(samePage, { method: "HEAD", cache: "no-store" });
         if (!response.ok) {
           const manual = suffix.match(/^\/(user_manual|admin_manual|developer_manual)\//);
-          destination = "/" + wanted + (manual ? "/" + manual[1] + "/" : "/");
+          destination = root + "/" + wanted + (manual ? "/" + manual[1] + "/" : "/");
           if (notice) {
             notice.textContent = "This page is unavailable in that release. Opening its manual index.";
           }

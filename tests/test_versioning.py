@@ -4,6 +4,7 @@ import json
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 from versioning.catalog import discover, manifest_info, operations, sha256
 from versioning.build import redirect_html
@@ -120,6 +121,31 @@ class PublicationTests(unittest.TestCase):
         self.assertIn("location.search", markup)
         self.assertIn("location.hash", markup)
         self.assertNotIn("/main/", markup)
+
+    def test_preview_redirects_stay_under_isolated_origin(self):
+        with patch.dict("os.environ", {
+            "LIBRESIGN_DOC_BASE_PATH": "/site-preview/docs-preview/pr-126"
+        }):
+            markup = redirect_html("/15/user_manual/")
+            self.assertIn(
+                "/site-preview/docs-preview/pr-126/15/user_manual/", markup)
+            self.assertNotIn("url=/15/user_manual/", markup)
+
+    def test_preview_absolute_links_map_into_candidate_tree(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            (root / "15").mkdir()
+            page = root / "15/index.html"
+            page.write_text(
+                '<a href="/site-preview/docs-preview/pr-126/15/help.html">Help</a>'
+            )
+            (root / "15/help.html").touch()
+            with patch.dict("os.environ", {
+                "LIBRESIGN_DOC_BASE_PATH": "/site-preview/docs-preview/pr-126"
+            }):
+                self.assertEqual(inspect_links(root, page), [])
+                (root / "15/help.html").unlink()
+                self.assertEqual(len(inspect_links(root, page)), 1)
 
     def test_local_link_verification(self):
         with tempfile.TemporaryDirectory() as temp:

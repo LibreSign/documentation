@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 from pathlib import Path
 
 
@@ -15,15 +16,24 @@ def configure(config: dict) -> None:
     status = os.environ.get("LIBRESIGN_DOC_STATUS", "development")
     raw_catalog = os.environ.get("LIBRESIGN_VERSION_CATALOG", "{}")
     catalog = json.loads(raw_catalog)
+    site_root = os.environ.get("LIBRESIGN_DOC_BASE_PATH", "").rstrip("/")
+    preview_pr = os.environ.get("LIBRESIGN_PREVIEW_PR", "")
+    if site_root and (not re.fullmatch(r"/[A-Za-z0-9/_-]+", site_root)
+                      or ".." in site_root or "//" in site_root):
+        raise ValueError("Invalid documentation site base path")
+    if preview_pr and not re.fullmatch(r"[1-9][0-9]*", preview_pr):
+        raise ValueError("Invalid preview pull request number")
 
     manual = os.environ.get("LIBRESIGN_DOC_MANUAL", "main")
     config["notfound_urls_prefix"] = (
-        f"/{slug}/" + (f"{manual}/" if manual != "main" else "")
+        f"{site_root}/{slug}/" + (f"{manual}/" if manual != "main" else "")
     )
     config["release"] = app_version
     config["version"] = slug
     context = dict(config.get("html_context", {}))
     context.update({
+        "libresign_site_root": site_root,
+        "libresign_preview_pr": preview_pr,
         "libresign_doc_version": slug,
         "libresign_app_version": app_version,
         "libresign_nextcloud": nextcloud,

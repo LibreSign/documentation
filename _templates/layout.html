@@ -1,7 +1,16 @@
 {% extends "!layout.html" %}
 {% block sidebartitle %}
   {{ super() }}
-  <div class="libresign-version-control" data-version="{{ libresign_doc_version|e }}">
+  {% if libresign_preview_pr %}
+    <div class="libresign-preview-banner" role="note">
+      <strong>Pull request preview</strong>
+      <a href="https://github.com/LibreSign/documentation/pull/{{ libresign_preview_pr|e }}">PR #{{ libresign_preview_pr|e }}</a>
+      <span>Draft documentation. Not published.</span>
+    </div>
+  {% endif %}
+  <div class="libresign-version-control"
+       data-version="{{ libresign_doc_version|e }}"
+       data-site-root="{{ libresign_site_root|e }}">
     <label for="libresign-version-select">Documentation version</label>
     <select id="libresign-version-select" aria-label="Switch LibreSign documentation version">
       {% for entry in libresign_versions %}

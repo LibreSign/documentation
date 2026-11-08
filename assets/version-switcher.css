@@ -34,3 +34,19 @@
   margin: -1px; overflow: hidden; clip: rect(0,0,0,0);
   white-space: nowrap; border: 0;
 }
+
+.libresign-preview-banner {
+  padding: .65rem 1rem;
+  background: #fff5ce;
+  color: #40331c;
+  font-size: .8rem;
+  line-height: 1.45;
+}
+.libresign-preview-banner strong, .libresign-preview-banner span {
+  display: block;
+}
+.libresign-preview-banner a { color: #154c6e; text-decoration: underline; }
+.libresign-preview-banner a:focus-visible {
+  outline: 3px solid #154c6e;
+  outline-offset: 2px;
+}

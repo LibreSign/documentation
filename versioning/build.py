@@ -80,6 +80,10 @@ def run_sphinx(source: Path, destination: Path, entry: dict, catalog: dict) -> N
 
 
 def redirect_html(target: str) -> str:
+    # A Pages preview is mounted under a nested URL prefix, not at /.
+    site_root = os.environ.get("LIBRESIGN_DOC_BASE_PATH", "").rstrip("/")
+    if site_root and target.startswith("/"):
+        target = site_root + target
     quoted = html.escape(target, quote=True)
     json_target = json.dumps(target)
     return (

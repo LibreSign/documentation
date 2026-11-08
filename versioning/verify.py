@@ -4,6 +4,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import re
 from html.parser import HTMLParser
 from pathlib import Path
@@ -36,6 +37,9 @@ def inspect_links(output: Path, page: Path) -> list[str]:
         if url.scheme or url.netloc or not url.path or href.startswith("#"):
             continue
         path = unquote(url.path)
+        site_root = os.environ.get("LIBRESIGN_DOC_BASE_PATH", "").rstrip("/")
+        if site_root and path.startswith(site_root + "/"):
+            path = path[len(site_root):]
         if path.startswith("/"):
             candidate = output / path.lstrip("/")
         else:
