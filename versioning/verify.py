@@ -76,7 +76,9 @@ def verify_site(output: Path, versions: list[str] | None = None,
                 errors.append(f"Missing versioned index {index}")
                 continue
             content = index.read_text(encoding="utf-8")
-            if 'id="libresign-version-select"' not in content:
+            if ('id="libresign-version-toggle"' not in content or
+                    'class="rst-versions libresign-rst-versions"' not in content or
+                    'id="libresign-version-menu"' not in content):
                 errors.append(f"Missing version selector in {index}")
             if slug == "main" and "Development documentation" not in content:
                 errors.append("Development version is not labelled as such")
@@ -124,6 +126,21 @@ def verify_site(output: Path, versions: list[str] | None = None,
                 errors.append(f"Development-only operations leaked to {slug}: {sorted(leaked)}")
         if not (version_dir / "developer_manual/swagger-ui/swagger-ui-bundle.js").is_file():
             errors.append(f"Swagger UI assets missing for {slug}")
+    homepage = output / "index.html"
+    if homepage.is_file():
+        home = homepage.read_text(encoding="utf-8")
+        if ('id="main-content"' not in home or
+                'Documentation by release' not in home):
+            errors.append("Public homepage does not explain version selection")
+        expected_slugs = sorted(
+            all_versions,
+            key=lambda slug: (slug == "main", -(int(slug) if slug != "main" else 0)),
+        )
+        positions = [home.find(f'data-version="{slug}"') for slug in expected_slugs]
+        if -1 in positions or positions != sorted(positions):
+            errors.append("Homepage versions are not ordered newest stable first")
+        if check_links:
+            errors.extend(inspect_links(output, homepage))
     if check_links:
         for slug in versions:
             for page in (output / slug).rglob("*.html"):

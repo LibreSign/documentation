@@ -14,6 +14,8 @@ import subprocess
 import tempfile
 from pathlib import Path
 
+from jinja2 import Environment, FileSystemLoader, select_autoescape
+
 from versioning.catalog import discover, get_version, load_policy
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -97,11 +99,32 @@ def redirect_html(target: str) -> str:
     )
 
 
+def version_overview(catalog: dict) -> str:
+    """Generate the public entry page from the same version catalog as Sphinx."""
+    versions = sorted(
+        catalog["versions"],
+        key=lambda v: (v["slug"] == "main",
+                       -(int(v["slug"]) if v["slug"] != "main" else 0)),
+    )
+    environment = Environment(
+        loader=FileSystemLoader(str(ROOT / "_templates")),
+        autoescape=select_autoescape(["html"]),
+    )
+    return environment.get_template("home.html").render(
+        versions=versions,
+        current_stable=catalog["current_stable"],
+        preview_pr=os.environ.get("LIBRESIGN_PREVIEW_PR", ""),
+    )
+
+
 def legacy_redirects(output: Path, current: str) -> None:
     destination = output / current
     if not (destination / "index.html").is_file():
         raise ValueError("Cannot create legacy redirects without stable landing page")
-    (output / "index.html").write_text(redirect_html(f"/{current}/"), encoding="utf-8")
+    catalog = json.loads((output / "versions.json").read_text(encoding="utf-8"))
+    if catalog["current_stable"] != current:
+        raise ValueError("Current stable line differs from published catalog")
+    (output / "index.html").write_text(version_overview(catalog), encoding="utf-8")
     # Previous URLs did not include a version prefix. Preserve page paths
     # when the same page exists in current stable; otherwise go to that
     # manual's landing page, never silently to a development-only page.
@@ -157,6 +180,9 @@ def build(output: Path, selected: str = "all") -> dict:
     (output / "versions.json").write_text(
         json.dumps(catalog, indent=2) + "\n", encoding="utf-8"
     )
+    shutil.copy2(ROOT / "assets/home.css", output / "home.css")
+    shutil.copy2(ROOT / "images/logo.png", output / "logo.png")
+
     if selected == "all":
         legacy_redirects(output, catalog["current_stable"])
     return catalog

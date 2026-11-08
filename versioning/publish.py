@@ -52,10 +52,14 @@ def assemble(built: Path, destination: Path, selected: str,
                 )
         output_catalog = {**incoming, "versions": entries,
                           "current_stable": latest["slug"] if latest else None}
-        legacy_redirects(destination, output_catalog["current_stable"])
         (destination / "versions.json").write_text(
             json.dumps(output_catalog, indent=2) + "\n", encoding="utf-8"
         )
+        for filename in ("home.css", "logo.png"):
+            candidate = built / filename
+            if candidate.is_file():
+                shutil.copy2(candidate, destination / filename)
+        legacy_redirects(destination, output_catalog["current_stable"])
     (destination / "CNAME").write_text("docs.libresign.coop\n", encoding="utf-8")
     (destination / ".nojekyll").touch()
     return output_catalog

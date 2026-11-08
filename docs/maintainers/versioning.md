@@ -24,7 +24,12 @@ release-safe foundation. Use `versioned/<major>/` for material verified
 against a specific release. Do not copy unreviewed development flows into
 stable manuals. The Sphinx theme and configuration are shared.
 
-The version selector marks `main` as development, the latest supported
+The documentation homepage (the root URL) lists versions from latest stable
+to oldest stable and development `main` last. Within the Sphinx manuals,
+the version chooser is collapsed in the bottom-left corner, following the
+Nextcloud Server documentation pattern. It preserves the current page when
+that page exists in the target version, otherwise opening the target
+manual index. The selector marks `main` as development, the latest supported
 stable line as current, and earlier stable lines as previous. EOL status and
 dates are explicit entries in `versioning/lifecycle.json`. Never infer an
 EOL commitment or commercial support guarantee from branch existence.
@@ -102,8 +107,9 @@ Successful preview CI is **not authorization to merge**.
    or another previously published version is missing. Full releases must
    build every version before deployment.
 7. Test each published major/manual URL and its corresponding
-   `openapi.provenance.json`. Legacy, unversioned documentation paths
-   redirect to the current stable line.
+   `openapi.provenance.json`. The root URL lists every available version
+   (latest stable first); legacy, unversioned manual URLs redirect to the
+   current stable line.
 
 Pages deployments are serialized by workflow concurrency. Their output must
 never erase sibling stable versions.

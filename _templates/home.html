@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="LibreSign documentation by stable release and Nextcloud compatibility.">
+  <title>LibreSign documentation · Versions and manuals</title>
+  <link rel="stylesheet" href="home.css">
+</head>
+<body>
+  <div class="page-shell">
+    {% if preview_pr %}
+      <div class="preview-banner" role="note">
+        Pull request preview · <a href="https://github.com/LibreSign/documentation/pull/{{ preview_pr }}">PR #{{ preview_pr }}</a>
+        · Not published
+      </div>
+    {% endif %}
+    <header class="page-header">
+      <a class="brand" href="./" aria-label="LibreSign documentation home">
+        <img src="logo.png" alt="" width="46" height="46">
+        <span>LibreSign <span class="brand-subtitle">Documentation</span></span>
+      </a>
+      <a class="source-link" href="https://github.com/LibreSign/documentation">Documentation source</a>
+    </header>
+    <main id="main-content">
+      <div class="hero">
+        <p class="eyebrow">Documentation by release</p>
+        <h1>Find documentation for your version of LibreSign.</h1>
+        <p>Choose the version installed on your Nextcloud server. Each manual
+          includes the API contract from that release, not from the development branch.</p>
+        <p class="latest-reference">Latest stable: <a href="{{ current_stable }}/">
+          LibreSign {{ current_stable }}</a>
+          {% for entry in versions if entry.slug == current_stable %}
+            · Nextcloud {{ entry.nextcloud_min }}{% if entry.nextcloud_min != entry.nextcloud_max %}–{{ entry.nextcloud_max }}{% endif %}
+          {% endfor %}
+        </p>
+      </div>
+      <section class="versions-section" aria-labelledby="versions-title">
+        <div class="section-heading">
+          <h2 id="versions-title">Available versions</h2>
+          <p>Latest stable first. Development documentation is listed separately.</p>
+        </div>
+        <div class="version-list">
+          {% for entry in versions %}
+          <article class="version-row {% if entry.status == 'current' %}version-current{% endif %}" data-version="{{ entry.slug }}">
+            <div class="version-identification">
+              <h3><a href="{{ entry.slug }}/">
+                {% if entry.slug == 'main' %}main{% else %}LibreSign {{ entry.slug }}{% endif %}
+              </a></h3>
+              <p class="release-status">
+                {% if entry.status == 'development' %}Development (not a stable release)
+                {% elif entry.status == 'eol' %}End of support
+                {% elif entry.status == 'current' %}Latest stable
+                {% else %}Earlier stable release{% endif %}
+              </p>
+              <p class="compatibility">Nextcloud {{ entry.nextcloud_min }}{% if entry.nextcloud_min != entry.nextcloud_max %}–{{ entry.nextcloud_max }}{% endif %}</p>
+            </div>
+            <nav class="manual-links" aria-label="{% if entry.slug == 'main' %}Development{% else %}LibreSign {{ entry.slug }}{% endif %} manuals">
+              <a href="{{ entry.slug }}/user_manual/">User manual</a>
+              <a href="{{ entry.slug }}/admin_manual/">Administrator manual</a>
+              <a href="{{ entry.slug }}/developer_manual/">Developer manual and API</a>
+            </nav>
+          </article>
+          {% endfor %}
+        </div>
+      </section>
+      <p class="lifecycle-note">Release history is maintained in the
+        <a href="https://github.com/LibreSign/libresign/releases">application repository</a>.
+        Archived documentation does not imply continued security maintenance or commercial support.
+      </p>
+    </main>
+    <footer class="page-footer">
+      <span>LibreSign · Free and open source digital signatures</span>
+      <a href="{{ current_stable }}/lifecycle.html">Release lifecycle</a>
+    </footer>
+  </div>
+</body>
+</html>

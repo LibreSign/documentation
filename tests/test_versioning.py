@@ -7,7 +7,7 @@ from pathlib import Path
 from unittest.mock import patch
 
 from versioning.catalog import discover, manifest_info, operations, sha256
-from versioning.build import redirect_html
+from versioning.build import redirect_html, version_overview
 from versioning.publish import assemble
 from versioning.verify import inspect_links, verify_site
 
@@ -146,6 +146,40 @@ class PublicationTests(unittest.TestCase):
                 self.assertEqual(inspect_links(root, page), [])
                 (root / "15/help.html").unlink()
                 self.assertEqual(len(inspect_links(root, page)), 1)
+
+    def test_homepage_lists_latest_stable_first_and_main_last(self):
+        catalog = {
+            "current_stable": "15",
+            "versions": [
+                {"slug": "main", "status": "development", "nextcloud_min": 36,
+                 "nextcloud_max": 36},
+                {"slug": "13", "status": "previous", "nextcloud_min": 33,
+                 "nextcloud_max": 33},
+                {"slug": "15", "status": "current", "nextcloud_min": 35,
+                 "nextcloud_max": 35},
+                {"slug": "14", "status": "previous", "nextcloud_min": 34,
+                 "nextcloud_max": 34},
+            ],
+        }
+        page = version_overview(catalog)
+        positions = [page.index(f'data-version="{v}"')
+                     for v in ("15", "14", "13", "main")]
+        self.assertEqual(positions, sorted(positions))
+        self.assertIn('href="15/developer_manual/"', page)
+        self.assertIn('Latest stable', page)
+        self.assertIn('Development (not a stable release)', page)
+        self.assertNotIn('http-equiv="refresh"', page)
+
+    def test_homepage_preview_uses_relative_links(self):
+        catalog = {"current_stable": "15", "versions": [
+            {"slug": "15", "status": "current", "nextcloud_min": 35,
+             "nextcloud_max": 35}]}
+        with patch.dict("os.environ", {"LIBRESIGN_PREVIEW_PR": "126",
+                                    "LIBRESIGN_DOC_BASE_PATH": "/site-preview/docs-preview/pr-126"}):
+            page = version_overview(catalog)
+        self.assertIn("Pull request preview", page)
+        self.assertIn('href="15/admin_manual/"', page)
+        self.assertNotIn('href="/15/admin_manual/"', page)
 
     def test_local_link_verification(self):
         with tempfile.TemporaryDirectory() as temp:

@@ -34,6 +34,7 @@ def configure(config: dict) -> None:
     context.update({
         "libresign_site_root": site_root,
         "libresign_preview_pr": preview_pr,
+        "libresign_doc_manual": manual,
         "libresign_doc_version": slug,
         "libresign_app_version": app_version,
         "libresign_nextcloud": nextcloud,

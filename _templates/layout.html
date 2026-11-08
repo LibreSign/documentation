@@ -1,34 +1,11 @@
 {% extends "!layout.html" %}
-{% block sidebartitle %}
-  {{ super() }}
+{% block body %}
   {% if libresign_preview_pr %}
     <div class="libresign-preview-banner" role="note">
-      <strong>Pull request preview</strong>
+      <strong>Pull request preview</strong> ·
       <a href="https://github.com/LibreSign/documentation/pull/{{ libresign_preview_pr|e }}">PR #{{ libresign_preview_pr|e }}</a>
-      <span>Draft documentation. Not published.</span>
+      <span> — Not published</span>
     </div>
   {% endif %}
-  <div class="libresign-version-control"
-       data-version="{{ libresign_doc_version|e }}"
-       data-site-root="{{ libresign_site_root|e }}">
-    <label for="libresign-version-select">Documentation version</label>
-    <select id="libresign-version-select" aria-label="Switch LibreSign documentation version">
-      {% for entry in libresign_versions %}
-        <option value="{{ entry.slug|e }}" {% if entry.slug == libresign_doc_version %}selected{% endif %}>
-          {% if entry.slug == "main" %}main (development)
-          {% else %}LibreSign {{ entry.slug }} / Nextcloud {{ entry.nextcloud_min }}{% if entry.nextcloud_min != entry.nextcloud_max %}-{{ entry.nextcloud_max }}{% endif %}{% if entry.status == "eol" %} (EOL){% elif entry.status == "current" %} (current){% endif %}
-          {% endif %}
-        </option>
-      {% endfor %}
-    </select>
-    <p class="libresign-version-caption">
-      {% if libresign_doc_version == "main" %}
-        <strong>Development documentation.</strong> Not a stable release contract.
-      {% else %}
-        LibreSign {{ libresign_app_version }} · Nextcloud {{ libresign_nextcloud }}
-        {% if libresign_doc_status == "eol" %} · End of support{% elif libresign_doc_status == "current" %} · Current stable line{% else %} · Earlier release line{% endif %}
-      {% endif %}
-    </p>
-    <span class="sr-only" id="libresign-version-notice" role="status" aria-live="polite"></span>
-  </div>
+  {{ super() }}
 {% endblock %}

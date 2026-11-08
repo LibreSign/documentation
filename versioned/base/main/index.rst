@@ -11,6 +11,8 @@ Choose the manual for your task:
 * `Administrator manual <admin_manual/>`_
 * `Developer and OpenAPI manual <developer_manual/>`_
 
+`Browse all versions and manuals <../>`_
+
 .. toctree::
    :maxdepth: 1
 
