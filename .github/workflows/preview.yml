@@ -83,7 +83,7 @@ jobs:
           preview-branch: gh-pages
           pages-base-url: libresign.github.io/site-preview
           wait-for-pages-deployment: false
-          qr-code: false
+          qr-code: true
           token: ${{ steps.preview-token.outputs.token }}
 
       - name: Check preview URL from separate origin
@@ -96,7 +96,7 @@ jobs:
             success=false
             for attempt in $(seq 1 15); do
               if curl -fsSL --max-time 15 -o /tmp/preview-page.html "$url" &&
-                grep -q 'libresign-version-select' /tmp/preview-page.html; then
+                grep -q 'libresign-version-toggle' /tmp/preview-page.html; then
                 echo "Preview is publicly navigable: $url"
                 success=true
                 break

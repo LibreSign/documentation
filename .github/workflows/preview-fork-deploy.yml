@@ -63,6 +63,6 @@ jobs:
           deploy-repository: LibreSign/site-preview
           preview-branch: gh-pages
           pages-base-url: libresign.github.io/site-preview
+          qr-code: true
           wait-for-pages-deployment: false
-          qr-code: false
           token: ${{ steps.preview-token.outputs.token }}

@@ -72,6 +72,10 @@ jobs:
           server=$!
           trap 'kill "$server" || true' EXIT
           sleep 2
+          google-chrome --headless --no-sandbox --disable-gpu --disable-dev-shm-usage \
+            --hide-scrollbars --virtual-time-budget=8000 --window-size=1440,1100 \
+            --screenshot="screenshots/libresign-versions-home.png" \
+            "http://127.0.0.1:8765/" >/dev/null 2>&1
           for version in 13 14 15 main; do
             google-chrome --headless --no-sandbox --disable-gpu --disable-dev-shm-usage \
               --hide-scrollbars --virtual-time-budget=8000 --window-size=1440,1100 \
