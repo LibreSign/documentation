@@ -132,6 +132,10 @@ def verify_site(output: Path, versions: list[str] | None = None,
         if ('id="main-content"' not in home or
                 'Documentation by release' not in home):
             errors.append("Public homepage does not explain version selection")
+        if ('src="home-theme.js"' not in home or
+                'id="themeSwitcher"' not in home or
+                not (output / "home-theme.js").is_file()):
+            errors.append("Public homepage has no functioning shared theme switcher")
         expected_slugs = sorted(
             all_versions,
             key=lambda slug: (slug == "main", -(int(slug) if slug != "main" else 0)),

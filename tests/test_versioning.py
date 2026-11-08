@@ -170,6 +170,17 @@ class PublicationTests(unittest.TestCase):
         self.assertIn('Development (not a stable release)', page)
         self.assertNotIn('http-equiv="refresh"', page)
 
+    def test_homepage_loads_theme_before_css_and_exposes_accessible_toggle(self):
+        catalog = {"current_stable": "15", "versions": [
+            {"slug": "15", "status": "current", "nextcloud_min": 35,
+             "nextcloud_max": 35}]}
+        page = version_overview(catalog)
+        self.assertIn('id="themeSwitcher"', page)
+        self.assertIn('aria-label="Dark mode"', page)
+        self.assertIn('aria-pressed="false" hidden', page)
+        self.assertLess(page.index('src="home-theme.js"'),
+                        page.index('href="home.css"'))
+
     def test_homepage_preview_uses_relative_links(self):
         catalog = {"current_stable": "15", "versions": [
             {"slug": "15", "status": "current", "nextcloud_min": 35,
