@@ -65,39 +65,8 @@ jobs:
       - name: Verify deployed candidate preserves every version
         run: python -m versioning.verify --output _publish
 
-      - name: Capture rendered version pages
-        run: |
-          mkdir -p screenshots
-          python -m http.server 8765 --directory _publish > /tmp/sphinx-preview.log 2>&1 &
-          server=$!
-          trap 'kill "$server" || true' EXIT
-          sleep 2
-          google-chrome --headless --no-sandbox --disable-gpu --disable-dev-shm-usage \
-            --hide-scrollbars --virtual-time-budget=8000 --window-size=1440,1100 \
-            --screenshot="screenshots/libresign-versions-home-dark.png" \
-            "http://127.0.0.1:8765/" >/dev/null 2>&1
-          # The manual theme extension shares localStorage.theme with the homepage.
-          # Capture the alternate light theme without changing published code.
-          cat > _publish/_capture-light.html <<'HTML'
-          <!doctype html><html lang="en"><head><meta charset="utf-8">
-          <script>localStorage.setItem('theme', 'light'); location.replace('./');</script>
-          </head></html>
-          HTML
-          google-chrome --headless --no-sandbox --disable-gpu --disable-dev-shm-usage \
-            --hide-scrollbars --virtual-time-budget=8000 --window-size=1440,1100 \
-            --screenshot="screenshots/libresign-versions-home-light.png" \
-            "http://127.0.0.1:8765/_capture-light.html" >/dev/null 2>&1
-          rm _publish/_capture-light.html
-          for version in 13 14 15 main; do
-            google-chrome --headless --no-sandbox --disable-gpu --disable-dev-shm-usage \
-              --hide-scrollbars --virtual-time-budget=8000 --window-size=1440,1100 \
-              --screenshot="screenshots/libresign-$version.png" \
-              "http://127.0.0.1:8765/$version/" >/dev/null 2>&1
-          done
-          google-chrome --headless --no-sandbox --disable-gpu --disable-dev-shm-usage \
-            --hide-scrollbars --virtual-time-budget=8000 --window-size=1440,1100 \
-            --screenshot="screenshots/openapi-15.png" \
-            "http://127.0.0.1:8765/15/developer_manual/api/openapi.html" >/dev/null 2>&1
+      - name: Capture all published documentation versions
+        run: python -m versioning.screenshots --site _publish --output screenshots
 
       - name: Upload screenshots for PR review
         uses: actions/upload-artifact@v4

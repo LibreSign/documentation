@@ -54,7 +54,14 @@ python -m http.server 8765 --directory _publish
 
 The build needs read-only network access to application Git refs and files.
 It fails rather than silently substituting an outdated or main-branch
-contract. GitHub Actions additionally uploads screenshots as review evidence.
+contract. The `Documentation` workflow captures screenshots with
+`python -m versioning.screenshots --site _publish --output screenshots`.
+That script reads the **generated `_publish/versions.json` catalog**, so each
+published stable major and `main` is captured without updating the workflow
+when a new stable branch appears. It also captures the light/dark homepage and
+the current stable OpenAPI page, with an isolated browser profile for each
+capture. Missing version pages fail CI rather than silently being skipped.
+Screenshots are review artifacts; they are not committed.
 
 ## Pull request previews
 
