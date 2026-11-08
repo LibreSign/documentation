@@ -1,0 +1,54 @@
+# SPDX-FileCopyrightText: 2026 LibreCode coop and contributors
+# SPDX-License-Identifier: CC-BY-3.0
+
+name: Documentation PR Preview Remove
+
+on:
+  pull_request_target:
+    branches: [main]
+    types: [closed]
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: "Closed documentation PR to clean up"
+        required: true
+        type: number
+
+permissions:
+  contents: read
+
+jobs:
+  remove:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    concurrency:
+      group: documentation-preview-${{ github.event.pull_request.number || inputs.pr_number }}
+      cancel-in-progress: false
+    steps:
+      - name: Checkout trusted default branch, never PR head
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+          persist-credentials: false
+
+      - name: Create scoped cleanup token
+        id: preview-token
+        uses: actions/create-github-app-token@fee1f7d63c2ff003460e3d139729b119787bc349 # v2
+        with:
+          app-id: ${{ vars.LIBRECODE_WORKFLOW_APP_ID }}
+          private-key: ${{ secrets.LIBRECODE_WORKFLOW_APP_PRIVATE_KEY }}
+          owner: LibreSign
+          repositories: site-preview
+          permission-contents: write
+
+      - name: Remove only this documentation PR preview
+        uses: LibreSign/pr-preview-action@2a6da1177b47dc23173ba9a75e01da0a0d800978
+        with:
+          action: remove
+          pr-number: ${{ github.event.pull_request.number || inputs.pr_number }}
+          umbrella-dir: docs-preview
+          deploy-repository: LibreSign/site-preview
+          preview-branch: gh-pages
+          pages-base-url: libresign.github.io/site-preview
+          comment: false
+          token: ${{ steps.preview-token.outputs.token }}

@@ -50,6 +50,9 @@ jobs:
       - name: Test version discovery and deploy invariants
         run: python -m unittest discover -s tests -v
 
+      - name: Test version selection navigation
+        run: node --test tests/js/version-switcher.test.mjs
+
       - name: Build every Sphinx version independently
         run: python -m versioning.build --output _build
 
