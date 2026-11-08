@@ -16,7 +16,7 @@ personal or customer data.
 
 ## Build and review your change
 
-From the repository root, install Python 3.12 and the dependencies from the root
+From the repository root, install Python 3.13 and the dependencies from the root
 `requirements.txt` in a virtual environment. For example:
 
 ```sh
