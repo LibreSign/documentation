@@ -1,0 +1,147 @@
+"""Verify generated Sphinx pages and pinned OpenAPI contracts."""
+from __future__ import annotations
+
+import argparse
+import hashlib
+import json
+import re
+from html.parser import HTMLParser
+from pathlib import Path
+from urllib.parse import unquote, urlsplit
+
+from versioning.catalog import fetch_source, operations, validate_contract
+
+REQUIRED_MANUALS = ("user_manual", "admin_manual", "developer_manual")
+
+
+class PageLinks(HTMLParser):
+    def __init__(self) -> None:
+        super().__init__()
+        self.links: list[str] = []
+
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        attrs = dict(attrs)
+        if tag in ("a", "link", "script", "img"):
+            key = "href" if tag in ("a", "link") else "src"
+            if attrs.get(key):
+                self.links.append(attrs[key])
+
+
+def inspect_links(output: Path, page: Path) -> list[str]:
+    errors = []
+    parser = PageLinks()
+    parser.feed(page.read_text(encoding="utf-8"))
+    for href in parser.links:
+        url = urlsplit(href)
+        if url.scheme or url.netloc or not url.path or href.startswith("#"):
+            continue
+        path = unquote(url.path)
+        if path.startswith("/"):
+            candidate = output / path.lstrip("/")
+        else:
+            candidate = page.parent / path
+        if path.endswith("/"):
+            candidate /= "index.html"
+        elif candidate.is_dir():
+            candidate /= "index.html"
+        if not candidate.exists():
+            errors.append(f"{page.relative_to(output)}: broken link {href}")
+    return errors
+
+
+def verify_site(output: Path, versions: list[str] | None = None,
+                check_links: bool = True, fetch=fetch_source) -> dict:
+    catalog = json.loads((output / "versions.json").read_text())
+    all_versions = {entry["slug"]: entry for entry in catalog["versions"]}
+    versions = list(all_versions) if versions is None else versions
+    errors = []
+    main_ops = None
+    if (output / "main/developer_manual/api/openapi.json").is_file():
+        main = json.loads((output / "main/developer_manual/api/openapi.json").read_text())
+        main_ops = operations(main)
+    for slug in versions:
+        if slug not in all_versions:
+            errors.append(f"Version {slug} is absent from the deployed catalog")
+            continue
+        entry = all_versions[slug]
+        version_dir = output / slug
+        for manual in ("", *REQUIRED_MANUALS):
+            root = version_dir / manual
+            index = root / "index.html"
+            if not index.is_file():
+                errors.append(f"Missing versioned index {index}")
+                continue
+            content = index.read_text(encoding="utf-8")
+            if 'id="libresign-version-select"' not in content:
+                errors.append(f"Missing version selector in {index}")
+            if slug == "main" and "Development documentation" not in content:
+                errors.append("Development version is not labelled as such")
+        api = version_dir / "developer_manual/api"
+        contract_file = api / "openapi.json"
+        provenance_file = api / "openapi.provenance.json"
+        if not contract_file.is_file() or not provenance_file.is_file():
+            errors.append(f"Missing pinned OpenAPI/provenance for {slug}")
+            continue
+        contract_raw = contract_file.read_bytes()
+        contract = json.loads(contract_raw)
+        validate_contract(contract)
+        try:
+            from openapi_spec_validator import validate_spec
+            validate_spec(contract)
+        except ImportError:
+            raise RuntimeError("openapi-spec-validator must be installed")
+        except Exception as exc:
+            errors.append(f"Invalid OpenAPI schema for {slug}: {exc}")
+        provenance = json.loads(provenance_file.read_text())
+        actual = hashlib.sha256(contract_raw).hexdigest()
+        if (actual != provenance["openapi_sha256"] or
+                actual != entry["openapi_sha256"]):
+            errors.append(f"OpenAPI source hash mismatch for {slug}")
+        for field in ("branch", "app_commit", "app_version",
+                      "nextcloud_min", "nextcloud_max"):
+            if entry[field] != provenance[field]:
+                errors.append(f"OpenAPI provenance field differs: {slug}.{field}")
+        if slug != "main" and (provenance["branch"] == "main" or
+                                 not provenance["branch"].startswith("stable")):
+            errors.append(f"Stable {slug} is displaying a development branch")
+        openapi_page = (api / "openapi.html").read_text()
+        if "raw.githubusercontent.com/LibreSign/libresign/refs/heads/main/openapi.json" in openapi_page:
+            errors.append(f"OpenAPI page {slug} still loads main remotely")
+        if 'url: "openapi.json"' not in openapi_page:
+            errors.append(f"OpenAPI page {slug} does not load a local contract")
+        pinned_bytes = fetch(entry["app_commit"], "openapi.json")
+        pinned_ops = operations(json.loads(pinned_bytes))
+        if hashlib.sha256(pinned_bytes).hexdigest() != actual:
+            errors.append(f"Published OpenAPI does not match pinned source for {slug}")
+        if slug != "main" and main_ops is not None:
+            main_only = main_ops - pinned_ops
+            leaked = main_only & operations(contract)
+            if leaked:
+                errors.append(f"Development-only operations leaked to {slug}: {sorted(leaked)}")
+        if not (version_dir / "developer_manual/swagger-ui/swagger-ui-bundle.js").is_file():
+            errors.append(f"Swagger UI assets missing for {slug}")
+    if check_links:
+        for slug in versions:
+            for page in (output / slug).rglob("*.html"):
+                errors.extend(inspect_links(output, page))
+    if errors:
+        raise ValueError("\n".join(errors[:60]))
+    return {
+        "verified_versions": versions,
+        "contracts": {slug: all_versions[slug]["openapi_sha256"] for slug in versions},
+        "html_files": sum(1 for slug in versions for _ in (output / slug).rglob("*.html")),
+    }
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--version", default="all")
+    parser.add_argument("--no-links", action="store_true")
+    args = parser.parse_args()
+    versions = None if args.version == "all" else [args.version]
+    print(json.dumps(verify_site(args.output, versions, not args.no_links), indent=2))
+
+
+if __name__ == "__main__":
+    main()
