@@ -1,0 +1,37 @@
+{# Sphinx RTD theme includes versions.html outside the page body. Keep the
+   release chooser at the bottom of the sidebar, like Nextcloud Server docs. #}
+<div class="rst-versions libresign-rst-versions"
+     id="libresign-release-picker"
+     data-version="{{ libresign_doc_version|e }}"
+     data-site-root="{{ libresign_site_root|e }}"
+     data-manual="{{ libresign_doc_manual|e }}"
+     role="navigation"
+     aria-label="Documentation versions">
+  <button type="button" id="libresign-version-toggle" class="rst-current-version"
+          aria-label="{% if libresign_doc_version == 'main' %}Development documentation, main branch{% else %}LibreSign {{ libresign_doc_version|e }} documentation{% endif %}; choose version"
+          aria-controls="libresign-version-menu" aria-expanded="false">
+    <span class="libresign-version-current">{% if libresign_doc_version == 'main' %}main · development{% else %}LibreSign {{ libresign_doc_version|e }}{% endif %}</span>
+    <span class="libresign-version-chevron" aria-hidden="true">▴</span>
+  </button>
+  <div id="libresign-version-menu" class="rst-other-versions" hidden>
+    <p class="libresign-version-menu-heading">Documentation versions</p>
+    <ul id="libresign-version-list" class="libresign-version-list">
+      {% for entry in libresign_versions %}
+        <li>
+          <a href="{{ libresign_site_root|e }}/{{ entry.slug|e }}/{% if libresign_doc_manual != 'main' %}{{ libresign_doc_manual|e }}/{% endif %}"
+             data-version-target="{{ entry.slug|e }}"
+             {% if entry.slug == libresign_doc_version %}aria-current="true"{% endif %}>
+            <span class="libresign-version-name">
+              {% if entry.slug == 'main' %}main{% else %}LibreSign {{ entry.slug }}{% endif %}
+            </span>
+            <span class="libresign-version-detail">
+              {% if entry.slug == 'main' %}Development{% elif entry.status == 'eol' %}EOL{% elif entry.status == 'current' %}Latest stable{% else %}NC {{ entry.nextcloud_min }}{% if entry.nextcloud_min != entry.nextcloud_max %}–{{ entry.nextcloud_max }}{% endif %}{% endif %}
+            </span>
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+    <a class="libresign-all-versions" href="{{ libresign_site_root|e }}/">All versions and manuals</a>
+    <p id="libresign-version-notice" class="libresign-sr-only" role="status" aria-live="polite"></p>
+  </div>
+</div>

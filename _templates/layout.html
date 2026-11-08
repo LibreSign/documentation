@@ -1,0 +1,11 @@
+{% extends "!layout.html" %}
+{% block body %}
+  {% if libresign_preview_pr %}
+    <div class="libresign-preview-banner" role="note">
+      <strong>Pull request preview</strong> ·
+      <a href="https://github.com/LibreSign/documentation/pull/{{ libresign_preview_pr|e }}">PR #{{ libresign_preview_pr|e }}</a>
+      <span> — Not published</span>
+    </div>
+  {% endif %}
+  {{ super() }}
+{% endblock %}

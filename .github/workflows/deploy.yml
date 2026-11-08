@@ -1,41 +1,97 @@
+# SPDX-FileCopyrightText: 2026 LibreCode coop and contributors
+# SPDX-License-Identifier: CC-BY-3.0
+
 name: Deploy Sphinx Docs
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   workflow_dispatch:
+    inputs:
+      version:
+        description: "Line to publish (all, 13, 14, 15, main, or future detected line)"
+        required: true
+        default: all
+        type: string
+  schedule:
+    - cron: "23 4 * * *" # Capture release/backport changes without cross-repository credentials
   repository_dispatch:
+    types: [libresign-documentation-release, libresign-documentation-backport]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: libresign-docs-pages-deploy
+  cancel-in-progress: false
 
 jobs:
-  build:
+  publish:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
+    timeout-minutes: 25
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v7
+      - name: Checkout source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Choose version to publish
+        env:
+          INPUT_VERSION: ${{ inputs.version }}
+          EVENT_VERSION: ${{ github.event.client_payload.version }}
+        run: |
+          version="${INPUT_VERSION:-${EVENT_VERSION:-all}}"
+          if ! [[ "$version" =~ ^(all|main|[1-9][0-9]*)$ ]]; then
+            echo "Invalid release version: $version" >&2
+            exit 1
+          fi
+          echo "DOC_VERSION=$version" >> "$GITHUB_ENV"
 
       - name: Set up Python
-        uses: actions/setup-python@v7.1.0
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
-          python-version: 3.12
-          cache: 'pip'
+          python-version: '3.12'
+          cache: pip
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r "requirements.txt"
+          python -m pip install -r requirements.txt openapi-spec-validator==0.7.2
 
-      - name: Build Sphinx documentation
+      - name: Run versioning tests
+        run: python -m unittest discover -s tests -v
+
+      - name: Build requested Sphinx release
+        run: python -m versioning.build --version "$DOC_VERSION" --output _build
+
+      - name: Verify built release against source contract
+        run: python -m versioning.verify --output _build --version "$DOC_VERSION"
+
+      - name: Checkout existing Pages for partial deploy
+        if: env.DOC_VERSION != 'all'
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: gh-pages
+          path: _existing_pages
+          persist-credentials: false
+
+      - name: Assemble isolated publish tree (never erase other releases)
         run: |
-          make all
+          if [ "$DOC_VERSION" = "all" ]; then
+            python -m versioning.publish --built _build --destination _publish --version all
+          else
+            python -m versioning.publish --built _build --existing _existing_pages \
+              --destination _publish --version "$DOC_VERSION"
+          fi
+
+      - name: Verify all versions are intact in candidate
+        run: python -m versioning.verify --output _publish
 
       - name: Deploy to GitHub Pages
-        if: success()
         uses: crazy-max/ghaction-github-pages@v5
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          build_dir: _build
+          build_dir: _publish
           fqdn: docs.libresign.coop
           jekyll: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

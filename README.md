@@ -5,16 +5,18 @@ SPDX-License-Identifier: CC-BY-3.0
 
 # LibreSign documentation
 
-Source repository for the public LibreSign documentation published at https://docs.libresign.coop.
+Source for the [LibreSign public documentation](https://docs.libresign.coop/),
+built with Sphinx. The site provides separate manuals for stable LibreSign
+majors (`/13/`, `/14/`, `/15/`) and development (`/main/`).
 
-The repository contains user, administrator and developer documentation built with Sphinx. Product source code and canonical release changelogs live in `LibreSign/libresign`; this repository documents how LibreSign is used, operated and maintained.
+- **Edit content:** `main/` contains development manuals; `versioned/base/`
+  contains release-safe foundations, with changes for individual major lines
+  in `versioned/<major>/`.
+- **Contribute:** open a PR. CI checks Sphinx, links, OpenAPI provenance and
+  version isolation. A navigable preview link is posted on the PR.
+- **Maintain releases:** see the
+  [maintainer guide](docs/maintainers/versioning.md) for local builds,
+  deployment, previews, backports and lifecycle metadata.
 
-## Start here
-
-- Main documentation: `main/`
-- User manual: `user_manual/`
-- Administrator manual: `admin_manual/`
-- Developer manual: `developer_manual/`
-- Local documentation dependencies: `requirements.txt`
-
-Use the repository's documentation workflow to validate changes before merging.
+Canonical release history and API sources remain in
+[LibreSign/libresign](https://github.com/LibreSign/libresign).
