@@ -12,7 +12,7 @@ a:focus-visible { outline: 3px solid #d4a634; outline-offset: 3px; }
 .page-shell { max-width: 1100px; margin: 0 auto; padding: 0 28px; }
 .page-header { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: 24px 0; border-bottom: 1px solid #dce5e4; }
 .brand { display: inline-flex; align-items: center; gap: .6rem; color: #184c4e; text-decoration: none; font-weight: 700; font-size: 1.12rem; }
-.brand img { object-fit: contain; }
+.brand img { display: block; width: 110px; height: auto; padding: 5px 7px; border-radius: 5px; background: #184c4e; object-fit: contain; }
 .brand-subtitle { color: #586b70; font-weight: 400; }
 .source-link { font-size: .875rem; }
 .hero { padding: 64px 0 48px; max-width: 760px; }
