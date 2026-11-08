@@ -51,7 +51,7 @@ jobs:
         run: python -m unittest discover -s tests -v
 
       - name: Test version selection navigation
-        run: node --test tests/js/version-switcher.test.mjs
+        run: node --test tests/js/*.test.mjs
 
       - name: Build every Sphinx version independently
         run: python -m versioning.build --output _build
@@ -74,8 +74,20 @@ jobs:
           sleep 2
           google-chrome --headless --no-sandbox --disable-gpu --disable-dev-shm-usage \
             --hide-scrollbars --virtual-time-budget=8000 --window-size=1440,1100 \
-            --screenshot="screenshots/libresign-versions-home.png" \
+            --screenshot="screenshots/libresign-versions-home-dark.png" \
             "http://127.0.0.1:8765/" >/dev/null 2>&1
+          # The manual theme extension shares localStorage.theme with the homepage.
+          # Capture the alternate light theme without changing published code.
+          cat > _publish/_capture-light.html <<'HTML'
+          <!doctype html><html lang="en"><head><meta charset="utf-8">
+          <script>localStorage.setItem('theme', 'light'); location.replace('./');</script>
+          </head></html>
+          HTML
+          google-chrome --headless --no-sandbox --disable-gpu --disable-dev-shm-usage \
+            --hide-scrollbars --virtual-time-budget=8000 --window-size=1440,1100 \
+            --screenshot="screenshots/libresign-versions-home-light.png" \
+            "http://127.0.0.1:8765/_capture-light.html" >/dev/null 2>&1
+          rm _publish/_capture-light.html
           for version in 13 14 15 main; do
             google-chrome --headless --no-sandbox --disable-gpu --disable-dev-shm-usage \
               --hide-scrollbars --virtual-time-budget=8000 --window-size=1440,1100 \

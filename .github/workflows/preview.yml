@@ -43,7 +43,7 @@ jobs:
       - name: Test and build isolated preview
         run: |
           python -m unittest discover -s tests -v
-          node --test tests/js/version-switcher.test.mjs
+          node --test tests/js/*.test.mjs
           python -m versioning.build --output _build
           python -m versioning.verify --output _build
           python -m versioning.publish --built _build --destination _publish

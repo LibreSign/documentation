@@ -30,9 +30,12 @@ the version chooser is collapsed in the bottom-left corner, following the
 Nextcloud Server documentation pattern. It preserves the current page when
 that page exists in the target version, otherwise opening the target
 manual index. The selector marks `main` as development, the latest supported
-stable line as current, and earlier stable lines as previous. EOL status and
-dates are explicit entries in `versioning/lifecycle.json`. Never infer an
-EOL commitment or commercial support guarantee from branch existence.
+stable line as current, and earlier stable lines as previous. The homepage uses
+`assets/home-theme.js` with the same `localStorage.theme` preference as
+`sphinx_rtd_dark_mode` on internal pages. Theme changes must persist when
+navigating between these pages. EOL status and dates are explicit entries in
+`versioning/lifecycle.json`. Never infer an EOL commitment or commercial
+support guarantee from branch existence.
 
 ## Local build and checks
 
@@ -41,7 +44,7 @@ Use Python 3.12 (as in CI) and install `requirements.txt` plus
 
 ```sh
 python -m unittest discover -s tests -v
-node --test tests/js/version-switcher.test.mjs
+node --test tests/js/*.test.mjs
 python -m versioning.build --output _build
 python -m versioning.verify --output _build
 python -m versioning.publish --built _build --destination _publish
