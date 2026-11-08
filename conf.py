@@ -63,3 +63,6 @@ notfound_context = {
 }
 
 notfound_urls_prefix = None
+# Versioned site support is independent of the theme's selector flag.
+from versioning.sphinx_config import configure as _configure_versioning
+_configure_versioning(globals())

@@ -7,9 +7,9 @@ Welcome to the LibreSign documentation — a digital signature solution develope
 
 This documentation is organized into sections tailored for different audiences:
 
-- `User manual </user_manual/>`_ : instructions on how to use the system.
-- `Developer manual </developer_manual/>`_ : technical guides, APIs, and contribution guidelines.
-- `Admin manual </admin_manual/>`_ : guidance for installing, configuring, and maintaining the platform.
+- `User manual <user_manual/>`_ : instructions on how to use the system.
+- `Developer manual <developer_manual/>`_ : technical guides, APIs, and contribution guidelines.
+- `Admin manual <admin_manual/>`_ : guidance for installing, configuring, and maintaining the platform.
 
 
 Reporting Documentation Bugs & How to Contribute
