@@ -6,4 +6,5 @@ API Documentation
     :maxdepth: 2
 
     guide-api
+    external-email-signers
     openapi

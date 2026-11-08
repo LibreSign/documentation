@@ -7,4 +7,5 @@ release's application source revision, not from ``main``.
 .. toctree::
    :maxdepth: 2
 
+   external-email-signers
    openapi
