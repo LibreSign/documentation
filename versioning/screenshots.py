@@ -83,6 +83,14 @@ def screenshot_plan(site: Path) -> list[Screenshot]:
         Screenshot(f"openapi-{current}.png",
                    f"/{current}/developer_manual/api/openapi.html")
     )
+    for slug in slugs:
+        guide = site / slug / "developer_manual/api/external-email-signers.html"
+        if not guide.is_file():
+            raise ValueError(f"Missing external email signing guide for {slug}")
+        screenshots.append(Screenshot(
+            f"external-email-signers-{slug}.png",
+            f"/{slug}/developer_manual/api/external-email-signers.html",
+        ))
     return screenshots
 
 
