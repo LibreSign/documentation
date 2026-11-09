@@ -39,9 +39,25 @@ jobs:
       - name: Confirm preview artifact contains versioned pages
         run: |
           test -s _publish/versions.json
-          test -s _publish/15/index.html
-          test -s _publish/main/developer_manual/api/openapi.json
-          ! test -f _publish/CNAME
+          python - <<'PY'
+          import json
+          import re
+          from pathlib import Path
+
+          root = Path("_publish")
+          catalog = json.loads((root / "versions.json").read_text())
+          current = catalog["current_stable"]
+          if not re.fullmatch(r"[1-9][0-9]*", current):
+              raise ValueError("Invalid current stable release")
+          for page in (root / current / "index.html",
+                       root / "main/developer_manual/api/openapi.json",
+                       root / "_review/index.html",
+                       root / "_review/routes.txt"):
+              if not page.is_file() or not page.stat().st_size:
+                  raise ValueError(f"Missing preview artifact: {page}")
+          if (root / "CNAME").exists():
+              raise ValueError("Preview artifact must not carry production CNAME")
+          PY
 
       - name: Create scoped preview deployment token
         id: preview-token
@@ -64,5 +80,43 @@ jobs:
           preview-branch: gh-pages
           pages-base-url: libresign.github.io/site-preview
           qr-code: true
-          wait-for-pages-deployment: false
+          wait-for-pages-deployment: true
           token: ${{ steps.preview-token.outputs.token }}
+
+      - name: Confirm fork preview is publicly navigable
+        env:
+          PREVIEW_ROOT: https://libresign.github.io/site-preview/docs-preview/pr-${{ github.event.workflow_run.pull_requests[0].number }}
+        run: |
+          for route in "/" "/_review/index.html"; do
+            success=false
+            for attempt in $(seq 1 24); do
+              if curl -fsSL --max-time 15 -o /tmp/libresign-fork-preview.html "$PREVIEW_ROOT$route" &&
+                grep -Eq 'Documentation by release|Preview-only documentation' /tmp/libresign-fork-preview.html; then
+                success=true
+                break
+              fi
+              sleep 5
+            done
+            if [ "$success" != true ]; then
+              echo "::error::Fork preview unavailable: $PREVIEW_ROOT$route" >&2
+              exit 1
+            fi
+          done
+
+      - name: Post navigable preview links to fork PR
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.workflow_run.pull_requests[0].number }}
+        run: |
+          root="https://libresign.github.io/site-preview/docs-preview/pr-$PR_NUMBER"
+          body=$(printf '<!-- libresign-documentation-preview-links -->\n### Navigable documentation preview\n\n- [Browse published versions](%s/)\n- [Review unpublished release pages, if any](%s/_review/)\n\nAll pages are isolated from production and checked by the documentation build.\n' "$root" "$root")
+          marker='<!-- libresign-documentation-preview-links -->'
+          comment_id=$(gh api "repos/$GITHUB_REPOSITORY/issues/$PR_NUMBER/comments?per_page=100" \
+            --paginate --jq ".[] | select(.body | contains(\"$marker\")) | .id" | head -n 1)
+          if [ -n "$comment_id" ]; then
+            gh api --method PATCH "repos/$GITHUB_REPOSITORY/issues/comments/$comment_id" \
+              -f body="$body" >/dev/null
+          else
+            gh api --method POST "repos/$GITHUB_REPOSITORY/issues/$PR_NUMBER/comments" \
+              -f body="$body" >/dev/null
+          fi
