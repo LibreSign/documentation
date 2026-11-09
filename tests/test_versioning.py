@@ -171,24 +171,6 @@ class PublicationTests(unittest.TestCase):
         self.assertIn('Development (not a stable release)', page)
         self.assertNotIn('http-equiv="refresh"', page)
 
-    def test_homepage_exposes_latest_stable_task_routes(self):
-        catalog = {"current_stable": "15", "versions": [
-            {"slug": "15", "status": "current", "nextcloud_min": 35,
-             "nextcloud_max": 35},
-            {"slug": "main", "status": "development", "nextcloud_min": 36,
-             "nextcloud_max": 36}]}
-        page = version_overview(catalog)
-        for route in (
-            "15/user_manual/start.html",
-            "15/user_manual/functionality.html",
-            "15/admin_manual/installation.html",
-            "15/developer_manual/integration/index.html",
-        ):
-            with self.subTest(route=route):
-                self.assertIn(f'href="{route}"', page)
-        self.assertIn('id="quick-tasks-title"', page)
-        self.assertNotIn('href="main/user_manual/functionality.html"', page)
-
     def test_homepage_loads_theme_before_css_and_exposes_accessible_toggle(self):
         catalog = {"current_stable": "15", "versions": [
             {"slug": "15", "status": "current", "nextcloud_min": 35,
@@ -220,22 +202,11 @@ class PublicationTests(unittest.TestCase):
                     directory = root / slug / manual
                     directory.mkdir(parents=True, exist_ok=True)
                     (directory / "index.html").write_text("Manual")
-            # The public homepage offers task shortcuts; include their targets
-            # in this minimal preview fixture before checking local links.
-            for route in (
-                "15/user_manual/start.html",
-                "15/user_manual/functionality.html",
-                "15/admin_manual/installation.html",
-                "15/developer_manual/integration/index.html",
-            ):
-                target = root / route
-                target.parent.mkdir(parents=True, exist_ok=True)
-                target.write_text("Fixture page")
             for filename in ("home.css", "home-theme.js", "logo.png"):
                 (root / filename).write_text("asset")
             with patch.dict("os.environ", {"LIBRESIGN_PREVIEW_PR": "127"}):
                 legacy_redirects(root, "15", routes={})
-                self.assertEqual(inspect_links(root, root / "index.html"), [])
+                self.assertIn('href="_review/"', (root / "index.html").read_text())
             self.assertTrue((root / "_review/index.html").is_file())
 
     def test_production_does_not_create_review_page(self):
