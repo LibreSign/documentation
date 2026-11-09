@@ -1,6 +1,11 @@
 External email signers: integration
 ===================================
 
+**Applicable release:** LibreSign |LibreSignRelease| on Nextcloud |NextcloudRelease|.
+The exact source commit and contract hash are published as
+`pinned OpenAPI provenance <openapi.provenance.json>`_.
+The path /api/v1 is the API protocol version, not the LibreSign major version.
+
 An existing system may retain its own interface and authentication while
 its backend creates LibreSign signature requests. An external signer may
 sign in LibreSign without a Nextcloud account.
@@ -33,22 +38,13 @@ All four documented release lines use this OCS prefix:
 
    https://cloud.example.com/ocs/v2.php/apps/libresign/api/v1
 
-The companion examples in examples/external-email-signers contain
-request.json, flow.sh (bash/curl/jq/base64) and flow.php (PHP 8.1+
-with ext-curl). They use this synthetic request:
+The request structure is selected for this documentation release. Use only
+the version-specific fixture below with the executable cURL or PHP clients
+in ``examples/external-email-signers``. The version selector is mandatory.
 
-.. code-block:: json
+.. include:: _external-email-signers-release.rst
 
-   {
-     "name": "Synthetic service agreement", "status": 1,
-     "file": {"name": "synthetic.pdf", "base64": "REPLACE_WITH_BASE64"},
-     "signers": [{"displayName": "External Test Signer", "notify": 0,
-       "identifyMethods": [{"method": "email",
-         "value": "signer@example.test", "mandatory": 1}]}]
-   }
-
-Replace the PDF with synthetic bytes and the reserved example.test
-mailbox with an inbox you control. The scripts POST /request-signature,
+The scripts POST /request-signature,
 verify ocs.meta and retain ocs.data.id (LibreSign file ID) and
 ocs.data.uuid (document UUID). notify: 0 disables initial auto-invites;
 the scripts explicitly POST /notify/signers with the returned file ID:
@@ -125,10 +121,8 @@ Ordering, release differences, errors and security
 Use separate signers[] records and signingOrder when ordered signing
 is configured. Sequential recipients are activated in order; parallel
 signers can act independently. files[] can create envelopes when enabled.
-The 13 and 14 request OpenAPI contracts declare signatureFlow values
-parallel and ordered_numeric; 15 and main do not declare that request
-property. Use effective server policy instead of sending undocumented
-parameters. Do not claim main-only features exist in stable versions.
+The specific supported request options for this LibreSign release are
+documented above. Do not copy parameters from other major versions.
 
 Typical errors: 401 authentication; 403 file permission; 404 missing
 or inaccessible resource; 412 missing OCS header where enforced; 422
@@ -141,11 +135,9 @@ Protect invitation links, App Passwords, signer metadata and PDFs.
 Poll with backoff; native webhooks require a separately verified
 LibreSign event contract for the deployed Nextcloud version.
 
-Runtime evidence on main includes Playwright
-sign-envelope-unauthenticated-visible-signature.spec.ts,
-sign-email-token-unauthenticated.spec.ts, multi-signer-sequential.spec.ts,
-and multi-signer-parallel.spec.ts. These do not prove stable-branch
-behavior unless rerun there. Static contract checks do not prove
-SMTP, guest browser signing or certificate trust.
+The release-specific section links to browser-test sources from that
+application branch. Their presence is source evidence; running them
+against the installed release is still necessary to establish E2E behavior.
+Contract checks cannot prove SMTP, browser signing or certificate trust.
 
 Consult the OpenAPI reference beside this page for exact schemas.
