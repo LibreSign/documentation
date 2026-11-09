@@ -14,6 +14,9 @@ class SharedSourceTests(unittest.TestCase):
         (root / "developer_manual/integration").mkdir(parents=True)
         (root / "developer_manual/integration/index.rst").write_text("Architecture")
         (root / "developer_manual/integration/new-guide.rst").write_text("New guide")
+        (root / "developer_manual/integration/_native-webhooks.inc").write_text(
+            "Development completion event"
+        )
         (root / "developer_manual/api").mkdir()
         (root / "developer_manual/api/openapi.rst").write_text("OpenAPI")
         (root / "developer_manual/html").mkdir()
@@ -44,6 +47,8 @@ class SharedSourceTests(unittest.TestCase):
                 (stable / "integration/_native-webhooks.inc").read_text(), "Only polling")
             self.assertEqual(
                 (upcoming / "integration/_native-webhooks.inc").read_text(), "Native event")
+            self.assertEqual((dev / "integration/_native-webhooks.inc").read_text(),
+                             "Development completion event")
             self.assertFalse((stable / "integration/source-only.rst").exists())
 
     def test_unlisted_development_section_is_not_leaked(self):

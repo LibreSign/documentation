@@ -49,11 +49,11 @@ def source_tree(stage: Path, slug: str, manual: str) -> Path:
     if slug == "main":
         shutil.copytree(ROOT / manual, target)
     else:
-        shutil.copytree(ROOT / "versioned/base" / manual, target)
-        # Contributors declare version-safe sections in versioned/shared.json.
-        # Copy them before release overlays; no Python change for new RST pages.
+        target.mkdir(parents=True, exist_ok=True)
+        # Stable base documentation takes precedence over shared sections.
         for relative, source in shared_sources(manual):
             shutil.copytree(source, target / relative, dirs_exist_ok=True)
+        shutil.copytree(ROOT / "versioned/base" / manual, target, dirs_exist_ok=True)
         overlay = ROOT / "versioned" / slug / manual
         if overlay.exists():
             shutil.copytree(overlay, target, dirs_exist_ok=True)
