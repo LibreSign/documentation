@@ -47,6 +47,13 @@ class StableManualCoverageTests(unittest.TestCase):
             with self.subTest(anchor=anchor):
                 self.assertIn(f".. _{anchor}:", content)
 
+    def test_stable_developer_index_links_current_contributor_docs(self):
+        content = (ROOT / "versioned/base/developer_manual/index.rst").read_text()
+        self.assertIn("   api/index", content)
+        self.assertIn("   integration/index", content)
+        self.assertIn("../../main/developer_manual/index.html", content)
+        self.assertIn("unreleased functionality", content)
+
     def test_faq_avoids_unqualified_legal_guarantees(self):
         content = (ROOT / "versioned/base/user_manual/faq.rst").read_text().lower()
         self.assertNotIn("meets all the requirements", content)
