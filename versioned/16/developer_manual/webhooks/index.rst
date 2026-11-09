@@ -11,17 +11,14 @@ delivery is provided by Nextcloud's **Webhook Listeners** app. Each supported
 event has its own reference page, including the point in the workflow that
 triggers delivery and the data sent to the receiver.
 
-**Documentation scope:** LibreSign |LibreSignRelease| on Nextcloud
-|NextcloudRelease| (development line). The exact application revision is
-available through the :doc:`../api/openapi` provenance information. Webhooks
-configured in Nextcloud are not equivalent to LibreSign's existing per-request
-callback.
+**Availability:** LibreSign 16 with Nextcloud 36. These native LibreSign
+events are **not available in LibreSign 13, 14 or 15**. The exact application
+release and source revision are shown in :doc:`../api/openapi`. Nextcloud's
+Webhook Listeners app must be enabled and the installed LibreSign release must
+include the relevant event.
 
-.. note::
-
-   Native signing-completion webhooks are planned for LibreSign 16 on Nextcloud
-   36. They are **not available in LibreSign 13, 14 or 15**. This development
-   documentation applies only to installations that include the new event.
+Native webhooks and the existing LibreSign per-request callback are separate
+mechanisms. An integration may receive notifications through both transports.
 
 .. toctree::
    :maxdepth: 1

@@ -94,10 +94,7 @@ jobs:
           stable=$(python -c "import json; print(json.load(open('_publish/versions.json'))['current_stable'])")
           for url in \
             "$PREVIEW_ROOT/$stable/" \
-            "$PREVIEW_ROOT/$stable/developer_manual/api/openapi.html" \
-            "$PREVIEW_ROOT/main/developer_manual/webhooks/" \
-            "$PREVIEW_ROOT/main/developer_manual/webhooks/configuration.html" \
-            "$PREVIEW_ROOT/main/developer_manual/webhooks/signing_completion.html"; do
+            "$PREVIEW_ROOT/$stable/developer_manual/api/openapi.html"; do
             success=false
             for attempt in $(seq 1 45); do
               if curl -fsSL --max-time 15 -o /tmp/preview-page.html "$url" &&

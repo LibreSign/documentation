@@ -38,23 +38,6 @@ class Screenshot:
     route: str
 
 
-def development_webhook_screenshots(site: Path, slugs: list[str]) -> list[Screenshot]:
-    section = site / "main/developer_manual/webhooks"
-    if "main" not in slugs or not section.is_dir():
-        return []
-    pages = ("index", "configuration", "signing_completion")
-    screenshots = []
-    for name in pages:
-        path = section / f"{name}.html"
-        if not path.is_file():
-            raise ValueError(f"Missing webhook documentation page: {path}")
-        screenshots.append(Screenshot(
-            f"webhooks-{name}-main.png",
-            f"/main/developer_manual/webhooks/{name}.html",
-        ))
-    return screenshots
-
-
 def screenshot_plan(site: Path) -> list[Screenshot]:
     """List only versions actually built for this publish candidate."""
     catalog_file = site / "versions.json"
@@ -92,7 +75,6 @@ def screenshot_plan(site: Path) -> list[Screenshot]:
         Screenshot("libresign-versions-home-dark.png", "/"),
         Screenshot("libresign-versions-home-light.png", LIGHT_ROUTE),
     ]
-    screenshots.extend(development_webhook_screenshots(site, slugs))
     screenshots.extend(
         Screenshot(f"libresign-{slug}.png", f"/{slug}/")
         for slug in slugs
@@ -101,6 +83,21 @@ def screenshot_plan(site: Path) -> list[Screenshot]:
         Screenshot(f"openapi-{current}.png",
                    f"/{current}/developer_manual/api/openapi.html")
     )
+    for slug in slugs:
+        guide = site / slug / "developer_manual/api/external-email-signers.html"
+        if not guide.is_file():
+            raise ValueError(f"Missing external email signing guide for {slug}")
+        screenshots.append(Screenshot(
+            f"external-email-signers-{slug}.png",
+            f"/{slug}/developer_manual/api/external-email-signers.html",
+        ))
+    for slug in slugs:
+        folder = site / slug / "developer_manual/webhooks"
+        for page in sorted(folder.glob("*.html")):
+            screenshots.append(Screenshot(
+                f"webhooks-{slug}-{page.stem}.png",
+                f"/{slug}/developer_manual/webhooks/{page.name}",
+            ))
     return screenshots
 
 

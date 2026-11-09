@@ -7,11 +7,9 @@ Signing workflow completed
 
 **Event:** ``OCA\Libresign\Events\SigningRequestCompletedEvent``
 
-**Release scope:** LibreSign |LibreSignRelease| on Nextcloud
-|NextcloudRelease|, development line. This event is being introduced for the
-next LibreSign release; it is not available in stable LibreSign 13, 14 or 15.
-Use this subscription only after verifying that your installed LibreSign build
-supports the event.
+**Available from:** LibreSign 16 on Nextcloud 36. This event is not available
+in LibreSign 13, 14 or 15. Verify that your installed LibreSign build includes
+the event before registering a listener.
 
 When it is emitted
 ------------------
