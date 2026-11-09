@@ -76,14 +76,3 @@ jobs:
 
       - name: Verify deployed candidate preserves every version
         run: python -m versioning.verify --output _publish
-
-      - name: Capture all published documentation versions
-        run: python -m versioning.screenshots --site _publish --output screenshots
-
-      - name: Upload screenshots for PR review
-        uses: actions/upload-artifact@v4
-        with:
-          name: versioned-documentation-screenshots
-          path: screenshots/
-          if-no-files-found: error
-          retention-days: 30

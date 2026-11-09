@@ -19,9 +19,12 @@ dependencies cause the build to fail. A stable line must never load an API
 contract from `main`. Every generated API reference has accompanying
 `openapi.json` and `openapi.provenance.json` files.
 
-Maintain `main/` as development documentation and `versioned/base/` as the
-release-safe foundation. Use `versioned/<major>/` for material verified
-against a specific release. Do not copy unreviewed development flows into
+Maintain `main/` as top-level navigation and `developer_manual/` as
+development documentation. Use `versioned/base/` for the release-safe
+foundation and `versioned/<major>/` for release overrides. Directories
+verified as shared across development and stable lines are declared in
+`versioned/shared.json`; the build copies their RST automatically, without
+a per-page script change. Do not expose unreviewed development-only flows in
 stable manuals. The Sphinx theme and configuration are shared.
 
 The documentation homepage (the root URL) lists versions from latest stable
@@ -39,7 +42,7 @@ support guarantee from branch existence.
 
 ## Local build and checks
 
-Use Python 3.12 (as in CI) and install `requirements.txt` plus
+Use Python 3.13 (as in CI) and install `requirements.txt` plus
 `openapi-spec-validator==0.7.2`. Run:
 
 ```sh
@@ -53,15 +56,11 @@ python -m http.server 8765 --directory _publish
 ```
 
 The build needs read-only network access to application Git refs and files.
-It fails rather than silently substituting an outdated or main-branch
-contract. The `Documentation` workflow captures screenshots with
-`python -m versioning.screenshots --site _publish --output screenshots`.
-That script reads the **generated `_publish/versions.json` catalog**, so each
-published stable major and `main` is captured without updating the workflow
-when a new stable branch appears. It also captures the light/dark homepage and
-the current stable OpenAPI page, with an isolated browser profile for each
-capture. Missing version pages fail CI rather than silently being skipped.
-Screenshots are review artifacts; they are not committed.
+It fails rather than substituting an outdated or development-branch contract.
+Sphinx is compiled with warnings as errors, OpenAPI provenance and links are
+checked, and the PR preview is tested at the public preview origin. Screenshots
+are not generated or required. Version numbers and documentation pages are
+not maintained in capture scripts.
 
 ## Pull request previews
 
@@ -85,12 +84,21 @@ organization GitHub App `librecode-workflow-automation`. It requires
 distributes these to its repositories). The app token is short-lived and
 restricted to `LibreSign/site-preview`; no personal PAT needs copying.
 
-For PRs originating in the documentation repository, the build publishes
-the preview and posts a sticky preview link. For forks, the unprivileged
-workflow only uploads an HTML artifact; the trusted `workflow_run` consumer
-publishes that artifact from the repository default branch. It never
-checks out or executes fork code while possessing the deployment token.
-Upon closing the PR, the trusted cleanup workflow removes its preview.
+For PRs originating in this repository, the workflow publishes the full
+navigable preview, verifies the publicly hosted routes, and posts a sticky
+comment containing direct links. When the development major has unreleased
+release-specific overlays (for example, an event reference before a stable
+branch exists), they are built under `/_review/<major>/` with the
+development application's contract. A dedicated `/_review/` landing page
+links to every rendered overlay page. None of those pages is inserted into
+`versions.json`, the version selector or production Pages.
+
+For forks, the unprivileged workflow only uploads an HTML artifact; the
+trusted `workflow_run` consumer checks its static files, publishes it and
+verifies its public URLs without executing fork code while possessing the
+deployment token. The existing preview action posts the PR link; the preview
+homepage also links to `/_review/`, so no second comment script is needed.
+Upon closing the PR, the trusted cleanup workflow removes the preview.
 
 The preview action and organization App do not publish stable documentation.
 Successful preview CI is **not authorization to merge**.
@@ -100,8 +108,8 @@ Successful preview CI is **not authorization to merge**.
 1. Confirm the application release/backport and its manifest and OpenAPI.
 2. Review changes to `versioned/<major>/`; keep the stable content bounded
    by the branch's actual capabilities.
-3. Open a documentation PR, inspect the navigable preview and the uploaded
-   screenshots, and wait for CI checks.
+3. Open a documentation PR, inspect the navigable preview (including
+   `/_review/` when relevant), and wait for CI checks.
 4. After approval and merge, the `Deploy Sphinx Docs` workflow deploys
    the complete site. For a targeted update, dispatch with
    `version: <major>` or `version: main`. The application release

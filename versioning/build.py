@@ -22,12 +22,38 @@ ROOT = Path(__file__).resolve().parent.parent
 MANUALS = ("main", "user_manual", "admin_manual", "developer_manual")
 
 
+def shared_sources(manual: str) -> list[tuple[Path, Path]]:
+    """Read declarative shared sections; never assume development-only pages are stable."""
+    config = json.loads((ROOT / "versioned/shared.json").read_text(encoding="utf-8"))
+    sections = config.get(manual, [])
+    if not isinstance(sections, list):
+        raise ValueError(f"Shared sections must be a list: {manual}")
+    root = (ROOT / manual).resolve()
+    result = []
+    for name in sections:
+        if not isinstance(name, str) or not name or name.startswith("/"):
+            raise ValueError(f"Invalid shared section: {name!r}")
+        relative = Path(name)
+        if (relative == Path(".") or "//" in name or
+                any(part in ("..", ".") for part in relative.parts) or "\\" in name):
+            raise ValueError(f"Unsafe shared section: {name!r}")
+        source = (root / relative).resolve()
+        if not source.is_relative_to(root) or not source.is_dir():
+            raise ValueError(f"Missing or outside shared section: {name!r}")
+        result.append((relative, source))
+    return result
+
+
 def source_tree(stage: Path, slug: str, manual: str) -> Path:
     target = stage / slug / manual
     if slug == "main":
         shutil.copytree(ROOT / manual, target)
     else:
         shutil.copytree(ROOT / "versioned/base" / manual, target)
+        # Contributors declare version-safe sections in versioned/shared.json.
+        # Copy them before release overlays; no Python change for new RST pages.
+        for relative, source in shared_sources(manual):
+            shutil.copytree(source, target / relative, dirs_exist_ok=True)
         overlay = ROOT / "versioned" / slug / manual
         if overlay.exists():
             shutil.copytree(overlay, target, dirs_exist_ok=True)
@@ -57,7 +83,8 @@ def source_tree(stage: Path, slug: str, manual: str) -> Path:
     return target
 
 
-def run_sphinx(source: Path, destination: Path, entry: dict, catalog: dict) -> None:
+def run_sphinx(source: Path, destination: Path, entry: dict, catalog: dict, *,
+               review_only: bool = False) -> None:
     env = os.environ.copy()
     env["PYTHONPATH"] = str(ROOT) + os.pathsep + env.get("PYTHONPATH", "")
     env.update({
@@ -74,6 +101,10 @@ def run_sphinx(source: Path, destination: Path, entry: dict, catalog: dict) -> N
         "LIBRESIGN_APP_SHA": entry["app_commit"],
         "LIBRESIGN_VERSION_CATALOG": json.dumps(catalog),
     })
+    if review_only:
+        env["LIBRESIGN_DOC_REVIEW_PREFIX"] = "/_review"
+    else:
+        env.pop("LIBRESIGN_DOC_REVIEW_PREFIX", None)
     cmd = ["sphinx-build", "-b", "html", "-n"]
     if entry["slug"] != "main" or source.name == "developer_manual":
         cmd.extend(["-W", "--keep-going"])
@@ -125,6 +156,18 @@ def legacy_redirects(output: Path, current: str) -> None:
     if catalog["current_stable"] != current:
         raise ValueError("Current stable line differs from published catalog")
     (output / "index.html").write_text(version_overview(catalog), encoding="utf-8")
+    if os.environ.get("LIBRESIGN_PREVIEW_PR"):
+        # The homepage links to /_review/ before the later PR-only build
+        # replaces this placeholder. Keep the initial link check strict.
+        entry = output / "_review/index.html"
+        entry.parent.mkdir(parents=True, exist_ok=True)
+        entry.write_text(
+            "<!doctype html><html lang='en'><meta charset='utf-8'>"
+            "<title>Preview-only documentation</title>"
+            "<h1>Preview-only documentation</h1>"
+            "<p>Release-specific review pages are generated after validation.</p>",
+            encoding="utf-8",
+        )
     # Previous URLs did not include a version prefix. Preserve page paths
     # when the same page exists in current stable; otherwise go to that
     # manual's landing page, never silently to a development-only page.

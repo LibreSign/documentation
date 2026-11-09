@@ -50,11 +50,11 @@ jobs:
           python -m versioning.verify --output _publish
           rm _publish/CNAME
 
-      - name: Render unpublished release documentation for PR review
+      - name: Render navigable HTML for unpublished release documentation
         env:
           PREVIEW_ROOT: https://libresign.github.io/site-preview/docs-preview/pr-${{ github.event.pull_request.number }}
         run: |
-          python -m versioning.pr_review_screenshots \
+          python -m versioning.pr_preview \
             --site _publish --preview-root "$PREVIEW_ROOT"
 
       - name: Upload unprivileged preview for fork PRs
@@ -93,52 +93,41 @@ jobs:
           qr-code: true
           token: ${{ steps.preview-token.outputs.token }}
 
-      - name: Check preview URL from separate origin
+      - name: Check every navigable preview route on the public origin
         if: github.event.pull_request.head.repo.full_name == github.repository
         env:
           PREVIEW_ROOT: https://libresign.github.io/site-preview/docs-preview/pr-${{ github.event.pull_request.number }}
         run: |
-          stable=$(python -c "import json; print(json.load(open('_publish/versions.json'))['current_stable'])")
-          for url in \
-            "$PREVIEW_ROOT/$stable/" \
-            "$PREVIEW_ROOT/$stable/developer_manual/api/openapi.html"; do
+          while IFS= read -r route; do
+            [ -n "$route" ] || continue
+            url="$PREVIEW_ROOT$route"
             success=false
-            for attempt in $(seq 1 45); do
-              if curl -fsSL --max-time 15 -o /tmp/preview-page.html "$url" &&
-                grep -q 'libresign-version-toggle' /tmp/preview-page.html; then
-                echo "Preview is publicly navigable: $url"
+            for attempt in $(seq 1 24); do
+              if curl -fsSL --max-time 15 -o /tmp/libresign-preview-page.html "$url" &&
+                grep -Eq 'libresign-version-toggle|Documentation by release|Preview-only documentation' /tmp/libresign-preview-page.html; then
+                echo "Public preview available: $url"
                 success=true
                 break
               fi
-              sleep 10
+              sleep 5
             done
             if [ "$success" != true ]; then
-              echo "::error::Preview URL did not become reachable: $url" >&2
+              echo "::error::Preview page unavailable: $url" >&2
               exit 1
             fi
-          done
+          done < _publish/_review/routes.txt
 
-      - name: Comment with rendered screenshots
+      - name: Comment with navigable preview links
         if: github.event.pull_request.head.repo.full_name == github.repository
         env:
           GH_TOKEN: ${{ github.token }}
-          PREVIEW_ROOT: https://libresign.github.io/site-preview/docs-preview/pr-${{ github.event.pull_request.number }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
         run: |
-          if [ ! -f _publish/_review/screenshots-comment.md ]; then
-            echo "No unreleased manual changes to capture"
-            exit 0
-          fi
-          for image in _publish/_review/screenshots/*.png; do
-            url="$PREVIEW_ROOT/_review/screenshots/$(basename "$image")"
-            curl --fail --silent --show-error --location --retry 8 \
-              --retry-delay 5 --retry-all-errors --output /dev/null "$url"
-          done
-
-          body=$(cat _publish/_review/screenshots-comment.md)
-          marker='<!-- libresign-documentation-review-screenshots -->'
+          body=$(cat _publish/_review/preview-comment.md)
+          marker='<!-- libresign-documentation-preview-links -->'
+          legacy='<!-- libresign-documentation-review-screenshots -->'
           comment_id=$(gh api "repos/$GITHUB_REPOSITORY/issues/$PR_NUMBER/comments?per_page=100" \
-            --paginate --jq ".[] | select(.body | contains(\"$marker\")) | .id" | head -n 1)
+            --paginate --jq ".[] | select(.body | contains(\"$marker\") or contains(\"$legacy\")) | .id" | head -n 1)
           if [ -n "$comment_id" ]; then
             gh api --method PATCH "repos/$GITHUB_REPOSITORY/issues/comments/$comment_id" \
               -f body="$body" >/dev/null
