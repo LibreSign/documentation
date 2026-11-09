@@ -50,7 +50,7 @@ def preview_unreleased(site: Path, preview_root: str) -> list[str]:
             entry = {**development, "slug": major, "status": "development"}
             with tempfile.TemporaryDirectory(prefix="libresign-pr-review-") as tmp:
                 source = source_tree(Path(tmp), major, manual)
-                run_sphinx(source, output, entry, catalog)
+                run_sphinx(source, output, entry, catalog, review_only=True)
 
             if manual == "developer_manual":
                 # The preview reads the pinned *development* contract. It is

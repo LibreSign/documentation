@@ -7,6 +7,7 @@ from pathlib import Path
 from unittest.mock import patch
 
 from versioning import pr_preview
+from versioning.sphinx_config import configure
 
 
 class UnreleasedPreviewTests(unittest.TestCase):
@@ -43,7 +44,8 @@ class UnreleasedPreviewTests(unittest.TestCase):
 
     @staticmethod
     def fake_sphinx(source: Path, output: Path, entry: dict,
-                    catalog: dict) -> None:
+                    catalog: dict, *, review_only: bool = False) -> None:
+        assert review_only
         output.mkdir(parents=True)
         (output / "index.html").write_text("Review manual")
         target = output / "webhooks"
@@ -104,6 +106,24 @@ class UnreleasedPreviewTests(unittest.TestCase):
             self.assertNotIn("/_review/16/developer_manual/index.html", routes)
             self.assertTrue((site / "_review/index.html").is_file())
             self.assertFalse((site / "_review/16").exists())
+
+    def test_review_404_assets_use_review_path_not_a_fake_stable_url(self):
+        with patch.dict("os.environ", {
+            "LIBRESIGN_DOC_BASE_PATH": "/site-preview/docs-preview/pr-127",
+            "LIBRESIGN_DOC_VERSION": "16",
+            "LIBRESIGN_DOC_MANUAL": "developer_manual",
+            "LIBRESIGN_DOC_REVIEW_PREFIX": "/_review",
+        }):
+            config = {}
+            configure(config)
+        self.assertEqual(
+            config["notfound_urls_prefix"],
+            "/site-preview/docs-preview/pr-127/_review/16/developer_manual/",
+        )
+        self.assertEqual(
+            config["html_context"]["libresign_site_root"],
+            "/site-preview/docs-preview/pr-127",
+        )
 
     def test_reject_non_https_preview_links(self):
         with tempfile.TemporaryDirectory() as tmp:

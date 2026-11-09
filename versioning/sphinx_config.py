@@ -25,8 +25,12 @@ def configure(config: dict) -> None:
         raise ValueError("Invalid preview pull request number")
 
     manual = os.environ.get("LIBRESIGN_DOC_MANUAL", "main")
+    review_prefix = os.environ.get("LIBRESIGN_DOC_REVIEW_PREFIX", "")
+    if review_prefix not in ("", "/_review"):
+        raise ValueError("Invalid review-only Sphinx path")
     config["notfound_urls_prefix"] = (
-        f"{site_root}/{slug}/" + (f"{manual}/" if manual != "main" else "")
+        f"{site_root}{review_prefix}/{slug}/" +
+        (f"{manual}/" if manual != "main" else "")
     )
     config["release"] = app_version
     config["version"] = slug

@@ -82,7 +82,8 @@ def source_tree(stage: Path, slug: str, manual: str) -> Path:
     return target
 
 
-def run_sphinx(source: Path, destination: Path, entry: dict, catalog: dict) -> None:
+def run_sphinx(source: Path, destination: Path, entry: dict, catalog: dict, *,
+               review_only: bool = False) -> None:
     env = os.environ.copy()
     env["PYTHONPATH"] = str(ROOT) + os.pathsep + env.get("PYTHONPATH", "")
     env.update({
@@ -99,6 +100,10 @@ def run_sphinx(source: Path, destination: Path, entry: dict, catalog: dict) -> N
         "LIBRESIGN_APP_SHA": entry["app_commit"],
         "LIBRESIGN_VERSION_CATALOG": json.dumps(catalog),
     })
+    if review_only:
+        env["LIBRESIGN_DOC_REVIEW_PREFIX"] = "/_review"
+    else:
+        env.pop("LIBRESIGN_DOC_REVIEW_PREFIX", None)
     cmd = ["sphinx-build", "-b", "html", "-n"]
     if entry["slug"] != "main" or source.name == "developer_manual":
         cmd.extend(["-W", "--keep-going"])
