@@ -15,7 +15,13 @@ triggers delivery and the data sent to the receiver.
 |NextcloudRelease| (development line). The exact application revision is
 available through the :doc:`../api/openapi` provenance information. Webhooks
 configured in Nextcloud are not equivalent to LibreSign's existing per-request
-callback. Native event availability depends on the LibreSign version installed.
+callback.
+
+.. note::
+
+   Native signing-completion webhooks are planned for LibreSign 16 on Nextcloud
+   36. They are **not available in LibreSign 13, 14 or 15**. This development
+   documentation applies only to installations that include the new event.
 
 .. toctree::
    :maxdepth: 1

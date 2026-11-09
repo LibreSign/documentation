@@ -20,9 +20,11 @@ class WebhookDocumentationTests(unittest.TestCase):
             self.assertTrue((development / "webhooks/index.rst").is_file())
             self.assertTrue((development / "webhooks/configuration.rst").is_file())
             self.assertTrue((development / "webhooks/signing_completion.rst").is_file())
-            stable = source_tree(Path(temp), "15", "developer_manual")
-            self.assertFalse((stable / "webhooks").exists())
-            self.assertNotIn("webhooks/index", (stable / "index.rst").read_text())
+            for version in ("13", "14", "15"):
+                with self.subTest(version=version):
+                    stable = source_tree(Path(temp), version, "developer_manual")
+                    self.assertFalse((stable / "webhooks").exists())
+                    self.assertNotIn("webhooks/index", (stable / "index.rst").read_text())
 
     def test_preview_screenshots_cover_all_main_webhook_pages(self):
         with tempfile.TemporaryDirectory() as temp:
