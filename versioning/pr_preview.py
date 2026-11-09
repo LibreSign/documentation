@@ -16,6 +16,7 @@ from urllib.parse import quote
 
 from versioning.build import ROOT, run_sphinx, source_tree
 from versioning.verify import inspect_links
+from versioning.seo import mark_preview_noindex
 
 PREVIEW_MARKER = "<!-- libresign-documentation-preview-links -->"
 REVIEW_MANUALS = ("user_manual", "admin_manual", "developer_manual")
@@ -138,6 +139,7 @@ def preview_unreleased(site: Path, preview_root: str) -> list[str]:
             local /= "index.html"
         if not local.is_file():
             raise ValueError(f"Preview route is missing: {route}")
+    mark_preview_noindex(review)
     (review / "routes.txt").write_text(
         "\n".join(unique_routes) + "\n", encoding="utf-8"
     )

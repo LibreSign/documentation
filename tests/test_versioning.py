@@ -98,7 +98,8 @@ class PublicationTests(unittest.TestCase):
             (incoming / "versions.json").write_text(json.dumps(updated))
             (incoming / "15").mkdir()
             (incoming / "15/index.html").write_text("15-updated")
-            result_catalog = assemble(incoming, result, "15", published)
+            with patch("versioning.publish.legacy_redirects"), patch("versioning.publish.apply_seo"):
+                result_catalog = assemble(incoming, result, "15", published)
             self.assertEqual((result / "13/saved.html").read_text(), "do-not-erase")
             self.assertEqual((result / "14/index.html").read_text(), "14-original")
             self.assertEqual((result / "main/index.html").read_text(), "main-original")
@@ -204,7 +205,7 @@ class PublicationTests(unittest.TestCase):
             for filename in ("home.css", "home-theme.js", "logo.png"):
                 (root / filename).write_text("asset")
             with patch.dict("os.environ", {"LIBRESIGN_PREVIEW_PR": "127"}):
-                legacy_redirects(root, "15")
+                legacy_redirects(root, "15", routes={})
                 self.assertEqual(inspect_links(root, root / "index.html"), [])
             self.assertTrue((root / "_review/index.html").is_file())
 
@@ -219,7 +220,7 @@ class PublicationTests(unittest.TestCase):
             (root / "15/index.html").parent.mkdir()
             (root / "15/index.html").write_text("Stable")
             with patch.dict("os.environ", {"LIBRESIGN_PREVIEW_PR": ""}):
-                legacy_redirects(root, "15")
+                legacy_redirects(root, "15", routes={})
             self.assertFalse((root / "_review/index.html").exists())
             self.assertNotIn('href="_review/"', (root / "index.html").read_text())
 

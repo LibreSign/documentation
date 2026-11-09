@@ -3,10 +3,12 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import shutil
 from pathlib import Path
 
 from versioning.build import legacy_redirects
+from versioning.seo import apply_seo
 
 ROOT = Path(__file__).resolve().parent.parent
 
@@ -62,6 +64,7 @@ def assemble(built: Path, destination: Path, selected: str,
         legacy_redirects(destination, output_catalog["current_stable"])
     (destination / "CNAME").write_text("docs.libresign.coop\n", encoding="utf-8")
     (destination / ".nojekyll").touch()
+    apply_seo(destination, output_catalog, preview=bool(os.environ.get("LIBRESIGN_PREVIEW_PR")))
     return output_catalog
 
 
