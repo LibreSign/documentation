@@ -47,10 +47,10 @@ Notification ownership
    }
 
 The transport's acknowledgement is **not** delivery confirmation. Avoid blind
-retries that could duplicate messages. The development line additionally
-documents ``GET /notify/status``; do not assume it exists in stable releases.
-Optional WhatsApp, SMS and other channels require their configured gateway;
-they are not automatically included with the core LibreSign installation.
+retries that could duplicate messages. Notification status endpoints differ
+between releases; verify them in :doc:`../api/openapi`. Optional gateway
+integrations, such as WhatsApp via Two-Factor Gateway where supported, are
+separate services and are not bundled delivery guarantees.
 
 What counts as complete?
 ------------------------
@@ -93,8 +93,8 @@ parent and required child file results, not just the first child.
                               +----> more signer actions pending
    Deleted / rejected / invalid / unknown -> explicit exception handling
 
-Polling is the currently documented fallback
---------------------------------------------
+Polling and reconciliation
+--------------------------
 
 ``GET /file/list`` with ``details=1`` and a specific ``fileIds[]``
 filter is available on all documented release lines. Its response is
@@ -161,10 +161,10 @@ evidence archive.
 
 Use authenticated ``GET /file/validate/file_id/{fileId}`` with file-read
 permissions for validation metadata. The UUID validation route has separate
-privacy restrictions and is **not** unrestricted access to evidence. Availability of audit logs,
-certificate chain, timestamps, revocation proof or downloadable evidence
-packages depends on the installed version, selected signing method and
-configured providers. Do not promise a single evidence-download endpoint
+privacy restrictions and is **not** unrestricted access to evidence.
+Availability of audit logs, certificate chain, timestamps, revocation proof
+or downloadable evidence packages depends on the installed version, selected
+signing method and configured providers. Do not promise a single evidence-download endpoint
 that is absent from :doc:`../api/openapi`.
 
 See :doc:`../api/external-email-signers` for the executable

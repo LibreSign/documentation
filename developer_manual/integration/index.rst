@@ -92,11 +92,10 @@ Contract and ownership boundaries
 published LibreSign release. Use that guide for requests, mail invitations,
 status polling, validation and authenticated WebDAV download.
 
-**Native webhook support is release-dependent.** LibreSign 16 introduces a
-separate aggregate completion event, whereas 13–15 do not offer that event.
-Its presence in the application source and unit tests is not evidence of an
-actual successful outbound HTTP delivery. The release-specific Webhooks manual
-is provided only where the release includes that feature.
+**Native webhook support is release-dependent.** Consult :doc:`lifecycle`
+for the event availability on this release and the release-specific Webhooks
+manual where one exists. A compiled application event or passing unit test
+alone does not prove successful outbound HTTP delivery.
 
 No recommendation here requires direct database access, credential sharing
 with a signer, or disabling Nextcloud authorization. Use supported OCS and

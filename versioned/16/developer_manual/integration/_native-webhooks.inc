@@ -1,7 +1,7 @@
 .. note::
 
    **LibreSign 16 on Nextcloud 36:** Subscribe only to the public
-   ``OCA\\Libresign\\Events\\SigningRequestCompletedEvent`` when the installed
+   ``OCA\Libresign\Events\SigningRequestCompletedEvent`` when the installed
    application includes it. It implements ``IWebhookCompatibleEvent``
    and exposes contract version 1 with ``eventId``, ``requestUuid``,
    ``requestType`` and ``status``. It represents an aggregate transition
