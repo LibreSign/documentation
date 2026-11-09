@@ -7,7 +7,7 @@ from pathlib import Path
 from unittest.mock import patch
 
 from versioning.catalog import discover, manifest_info, operations, sha256
-from versioning.build import redirect_html, version_overview
+from versioning.build import legacy_redirects, redirect_html, version_overview
 from versioning.publish import assemble
 from versioning.verify import inspect_links, verify_site
 
@@ -180,6 +180,46 @@ class PublicationTests(unittest.TestCase):
         self.assertIn('aria-pressed="false" hidden', page)
         self.assertLess(page.index('src="home-theme.js"'),
                         page.index('href="home.css"'))
+
+    def test_preview_review_link_is_valid_during_initial_site_verification(self):
+        catalog = {"current_stable": "15", "versions": [
+            {"slug": "15", "status": "current", "nextcloud_min": 35,
+             "nextcloud_max": 35},
+            {"slug": "main", "status": "development", "nextcloud_min": 36,
+             "nextcloud_max": 36},
+        ]}
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            (root / "versions.json").write_text(json.dumps(catalog))
+            (root / "15/index.html").parent.mkdir()
+            (root / "15/index.html").write_text("Stable")
+            (root / "15/lifecycle.html").write_text("Lifecycle")
+            for manual in ("user_manual", "admin_manual", "developer_manual"):
+                for slug in ("15", "main"):
+                    directory = root / slug / manual
+                    directory.mkdir(parents=True, exist_ok=True)
+                    (directory / "index.html").write_text("Manual")
+            for filename in ("home.css", "home-theme.js", "logo.png"):
+                (root / filename).write_text("asset")
+            with patch.dict("os.environ", {"LIBRESIGN_PREVIEW_PR": "127"}):
+                legacy_redirects(root, "15")
+                self.assertEqual(inspect_links(root, root / "index.html"), [])
+            self.assertTrue((root / "_review/index.html").is_file())
+
+    def test_production_does_not_create_review_page(self):
+        catalog = {"current_stable": "15", "versions": [
+            {"slug": "15", "status": "current", "nextcloud_min": 35,
+             "nextcloud_max": 35},
+        ]}
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            (root / "versions.json").write_text(json.dumps(catalog))
+            (root / "15/index.html").parent.mkdir()
+            (root / "15/index.html").write_text("Stable")
+            with patch.dict("os.environ", {"LIBRESIGN_PREVIEW_PR": ""}):
+                legacy_redirects(root, "15")
+            self.assertFalse((root / "_review/index.html").exists())
+            self.assertNotIn('href="_review/"', (root / "index.html").read_text())
 
     def test_homepage_preview_uses_relative_links(self):
         catalog = {"current_stable": "15", "versions": [

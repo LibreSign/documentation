@@ -156,6 +156,18 @@ def legacy_redirects(output: Path, current: str) -> None:
     if catalog["current_stable"] != current:
         raise ValueError("Current stable line differs from published catalog")
     (output / "index.html").write_text(version_overview(catalog), encoding="utf-8")
+    if os.environ.get("LIBRESIGN_PREVIEW_PR"):
+        # The homepage links to /_review/ before the later PR-only build
+        # replaces this placeholder. Keep the initial link check strict.
+        entry = output / "_review/index.html"
+        entry.parent.mkdir(parents=True, exist_ok=True)
+        entry.write_text(
+            "<!doctype html><html lang='en'><meta charset='utf-8'>"
+            "<title>Preview-only documentation</title>"
+            "<h1>Preview-only documentation</h1>"
+            "<p>Release-specific review pages are generated after validation.</p>",
+            encoding="utf-8",
+        )
     # Previous URLs did not include a version prefix. Preserve page paths
     # when the same page exists in current stable; otherwise go to that
     # manual's landing page, never silently to a development-only page.
