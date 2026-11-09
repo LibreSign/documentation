@@ -20,6 +20,7 @@ Start here
   request.
 - :doc:`getting-started/tests` — choose and run the appropriate validation.
 - :doc:`api/index` — work with the public API.
+- :doc:`integration/index` — choose an integration architecture for an existing system.
 - :doc:`translation` — contribute translations and document source-string context.
 - :doc:`release-process` — maintain and publish releases.
 
@@ -49,6 +50,7 @@ For professional services or partnerships,
    getting-started/index
    development-workflow
    api/index
+   integration/index
    translation
    requesting-features
    release-process

@@ -12,4 +12,5 @@ are not presented as features of this release.
    :maxdepth: 2
 
    api/index
+   integration/index
    webhooks/index

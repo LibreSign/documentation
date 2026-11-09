@@ -28,6 +28,15 @@ def source_tree(stage: Path, slug: str, manual: str) -> Path:
         shutil.copytree(ROOT / manual, target)
     else:
         shutil.copytree(ROOT / "versioned/base" / manual, target)
+        if manual == "developer_manual":
+            # Shared architectural guidance is version-neutral. Add it before
+            # release overlays, so a stable version can override a claim.
+            shutil.copytree(ROOT / "developer_manual/integration",
+                            target / "integration", dirs_exist_ok=True)
+            stable_notes = ROOT / "versioned/base/developer_manual/integration"
+            if stable_notes.exists():
+                shutil.copytree(stable_notes, target / "integration",
+                                dirs_exist_ok=True)
         overlay = ROOT / "versioned" / slug / manual
         if overlay.exists():
             shutil.copytree(overlay, target, dirs_exist_ok=True)
