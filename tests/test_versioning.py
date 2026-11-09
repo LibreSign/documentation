@@ -220,6 +220,17 @@ class PublicationTests(unittest.TestCase):
                     directory = root / slug / manual
                     directory.mkdir(parents=True, exist_ok=True)
                     (directory / "index.html").write_text("Manual")
+            # The public homepage offers task shortcuts; include their targets
+            # in this minimal preview fixture before checking local links.
+            for route in (
+                "15/user_manual/start.html",
+                "15/user_manual/functionality.html",
+                "15/admin_manual/installation.html",
+                "15/developer_manual/integration/index.html",
+            ):
+                target = root / route
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_text("Fixture page")
             for filename in ("home.css", "home-theme.js", "logo.png"):
                 (root / filename).write_text("asset")
             with patch.dict("os.environ", {"LIBRESIGN_PREVIEW_PR": "127"}):
