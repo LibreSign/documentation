@@ -108,6 +108,26 @@ h1 {
 .hero > p:not(.eyebrow) { font-size: 1.04rem; line-height: 1.7; color: var(--muted); }
 .hero .latest-reference { margin-top: 22px; font-size: .96rem; color: var(--text); }
 .latest-reference a { font-weight: 700; }
+.quick-tasks {
+  margin: 0 0 46px;
+  padding: 24px 28px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  background: var(--surface);
+}
+.quick-tasks p {
+  margin: 8px 0 16px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+.quick-tasks ul {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 12px 24px;
+  margin: 0;
+  padding-left: 20px;
+}
+.quick-tasks a { font-weight: 550; }
 .section-heading {
   display: flex;
   flex-wrap: wrap;

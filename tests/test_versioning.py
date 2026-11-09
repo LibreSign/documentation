@@ -171,6 +171,24 @@ class PublicationTests(unittest.TestCase):
         self.assertIn('Development (not a stable release)', page)
         self.assertNotIn('http-equiv="refresh"', page)
 
+    def test_homepage_exposes_latest_stable_task_routes(self):
+        catalog = {"current_stable": "15", "versions": [
+            {"slug": "15", "status": "current", "nextcloud_min": 35,
+             "nextcloud_max": 35},
+            {"slug": "main", "status": "development", "nextcloud_min": 36,
+             "nextcloud_max": 36}]}
+        page = version_overview(catalog)
+        for route in (
+            "15/user_manual/start.html",
+            "15/user_manual/functionality.html",
+            "15/admin_manual/installation.html",
+            "15/developer_manual/integration/index.html",
+        ):
+            with self.subTest(route=route):
+                self.assertIn(f'href="{route}"', page)
+        self.assertIn('id="quick-tasks-title"', page)
+        self.assertNotIn('href="main/user_manual/functionality.html"', page)
+
     def test_homepage_loads_theme_before_css_and_exposes_accessible_toggle(self):
         catalog = {"current_stable": "15", "versions": [
             {"slug": "15", "status": "current", "nextcloud_min": 35,
