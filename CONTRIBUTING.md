@@ -42,6 +42,42 @@ developer manual is built with warnings treated as errors. Open the resulting
 HTML page under `_build/` and check headings, lists, code blocks, images, links,
 cross-references, spacing, and layout.
 
+## Version-scoped integration documentation
+
+The published version selector does not by itself make prose compatible with
+an older LibreSign release. The build discovers application releases from
+`appinfo/info.xml`, pins each source commit and publishes that commit's
+`openapi.json`. The exact LibreSign/Nextcloud versions are available in
+Sphinx as `|LibreSignRelease|` and `|NextcloudRelease|`.
+
+The source layout deliberately has three different scopes:
+
+- `developer_manual/` describes the development (`main`) application.
+- `versioned/base/` contains only claims verified across the published
+  stable releases. Do not copy development-only behavior into this base.
+- `versioned/<major>/` overrides stable content when a release differs.
+  The existing version build overlays files; do not change its discovery
+  or hardcode version numbers in workflow scripts.
+
+For the external-email-signers guide, each supported application line has
+a reviewed `examples/external-email-signers/request-<slug>.json` and a
+`_external-email-signers-release.inc` in its own source directory.
+The Sphinx include extension `.inc` prevents these snippets from being
+treated as additional standalone manual pages. The CLI clients refuse
+to choose a fixture implicitly: `LIBRESIGN_DOC_LINE` selects a reviewed
+release explicitly. When a new release is discovered, add its reviewed
+fixture and overlay rather than inheriting an older identity schema.
+
+The Documentation CI gate validates the actual nested request fields
+and example JSON against **that version's pinned OpenAPI**, checks
+guarded controller and Playwright source files from the **same pinned
+application commit**, and rejects unknown/new releases without reviewed
+examples. It does not assert that browser signing, SMTP or certificate
+verification passed in a live environment. Record those executions
+separately when performed. Changes to an API contract must be made in
+the LibreSign application repository and regenerated there; do not
+modify the pinned JSON inside the documentation repository.
+
 ## Pull request evidence
 
 Link the relevant issue. For every changed or newly added **rendered
