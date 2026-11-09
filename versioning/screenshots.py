@@ -76,6 +76,14 @@ def screenshot_plan(site: Path) -> list[Screenshot]:
         Screenshot("libresign-versions-home-light.png", LIGHT_ROUTE),
     ]
     screenshots.extend(
+        Screenshot(
+            f"webhooks-{slug}-{page.stem}.png",
+            f"/{slug}/developer_manual/webhooks/{page.name}",
+        )
+        for slug in slugs
+        for page in sorted((site / slug / "developer_manual/webhooks").glob("*.html"))
+    )
+    screenshots.extend(
         Screenshot(f"libresign-{slug}.png", f"/{slug}/")
         for slug in slugs
     )
@@ -113,8 +121,11 @@ class PreviewHandler(SimpleHTTPRequestHandler):
         pass
 
 
-def take_screenshots(site: Path, output: Path, browser: str | None = None) -> list[Path]:
-    screenshots = screenshot_plan(site)
+def take_screenshots(
+    site: Path, output: Path, browser: str | None = None,
+    plan: list[Screenshot] | None = None,
+) -> list[Path]:
+    screenshots = screenshot_plan(site) if plan is None else plan
     chrome = browser or shutil.which("google-chrome") or shutil.which("chromium")
     if not chrome:
         raise RuntimeError("Google Chrome/Chromium is required for screenshots")
