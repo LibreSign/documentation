@@ -32,7 +32,7 @@ SOURCE_MARKERS = {
     "playwright/e2e/multi-signer-sequential.spec.ts": ("test(",),
 }
 FIXTURE_FOLDER = Path("examples/external-email-signers")
-PARTIAL_NAME = "_external-email-signers-release.rst"
+PARTIAL_NAME = "_external-email-signers-release.inc"
 
 
 def resolve(spec: dict, schema: dict) -> dict:

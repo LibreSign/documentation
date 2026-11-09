@@ -42,7 +42,7 @@ The request structure is selected for this documentation release. Use only
 the version-specific fixture below with the executable cURL or PHP clients
 in ``examples/external-email-signers``. The version selector is mandatory.
 
-.. include:: _external-email-signers-release.rst
+.. include:: _external-email-signers-release.inc
 
 The scripts POST /request-signature,
 verify ocs.meta and retain ocs.data.id (LibreSign file ID) and

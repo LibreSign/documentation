@@ -159,7 +159,7 @@ class GuestSigningContractTests(unittest.TestCase):
                     ROOT / "developer_manual/api" if slug == "main"
                     else ROOT / "versioned" / slug / "developer_manual/api"
                 )
-                panel = (directory / "_external-email-signers-release.rst").read_text()
+                panel = (directory / "_external-email-signers-release.inc").read_text()
                 self.assertEqual(extract_rst_json(panel), fixture(slug))
                 self.assertIn(f"LIBRESIGN_DOC_LINE={slug}", panel)
 
