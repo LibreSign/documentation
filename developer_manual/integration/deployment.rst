@@ -52,7 +52,7 @@ LibreSign signer workflow can complete.
      - Tokens accepted by IdP but rejected by Nextcloud
    * - Native Webhook Listeners
      - Optional, version-gated
-     - LibreSign 16/Nextcloud 36 completion event where installed; verify the receiver and worker HTTP delivery
+     - Only when this release publishes a compatible event; verify the receiving endpoint and worker HTTP delivery
      - Missing, ambiguous or duplicate events
    * - TSA, CRL, additional trust anchors
      - Conditional

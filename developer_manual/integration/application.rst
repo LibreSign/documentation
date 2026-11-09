@@ -70,19 +70,26 @@ identification methods require instance-level configuration.
 **The signer identification payload is not identical across releases.**
 An ``identifyMethods`` element in LibreSign 13/14 uses ``mandatory``;
 in LibreSign 15 and the development line it uses the ``requirement`` enum.
-For example, these are **field fragments**, not full request bodies:
+The following comparison is **not** a reusable request body:
 
-.. code-block:: json
+.. list-table:: Version-specific email signer identification
+   :header-rows: 1
+   :widths: 24 38 38
 
-   {"method": "email", "value": "signer@example.test", "mandatory": 1}
+   * - LibreSign release
+     - Required input field
+     - Example value
+   * - 13 and 14
+     - ``mandatory`` (integer)
+     - ``1``
+   * - 15 and development ``main``
+     - ``requirement`` (string enum)
+     - ``"required"``
 
-.. code-block:: json
-
-   {"method": "email", "value": "signer@example.test", "requirement": "required"}
-
-Use only the fragment described by your selected
-:doc:`../api/openapi`, inside its ``NewSigner.identifyMethods`` schema.
-Do not paste fragments from a newer release into an older integration. The
+Verify ``NewSigner.identifyMethods`` in :doc:`../api/openapi` and
+select the complete, release-specific fixture from
+:doc:`../api/external-email-signers` using ``LIBRESIGN_DOC_LINE``.
+Do not copy fields from a newer release into an older request. The
 complete creation, invitation, polling and retrieval examples are maintained
 in :doc:`../api/external-email-signers`, where the fixture must match this
 release's pinned OpenAPI.
