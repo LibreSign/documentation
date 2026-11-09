@@ -50,6 +50,13 @@ jobs:
           python -m versioning.verify --output _publish
           rm _publish/CNAME
 
+      - name: Render unpublished release documentation for PR review
+        env:
+          PREVIEW_ROOT: https://libresign.github.io/site-preview/docs-preview/pr-${{ github.event.pull_request.number }}
+        run: |
+          python -m versioning.pr_review_screenshots \
+            --site _publish --preview-root "$PREVIEW_ROOT"
+
       - name: Upload unprivileged preview for fork PRs
         if: github.event.pull_request.head.repo.full_name != github.repository
         uses: actions/upload-artifact@v4
@@ -110,3 +117,32 @@ jobs:
               exit 1
             fi
           done
+
+      - name: Comment with rendered screenshots
+        if: github.event.pull_request.head.repo.full_name == github.repository
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PREVIEW_ROOT: https://libresign.github.io/site-preview/docs-preview/pr-${{ github.event.pull_request.number }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          if [ ! -f _publish/_review/screenshots-comment.md ]; then
+            echo "No unreleased manual changes to capture"
+            exit 0
+          fi
+          for image in _publish/_review/screenshots/*.png; do
+            url="$PREVIEW_ROOT/_review/screenshots/$(basename "$image")"
+            curl --fail --silent --show-error --location --retry 8 \
+              --retry-delay 5 --retry-all-errors --output /dev/null "$url"
+          done
+
+          body=$(cat _publish/_review/screenshots-comment.md)
+          marker='<!-- libresign-documentation-review-screenshots -->'
+          comment_id=$(gh api "repos/$GITHUB_REPOSITORY/issues/$PR_NUMBER/comments?per_page=100" \
+            --paginate --jq ".[] | select(.body | contains(\"$marker\")) | .id" | head -n 1)
+          if [ -n "$comment_id" ]; then
+            gh api --method PATCH "repos/$GITHUB_REPOSITORY/issues/comments/$comment_id" \
+              -f body="$body" >/dev/null
+          else
+            gh api --method POST "repos/$GITHUB_REPOSITORY/issues/$PR_NUMBER/comments" \
+              -f body="$body" >/dev/null
+          fi

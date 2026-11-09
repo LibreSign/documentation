@@ -121,8 +121,11 @@ class PreviewHandler(SimpleHTTPRequestHandler):
         pass
 
 
-def take_screenshots(site: Path, output: Path, browser: str | None = None) -> list[Path]:
-    screenshots = screenshot_plan(site)
+def take_screenshots(
+    site: Path, output: Path, browser: str | None = None,
+    plan: list[Screenshot] | None = None,
+) -> list[Path]:
+    screenshots = screenshot_plan(site) if plan is None else plan
     chrome = browser or shutil.which("google-chrome") or shutil.which("chromium")
     if not chrome:
         raise RuntimeError("Google Chrome/Chromium is required for screenshots")
