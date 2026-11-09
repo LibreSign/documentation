@@ -94,10 +94,11 @@ links to every rendered overlay page. None of those pages is inserted into
 `versions.json`, the version selector or production Pages.
 
 For forks, the unprivileged workflow only uploads an HTML artifact; the
-trusted `workflow_run` consumer publishes and verifies it without executing
-fork code while possessing the deployment token. Both paths expose navigable
-review-only pages. Upon closing the PR, the trusted cleanup workflow removes
-the preview.
+trusted `workflow_run` consumer checks its static files, publishes it and
+verifies its public URLs without executing fork code while possessing the
+deployment token. The existing preview action posts the PR link; the preview
+homepage also links to `/_review/`, so no second comment script is needed.
+Upon closing the PR, the trusted cleanup workflow removes the preview.
 
 The preview action and organization App do not publish stable documentation.
 Successful preview CI is **not authorization to merge**.

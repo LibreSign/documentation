@@ -191,6 +191,10 @@ class PublicationTests(unittest.TestCase):
         self.assertIn("Pull request preview", page)
         self.assertIn('href="15/admin_manual/"', page)
         self.assertNotIn('href="/15/admin_manual/"', page)
+        self.assertIn('href="_review/"', page)
+        with patch.dict("os.environ", {"LIBRESIGN_PREVIEW_PR": ""}):
+            public_page = version_overview(catalog)
+        self.assertNotIn('href="_review/"', public_page)
 
     def test_local_link_verification(self):
         with tempfile.TemporaryDirectory() as temp:
