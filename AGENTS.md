@@ -29,7 +29,7 @@ Keep changes in the appropriate manual:
 ## Release parity (required for every documentation change)
 
 Before writing, correcting, or backporting a feature description, API example,
-configuration instruction, screenshot, or troubleshooting step:
+configuration instruction, rendered example, or troubleshooting step:
 
 1. **Identify the target LibreSign release(s).** A Nextcloud major, an OCS
    `/api/v1` path, or a successful build does not identify the LibreSign feature
@@ -60,13 +60,15 @@ configuration instruction, screenshot, or troubleshooting step:
    URLs. Check old and new releases after changing shared content.
 6. **Validate and report evidence.** Build affected Sphinx manuals, run
    versioned contract/provenance checks and relevant runtime tests where
-   feasible, and inspect screenshots of each changed rendered page. State
-   explicitly which releases, scenarios, and behaviors are verified versus
-   untested. Green Sphinx/CI checks are not proof of real signing, SMTP,
-   policies, or file-download permissions.
+   feasible, and inspect the navigable PR preview, including any unreleased
+   release-specific pages under `/_review/`. State explicitly which releases,
+   scenarios, and behaviors are verified versus untested. Green Sphinx/CI
+   checks are not proof of real signing, SMTP, policies, or file permissions.
 
 This repository builds stable versions from `versioned/base/` plus overlays,
-not from separate documentation branches as Nextcloud does. Preserve the
+not from separate documentation branches as Nextcloud does. Directory scopes
+shared from the development manual into stable builds are declared in
+`versioned/shared.json`, never hardcoded per page in build scripts. Preserve the
 existing dynamic discovery and build infrastructure. For authoring details
 and the external-email-signers fixture conventions, read
 [CONTRIBUTING.md](CONTRIBUTING.md). Application behavior and API contract
@@ -76,10 +78,10 @@ changes belong in `LibreSign/libresign` and require a separate change there.
 
 Build the affected Sphinx manuals. Pull requests should pass the Documentation workflow; developer documentation is built with warnings treated as errors.
 
-For each changed or added rendered documentation page, include a screenshot of
-the Sphinx output in the PR. Screenshots are review evidence, not source files;
-do not include sensitive information. For tooling-only changes that affect no
-rendered page, state `Not applicable` and explain why.
+Every rendered documentation change must be accessible through the PR preview.
+Reviewers use the published HTML, not mandatory screenshots. Sphinx, links,
+OpenAPI provenance and release-specific checks remain required; do not weaken
+these checks to make an inaccurate page look compatible.
 
 ## Licensing
 

@@ -37,10 +37,13 @@ sphinx-build admin_manual _build/admin_manual
 sphinx-build -W developer_manual _build/developer_manual
 ```
 
-Run the affected command(s), not necessarily all four; CI builds all four. The
-developer manual is built with warnings treated as errors. Open the resulting
-HTML page under `_build/` and check headings, lists, code blocks, images, links,
-cross-references, spacing, and layout.
+Run the affected command(s), not necessarily all four; CI builds every
+version. For stable or cross-version edits, run
+`python -m versioning.build --output _build` when network access is available;
+it uses pinned application contracts. The developer manual is built with
+warnings treated as errors. The PR workflow publishes a navigable preview
+for visual checking of headings, code blocks, links and layout. No
+screenshot attachment or Python change is required to add an RST page.
 
 ## Version-scoped integration documentation
 
@@ -56,8 +59,16 @@ The source layout deliberately has three different scopes:
 - `versioned/base/` contains only claims verified across the published
   stable releases. Do not copy development-only behavior into this base.
 - `versioned/<major>/` overrides stable content when a release differs.
-  The existing version build overlays files; do not change its discovery
-  or hardcode version numbers in workflow scripts.
+- `versioned/shared.json` lists **directory scopes**, not individual pages,
+  that are already verified as release-safe and can be copied from the
+  development manual into stable builds. New RST files inside a declared
+  section are included automatically. Add a new directory to this small
+  declarative file only when all relevant stable releases support its content.
+  Keep development-only pages outside shared scopes.
+
+Use `.. toctree::` in your RST section index so Sphinx can discover the
+new page. No Python file needs modification to add a page, section or
+version-specific override; keep release discovery dynamic.
 
 For the external-email-signers guide, each supported application line has
 a reviewed `examples/external-email-signers/request-<slug>.json` and a
@@ -78,24 +89,25 @@ separately when performed. Changes to an API contract must be made in
 the LibreSign application repository and regenerated there; do not
 modify the pinned JSON inside the documentation repository.
 
-## Pull request evidence
+## Pull request preview and evidence
 
-Link the relevant issue. For every changed or newly added **rendered
-documentation page**, attach a screenshot of that page's rendered output to the
-pull request. For a long page, use multiple focused screenshots that keep the
-changed content and its surrounding context readable. For responsive or UI
-examples, use the viewport relevant to the documented workflow. Screenshots
-support review; they do not replace the source files or automated checks. Do
-not add an image to the documentation source solely to satisfy this requirement.
+Link the relevant issue and describe the affected versions. The workflow
+publishes the complete multiversion HTML preview on an isolated origin and
+checks its public URLs. Review the rendered result by opening its links:
+navigation, responsive layout, dark mode, code blocks and cross-references
+are easier to verify there than in static screenshots. No screenshots are
+required, and you do not need to edit Python for ordinary RST contributions.
 
-If a pull request changes only non-rendered tooling, CI, dependencies, or other
-files that do not affect a documentation page, write `Not applicable` in the PR
-screenshot section and explain why. Never include credentials, tokens, private
-documents, real personal or customer data, or other sensitive information in
-screenshots.
+Documentation for an unreleased application major is rendered into a separate
+`/_review/` preview area, with direct links in a PR comment. It does not
+appear in production Pages or the published version selector. Future-release
+content uses development application metadata for preview, not an invented
+stable OpenAPI. Contributor fork previews use the same isolated static HTML
+site, deployed by a privileged workflow that does not execute fork code.
 
-Keep each pull request focused on one documentation concern. Review the rendered
-output and complete the PR checklist before requesting review.
+Keep each pull request focused. Report the tests actually run and any known
+runtime coverage gaps; never include secrets, private documents or real
+customer data in examples or previews.
 
 ## Developer Certificate of Origin
 
