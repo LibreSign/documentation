@@ -148,7 +148,7 @@ def version_overview(catalog: dict) -> str:
     )
 
 
-def legacy_redirects(output: Path, current: str) -> None:
+def legacy_redirects(output: Path, current: str, *, routes: dict[str, str] | None = None) -> None:
     destination = output / current
     if not (destination / "index.html").is_file():
         raise ValueError("Cannot create legacy redirects without stable landing page")
@@ -168,26 +168,19 @@ def legacy_redirects(output: Path, current: str) -> None:
             "<p>Release-specific review pages are generated after validation.</p>",
             encoding="utf-8",
         )
-    # Previous URLs did not include a version prefix. Preserve page paths
-    # when the same page exists in current stable; otherwise go to that
-    # manual's landing page, never silently to a development-only page.
-    for manual in MANUALS[1:]:
-        base = output / manual
-        base.mkdir(parents=True, exist_ok=True)
-        main_source = output / "main" / manual
-        for page in main_source.rglob("*.html"):
-            relative = page.relative_to(main_source)
-            target = destination / manual / relative
-            if not target.is_file():
-                target = destination / manual / "index.html"
-            redirect = base / relative
-            redirect.parent.mkdir(parents=True, exist_ok=True)
-            redirect.write_text(
-                redirect_html("/" + str(target.relative_to(output)).replace(os.sep, "/")),
-                encoding="utf-8",
-            )
-        (base / "index.html").write_text(
-            redirect_html(f"/{current}/{manual}/"), encoding="utf-8",
+    # The previous unversioned URLs are a permanent migration interface.
+    # Do not move their destinations when a future stable line is published.
+    from versioning.seo import read_legacy_routes
+
+    for old, target in (read_legacy_routes(ROOT) if routes is None else routes).items():
+        destination_page = output / target
+        if not destination_page.is_file():
+            raise ValueError(f"Missing historical destination: {old} => {target}")
+        legacy_page = output / old
+        legacy_page.parent.mkdir(parents=True, exist_ok=True)
+        legacy_page.write_text(
+            redirect_html("/" + target),
+            encoding="utf-8",
         )
 
 

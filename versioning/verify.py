@@ -11,6 +11,7 @@ from pathlib import Path
 from urllib.parse import unquote, urlsplit
 
 from versioning.catalog import fetch_source, operations, validate_contract
+from versioning.seo import verify_seo
 
 REQUIRED_MANUALS = ("user_manual", "admin_manual", "developer_manual")
 
@@ -149,6 +150,9 @@ def verify_site(output: Path, versions: list[str] | None = None,
         for slug in versions:
             for page in (output / slug).rglob("*.html"):
                 errors.extend(inspect_links(output, page))
+    if (output / ".nojekyll").exists():
+        errors.extend(verify_seo(output, catalog,
+                                 preview=bool(os.environ.get("LIBRESIGN_PREVIEW_PR"))))
     if errors:
         raise ValueError("\n".join(errors[:60]))
     return {

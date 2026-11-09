@@ -47,14 +47,14 @@ class UnreleasedPreviewTests(unittest.TestCase):
                     catalog: dict, *, review_only: bool = False) -> None:
         assert review_only
         output.mkdir(parents=True)
-        (output / "index.html").write_text("Review manual")
+        (output / "index.html").write_text("<html><head></head><body>Review manual</body></html>")
         target = output / "webhooks"
         target.mkdir()
         (target / "index.html").write_text(
-            '<a href="new_event.html">Event</a>')
-        (target / "new_event.html").write_text("Native event")
+            '<html><head></head><body><a href="new_event.html">Event</a></body></html>')
+        (target / "new_event.html").write_text("<html><head></head><body>Native event</body></html>")
         (output / "api").mkdir()
-        (output / "api/openapi.html").write_text("OpenAPI")
+        (output / "api/openapi.html").write_text("<html><head></head><body>OpenAPI</body></html>")
 
     def test_future_pages_are_built_and_linked_without_filename_registration(self):
         with tempfile.TemporaryDirectory() as tmp:
