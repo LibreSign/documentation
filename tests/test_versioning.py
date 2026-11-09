@@ -193,6 +193,8 @@ class PublicationTests(unittest.TestCase):
             (root / "versions.json").write_text(json.dumps(catalog))
             (root / "15/index.html").parent.mkdir()
             (root / "15/index.html").write_text("Stable")
+            (root / "main/index.html").parent.mkdir()
+            (root / "main/index.html").write_text("Development")
             (root / "15/lifecycle.html").write_text("Lifecycle")
             for manual in ("user_manual", "admin_manual", "developer_manual"):
                 for slug in ("15", "main"):
