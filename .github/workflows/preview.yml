@@ -82,7 +82,7 @@ jobs:
           deploy-repository: LibreSign/site-preview
           preview-branch: gh-pages
           pages-base-url: libresign.github.io/site-preview
-          wait-for-pages-deployment: false
+          wait-for-pages-deployment: true
           qr-code: true
           token: ${{ steps.preview-token.outputs.token }}
 
@@ -92,9 +92,14 @@ jobs:
           PREVIEW_ROOT: https://libresign.github.io/site-preview/docs-preview/pr-${{ github.event.pull_request.number }}
         run: |
           stable=$(python -c "import json; print(json.load(open('_publish/versions.json'))['current_stable'])")
-          for url in "$PREVIEW_ROOT/$stable/" "$PREVIEW_ROOT/$stable/developer_manual/api/openapi.html"; do
+          for url in \
+            "$PREVIEW_ROOT/$stable/" \
+            "$PREVIEW_ROOT/$stable/developer_manual/api/openapi.html" \
+            "$PREVIEW_ROOT/main/developer_manual/webhooks/" \
+            "$PREVIEW_ROOT/main/developer_manual/webhooks/configuration.html" \
+            "$PREVIEW_ROOT/main/developer_manual/webhooks/signing_completion.html"; do
             success=false
-            for attempt in $(seq 1 15); do
+            for attempt in $(seq 1 45); do
               if curl -fsSL --max-time 15 -o /tmp/preview-page.html "$url" &&
                 grep -q 'libresign-version-toggle' /tmp/preview-page.html; then
                 echo "Preview is publicly navigable: $url"

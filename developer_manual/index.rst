@@ -49,6 +49,7 @@ For professional services or partnerships,
    getting-started/index
    development-workflow
    api/index
+   webhooks/index
    translation
    requesting-features
    release-process
