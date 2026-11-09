@@ -41,9 +41,9 @@ class DocumentationSeoTests(unittest.TestCase):
         self.assertEqual(set(routes), source)
         self.assertEqual(len(routes), 46)
         self.assertEqual(routes["user_manual/functionality.html"],
-                         "main/user_manual/functionality.html")
+                         "15/user_manual/functionality.html")
         self.assertEqual(routes["admin_manual/installation.html"],
-                         "main/admin_manual/installation.html")
+                         "15/admin_manual/installation.html")
         self.assertEqual(routes["developer_manual/architecture.html"],
                          "main/developer_manual/architecture.html")
 
