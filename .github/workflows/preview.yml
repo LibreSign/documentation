@@ -56,6 +56,7 @@ jobs:
         run: |
           python -m versioning.pr_preview \
             --site _publish --preview-root "$PREVIEW_ROOT"
+          printf '%s\n' "$GITHUB_SHA" > _publish/_review/source-revision.txt
 
       - name: Upload unprivileged preview for fork PRs
         if: github.event.pull_request.head.repo.full_name != github.repository
@@ -89,8 +90,11 @@ jobs:
           deploy-repository: LibreSign/site-preview
           preview-branch: gh-pages
           pages-base-url: libresign.github.io/site-preview
-          wait-for-pages-deployment: true
-          qr-code: true
+          # A newer deployment from another PR can supersede this Pages build.
+          # Verify our published revision over HTTP instead of waiting on its run ID.
+          wait-for-pages-deployment: false
+          comment: false
+          qr-code: false
           token: ${{ steps.preview-token.outputs.token }}
 
       - name: Check every navigable preview route on the public origin
@@ -98,6 +102,23 @@ jobs:
         env:
           PREVIEW_ROOT: https://libresign.github.io/site-preview/docs-preview/pr-${{ github.event.pull_request.number }}
         run: |
+          # The Pages deployment for our commit may be superseded by another
+          # PR using the same origin. Wait for OUR immutable source revision.
+          revision_url="$PREVIEW_ROOT/_review/source-revision.txt"
+          for attempt in $(seq 1 72); do
+            published_revision="$(curl -fsSL --max-time 15 \
+              -H 'Cache-Control: no-cache' \
+              "$revision_url?run=$GITHUB_RUN_ID&attempt=$attempt" 2>/dev/null || true)"
+            if [ "$published_revision" = "$GITHUB_SHA" ]; then
+              echo "Published preview revision matches $GITHUB_SHA"
+              break
+            fi
+            if [ "$attempt" -eq 72 ]; then
+              echo "::error::Preview revision not yet published: $revision_url" >&2
+              exit 1
+            fi
+            sleep 5
+          done
           while IFS= read -r route; do
             [ -n "$route" ] || continue
             url="$PREVIEW_ROOT$route"
