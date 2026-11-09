@@ -67,6 +67,14 @@ try {
     $api = $base . '/ocs/v2.php/apps/libresign/api/v1';
     switch ($mode) {
         case 'start':
+            $line = requiredEnv('LIBRESIGN_DOC_LINE');
+            if (!preg_match('/\A(?:main|[1-9][0-9]*)\z/D', $line)) {
+                throw new RuntimeException('Invalid documentation release slug');
+            }
+            $fixture = __DIR__ . '/request-' . $line . '.json';
+            if (!is_readable($fixture)) {
+                throw new RuntimeException('No verified fixture for this LibreSign documentation line');
+            }
             $email = requiredEnv('SIGNER_EMAIL');
             if (str_ends_with($email, '@example.test') || str_ends_with($email, '@example.invalid')) {
                 throw new RuntimeException('Use a controlled deliverable test mailbox');
@@ -75,7 +83,7 @@ try {
             if ($pdf === false || !str_starts_with($pdf, '%PDF-')) {
                 throw new RuntimeException('Unreadable or invalid synthetic PDF');
             }
-            $payload = json_decode(file_get_contents(__DIR__ . '/request.json'), true, 512, JSON_THROW_ON_ERROR);
+            $payload = json_decode(file_get_contents($fixture), true, 512, JSON_THROW_ON_ERROR);
             $payload['file']['base64'] = base64_encode($pdf);
             $payload['signers'][0]['identifyMethods'][0]['value'] = $email;
             $created = ocs($api, $user, $password, '/request-signature', 'POST', $payload);
@@ -84,7 +92,7 @@ try {
             if (!is_int($fileId) || !is_string($fileUuid) || $fileUuid === '') {
                 throw new RuntimeException('Creation response lacks a valid file ID/UUID');
             }
-            // notify: 0 in request.json prevents an automatic duplicate invitation.
+            // notify: 0 in the version-specific fixture prevents an automatic duplicate invitation.
             ocs($api, $user, $password, '/notify/signers', 'POST', [
                 'fileId' => $fileId,
                 'signers' => [['email' => $email]],

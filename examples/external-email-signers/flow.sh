@@ -31,6 +31,15 @@ check_response() {
 }
 case "$mode" in
   start)
+    : "${LIBRESIGN_DOC_LINE:?Choose the documentation line (13, 14, 15 or main)}"
+    if [[ ! "$LIBRESIGN_DOC_LINE" =~ ^(main|[1-9][0-9]*)$ ]]; then
+      echo "LIBRESIGN_DOC_LINE must be a documentation release slug" >&2; exit 2
+    fi
+    fixture="request-${LIBRESIGN_DOC_LINE}.json"
+    if [[ ! -r "$fixture" ]]; then
+      echo "No verified request fixture for ${LIBRESIGN_DOC_LINE}; review this release's API" >&2
+      exit 2
+    fi
     : "${SIGNER_EMAIL:?Use an inbox you control}"
     : "${PDF_PATH:?Use a synthetic PDF on disk}"
     if [[ "$SIGNER_EMAIL" == *"@example.test" || "$SIGNER_EMAIL" == *"@example.invalid" ]]; then
@@ -42,7 +51,7 @@ case "$mode" in
     fi
     pdf64="$(base64 < "$PDF_PATH" | tr -d '\r\n')"
     payload="$(jq -c --arg pdf "$pdf64" --arg email "$SIGNER_EMAIL" \
-      '.file.base64=$pdf | .signers[0].identifyMethods[0].value=$email' request.json)"
+      '.file.base64=$pdf | .signers[0].identifyMethods[0].value=$email' "$fixture")"
     result="$(printf '%s' "$payload" | ocs -X POST \
       -H 'Content-Type: application/json' --data-binary @- "$api/request-signature")"
     printf '%s' "$result" | check_response
