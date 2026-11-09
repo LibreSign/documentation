@@ -74,8 +74,8 @@ class UnreleasedPreviewTests(unittest.TestCase):
     def test_invalid_overlay_page_cannot_be_silently_omitted(self):
         with tempfile.TemporaryDirectory() as tmp:
             site, sources = self.fixture(Path(tmp))
-            def incomplete(source, output, entry, catalog):
-                self.fake_sphinx(source, output, entry, catalog)
+            def incomplete(source, output, entry, catalog, *, review_only=False):
+                self.fake_sphinx(source, output, entry, catalog, review_only=review_only)
                 (output / "webhooks/new_event.html").unlink()
             with patch.object(pr_preview, "ROOT", sources), \
                  patch.object(pr_preview, "source_tree", return_value=Path(tmp)), \
@@ -86,8 +86,8 @@ class UnreleasedPreviewTests(unittest.TestCase):
     def test_broken_links_in_review_are_detected(self):
         with tempfile.TemporaryDirectory() as tmp:
             site, sources = self.fixture(Path(tmp))
-            def broken(source, output, entry, catalog):
-                self.fake_sphinx(source, output, entry, catalog)
+            def broken(source, output, entry, catalog, *, review_only=False):
+                self.fake_sphinx(source, output, entry, catalog, review_only=review_only)
                 (output / "webhooks/index.html").write_text(
                     '<a href="absent.html">Missing</a>')
             with patch.object(pr_preview, "ROOT", sources), \

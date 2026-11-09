@@ -34,7 +34,8 @@ def shared_sources(manual: str) -> list[tuple[Path, Path]]:
         if not isinstance(name, str) or not name or name.startswith("/"):
             raise ValueError(f"Invalid shared section: {name!r}")
         relative = Path(name)
-        if any(part in ("..", ".") for part in relative.parts) or "\\" in name:
+        if (relative == Path(".") or "//" in name or
+                any(part in ("..", ".") for part in relative.parts) or "\\" in name):
             raise ValueError(f"Unsafe shared section: {name!r}")
         source = (root / relative).resolve()
         if not source.is_relative_to(root) or not source.is_dir():

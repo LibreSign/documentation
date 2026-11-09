@@ -57,7 +57,7 @@ class SharedSourceTests(unittest.TestCase):
             self.assertFalse((stable / "experimental/new.rst").exists())
 
     def test_traversal_and_missing_sources_fail(self):
-        for section in ("../secrets", "/etc", "missing"):
+        for section in (".", "./", "../secrets", "/etc", "missing"):
             with self.subTest(section=section), tempfile.TemporaryDirectory() as temp:
                 root = Path(temp)
                 self.fixture(root)
