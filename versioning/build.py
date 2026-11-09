@@ -162,10 +162,11 @@ def legacy_redirects(output: Path, current: str, *, routes: dict[str, str] | Non
         entry = output / "_review/index.html"
         entry.parent.mkdir(parents=True, exist_ok=True)
         entry.write_text(
-            "<!doctype html><html lang='en'><meta charset='utf-8'>"
-            "<title>Preview-only documentation</title>"
-            "<h1>Preview-only documentation</h1>"
-            "<p>Release-specific review pages are generated after validation.</p>",
+            "<!doctype html><html lang='en'><head><meta charset='utf-8'>"
+            "<title>Preview-only documentation</title></head><body>"
+            "<main><h1>Preview-only documentation</h1>"
+            "<p>Release-specific review pages are generated after validation.</p>"
+            "</main></body></html>",
             encoding="utf-8",
         )
     # The previous unversioned URLs are a permanent migration interface.

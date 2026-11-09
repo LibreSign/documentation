@@ -55,7 +55,8 @@ class DocumentationSeoTests(unittest.TestCase):
         (self.site / "versions.json").write_text(
             json.dumps(self.catalog), encoding="utf-8")
         self.page("index.html", '<div id="main-content"></div>')
-        with patch("versioning.build.version_overview", return_value=self.page("index.html").read_text()):
+        with patch.dict("os.environ", {"LIBRESIGN_DOC_BASE_PATH": ""}), \
+             patch("versioning.build.version_overview", return_value=self.page("index.html").read_text()):
             legacy_redirects(self.site, "15", routes={
                 "user_manual/index.html": "15/user_manual/index.html",
                 "user_manual/functionality.html": "main/user_manual/functionality.html",
@@ -63,6 +64,28 @@ class DocumentationSeoTests(unittest.TestCase):
         redirect = (self.site / "user_manual/functionality.html").read_text()
         self.assertIn("url=/main/user_manual/functionality.html", redirect)
         self.assertNotIn("url=/15/user_manual/index.html", redirect)
+
+    def test_preview_legacy_routes_and_placeholder_are_not_indexable(self):
+        self.page("15/index.html")
+        self.page("main/user_manual/functionality.html")
+        self.page("index.html")
+        (self.site / "versions.json").write_text(json.dumps(self.catalog))
+        prefix = "/site-preview/docs-preview/pr-7"
+        with patch.dict("os.environ", {
+            "LIBRESIGN_DOC_BASE_PATH": prefix,
+            "LIBRESIGN_PREVIEW_PR": "7",
+        }), patch("versioning.build.version_overview",
+                 return_value=self.page("index.html").read_text()):
+            legacy_redirects(self.site, "15", routes={
+                "user_manual/functionality.html": "main/user_manual/functionality.html",
+            })
+            apply_seo(self.site, self.catalog, preview=True)
+
+        redirect = (self.site / "user_manual/functionality.html").read_text()
+        self.assertIn(f"url={prefix}/main/user_manual/functionality.html", redirect)
+        self.assertEqual(verify_seo(self.site, self.catalog, preview=True), [])
+        self.assertIn('name="robots" content="noindex,follow"',
+                      (self.site / "_review/index.html").read_text())
 
     def test_missing_redirect_destination_fails_before_deploy(self):
         self.page("15/index.html")
