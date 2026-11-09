@@ -59,6 +59,18 @@ jobs:
       - name: Check links, exact OpenAPI provenance and version isolation
         run: python -m versioning.verify --output _build
 
+      - name: Check external signing guide against each pinned OpenAPI
+        run: |
+          python -c 'from pathlib import Path; from versioning.external_contract import validate_site_external_samples; print(validate_site_external_samples(Path("_build"), Path(".")))'
+
+      - name: Syntax check executable signing examples
+        run: |
+          bash -n examples/external-email-signers/flow.sh
+          php -l examples/external-email-signers/flow.php
+          for template in examples/external-email-signers/request-*.json; do
+            python -m json.tool "$template" >/dev/null
+          done
+
       - name: Assemble complete atomic Pages candidate
         run: python -m versioning.publish --built _build --destination _publish
 

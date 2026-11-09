@@ -25,6 +25,7 @@ class ScreenshotDiscoveryTests(unittest.TestCase):
             (target / "index.html").write_text(f"<h1>{slug}</h1>")
             (target / "developer_manual/api").mkdir(parents=True)
             (target / "developer_manual/api/openapi.html").write_text("OpenAPI")
+            (target / "developer_manual/api/external-email-signers.html").write_text("Guest")
         return site
 
     def test_future_major_is_discovered_from_catalog_without_code_changes(self):
@@ -39,10 +40,13 @@ class ScreenshotDiscoveryTests(unittest.TestCase):
                     "libresign-versions-home-light.png",
                     "libresign-16.png", "libresign-15.png", "libresign-14.png",
                     "libresign-13.png", "libresign-main.png", "openapi-16.png",
+                    "external-email-signers-16.png", "external-email-signers-15.png",
+                    "external-email-signers-14.png", "external-email-signers-13.png",
+                    "external-email-signers-main.png",
                 ],
             )
             self.assertEqual(plan[1].route, LIGHT_ROUTE)
-            self.assertEqual(plan[-1].route, "/16/developer_manual/api/openapi.html")
+            self.assertEqual(plan[-1].route, "/main/developer_manual/api/external-email-signers.html")
 
     def test_new_version_does_not_require_a_workflow_edit(self):
         with tempfile.TemporaryDirectory() as temp:
@@ -52,6 +56,7 @@ class ScreenshotDiscoveryTests(unittest.TestCase):
             (extra / "developer_manual/api").mkdir(parents=True)
             (extra / "index.html").write_text("version 17")
             (extra / "developer_manual/api/openapi.html").write_text("schema")
+            (extra / "developer_manual/api/external-email-signers.html").write_text("Guest")
             catalog = json.loads((site / "versions.json").read_text())
             catalog["versions"].insert(0, {"slug": "17"})
             catalog["current_stable"] = "17"

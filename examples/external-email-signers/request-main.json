@@ -1,0 +1,21 @@
+{
+  "name": "Synthetic service agreement",
+  "status": 1,
+  "file": {
+    "name": "synthetic.pdf",
+    "base64": "REPLACE_WITH_BASE64"
+  },
+  "signers": [
+    {
+      "displayName": "External Test Signer",
+      "notify": 0,
+      "identifyMethods": [
+        {
+          "method": "email",
+          "value": "signer@example.test",
+          "requirement": "required"
+        }
+      ]
+    }
+  ]
+}
