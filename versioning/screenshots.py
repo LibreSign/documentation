@@ -99,6 +99,18 @@ def screenshot_plan(site: Path) -> list[Screenshot]:
             f"external-email-signers-{slug}.png",
             f"/{slug}/developer_manual/api/external-email-signers.html",
         ))
+    # Discover only rendered integration pages from each isolated release.
+    # The source for a new major is still subject to the release-parity gate.
+    screenshots.extend(
+        Screenshot(
+            f"integration-{slug}-{page.stem}.png",
+            f"/{slug}/developer_manual/integration/{page.name}",
+        )
+        for slug in slugs
+        for page in sorted(
+            (site / slug / "developer_manual/integration").glob("*.html")
+        )
+    )
     return screenshots
 
 

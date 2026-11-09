@@ -10,6 +10,9 @@ from versioning.screenshots import (
 )
 
 
+ARCHITECTURE_PAGES = ("application", "deployment", "identity", "index", "lifecycle")
+
+
 class ScreenshotDiscoveryTests(unittest.TestCase):
     def make_site(self, root: Path, slugs: list[str], current: str) -> Path:
         site = root / "site"
@@ -26,6 +29,10 @@ class ScreenshotDiscoveryTests(unittest.TestCase):
             (target / "developer_manual/api").mkdir(parents=True)
             (target / "developer_manual/api/openapi.html").write_text("OpenAPI")
             (target / "developer_manual/api/external-email-signers.html").write_text("Guest")
+            folder = target / "developer_manual/integration"
+            folder.mkdir()
+            for page in ARCHITECTURE_PAGES:
+                (folder / f"{page}.html").write_text(page)
         return site
 
     def test_future_major_is_discovered_from_catalog_without_code_changes(self):
@@ -34,19 +41,21 @@ class ScreenshotDiscoveryTests(unittest.TestCase):
                 Path(temp), ["main", "13", "16", "14", "15"], current="16"
             )
             plan = screenshot_plan(site)
-            self.assertEqual(
-                [s.filename for s in plan], [
-                    "libresign-versions-home-dark.png",
-                    "libresign-versions-home-light.png",
-                    "libresign-16.png", "libresign-15.png", "libresign-14.png",
-                    "libresign-13.png", "libresign-main.png", "openapi-16.png",
-                    "external-email-signers-16.png", "external-email-signers-15.png",
-                    "external-email-signers-14.png", "external-email-signers-13.png",
-                    "external-email-signers-main.png",
-                ],
-            )
+            releases = ["16", "15", "14", "13", "main"]
+            expected = [
+                "libresign-versions-home-dark.png",
+                "libresign-versions-home-light.png",
+                *(f"libresign-{slug}.png" for slug in releases),
+                "openapi-16.png",
+                *(f"external-email-signers-{slug}.png" for slug in releases),
+                *(f"integration-{slug}-{page}.png"
+                  for slug in releases for page in ARCHITECTURE_PAGES),
+            ]
+            self.assertEqual([s.filename for s in plan], expected)
             self.assertEqual(plan[1].route, LIGHT_ROUTE)
-            self.assertEqual(plan[-1].route, "/main/developer_manual/api/external-email-signers.html")
+            self.assertEqual(
+                plan[-1].route, "/main/developer_manual/integration/lifecycle.html"
+            )
 
     def test_new_version_does_not_require_a_workflow_edit(self):
         with tempfile.TemporaryDirectory() as temp:
@@ -57,6 +66,9 @@ class ScreenshotDiscoveryTests(unittest.TestCase):
             (extra / "index.html").write_text("version 17")
             (extra / "developer_manual/api/openapi.html").write_text("schema")
             (extra / "developer_manual/api/external-email-signers.html").write_text("Guest")
+            (extra / "developer_manual/integration").mkdir()
+            for page in ARCHITECTURE_PAGES:
+                (extra / "developer_manual/integration" / f"{page}.html").write_text(page)
             catalog = json.loads((site / "versions.json").read_text())
             catalog["versions"].insert(0, {"slug": "17"})
             catalog["current_stable"] = "17"
@@ -65,6 +77,19 @@ class ScreenshotDiscoveryTests(unittest.TestCase):
             self.assertIn("libresign-17.png", after - before)
             self.assertIn("openapi-17.png", after)
             self.assertNotIn("openapi-15.png", after)
+
+    def test_new_architecture_page_is_discovered_without_a_filename_list(self):
+        with tempfile.TemporaryDirectory() as temp:
+            site = self.make_site(Path(temp), ["15", "main"], "15")
+            destination = site / "15/developer_manual/integration/observability.html"
+            destination.write_text("Observable integration")
+            new_capture = "integration-15-observability.png"
+            plan = screenshot_plan(site)
+            self.assertIn(new_capture, {item.filename for item in plan})
+            self.assertIn(
+                "/15/developer_manual/integration/observability.html",
+                {item.route for item in plan},
+            )
 
     def test_missing_documented_version_fails_instead_of_silent_skip(self):
         with tempfile.TemporaryDirectory() as temp:
