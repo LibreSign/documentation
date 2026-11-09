@@ -22,21 +22,37 @@ ROOT = Path(__file__).resolve().parent.parent
 MANUALS = ("main", "user_manual", "admin_manual", "developer_manual")
 
 
+def shared_sources(manual: str) -> list[tuple[Path, Path]]:
+    """Read declarative shared sections; never assume development-only pages are stable."""
+    config = json.loads((ROOT / "versioned/shared.json").read_text(encoding="utf-8"))
+    sections = config.get(manual, [])
+    if not isinstance(sections, list):
+        raise ValueError(f"Shared sections must be a list: {manual}")
+    root = (ROOT / manual).resolve()
+    result = []
+    for name in sections:
+        if not isinstance(name, str) or not name or name.startswith("/"):
+            raise ValueError(f"Invalid shared section: {name!r}")
+        relative = Path(name)
+        if any(part in ("..", ".") for part in relative.parts) or "\\" in name:
+            raise ValueError(f"Unsafe shared section: {name!r}")
+        source = (root / relative).resolve()
+        if not source.is_relative_to(root) or not source.is_dir():
+            raise ValueError(f"Missing or outside shared section: {name!r}")
+        result.append((relative, source))
+    return result
+
+
 def source_tree(stage: Path, slug: str, manual: str) -> Path:
     target = stage / slug / manual
     if slug == "main":
         shutil.copytree(ROOT / manual, target)
     else:
         shutil.copytree(ROOT / "versioned/base" / manual, target)
-        if manual == "developer_manual":
-            # Shared architectural guidance is version-neutral. Add it before
-            # release overlays, so a stable version can override a claim.
-            shutil.copytree(ROOT / "developer_manual/integration",
-                            target / "integration", dirs_exist_ok=True)
-            stable_notes = ROOT / "versioned/base/developer_manual/integration"
-            if stable_notes.exists():
-                shutil.copytree(stable_notes, target / "integration",
-                                dirs_exist_ok=True)
+        # Contributors declare version-safe sections in versioned/shared.json.
+        # Copy them before release overlays; no Python change for new RST pages.
+        for relative, source in shared_sources(manual):
+            shutil.copytree(source, target / relative, dirs_exist_ok=True)
         overlay = ROOT / "versioned" / slug / manual
         if overlay.exists():
             shutil.copytree(overlay, target, dirs_exist_ok=True)
