@@ -76,6 +76,14 @@ def screenshot_plan(site: Path) -> list[Screenshot]:
         Screenshot("libresign-versions-home-light.png", LIGHT_ROUTE),
     ]
     screenshots.extend(
+        Screenshot(
+            f"webhooks-{slug}-{page.stem}.png",
+            f"/{slug}/developer_manual/webhooks/{page.name}",
+        )
+        for slug in slugs
+        for page in sorted((site / slug / "developer_manual/webhooks").glob("*.html"))
+    )
+    screenshots.extend(
         Screenshot(f"libresign-{slug}.png", f"/{slug}/")
         for slug in slugs
     )
@@ -91,13 +99,6 @@ def screenshot_plan(site: Path) -> list[Screenshot]:
             f"external-email-signers-{slug}.png",
             f"/{slug}/developer_manual/api/external-email-signers.html",
         ))
-    for slug in slugs:
-        folder = site / slug / "developer_manual/webhooks"
-        for page in sorted(folder.glob("*.html")):
-            screenshots.append(Screenshot(
-                f"webhooks-{slug}-{page.stem}.png",
-                f"/{slug}/developer_manual/webhooks/{page.name}",
-            ))
     return screenshots
 
 
