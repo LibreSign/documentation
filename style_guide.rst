@@ -17,10 +17,14 @@ When you are writing your text, make it as literal and specific as possible. Put
 yourself in the place of the person who is using LibreSign and looking for 
 instructions on performing a task. Don't make them guess, but spell 
 out every step in order, and tell exactly what buttons to click or what form 
-fields to fill out. Give complete information; for example, when making an OCC
-configuration change, specify the exact command to run, with the exact
-parameters, and the exact user to run it as. When you are describing 
-features of a GUI administration form use the exact literal names of buttons, 
+fields to fill out. Give complete information; for example, specify the
+exact Nextcloud ``occ`` subcommand and parameters for an administration task.
+Do not assume a ``sudo`` wrapper, operating-system user, PHP path or container
+name in a generic procedure. Instead, link to Nextcloud's
+`occ administration guide <https://docs.nextcloud.com/server/stable/admin_manual/occ_command.html>`_
+for the invocation appropriate to the reader's installation. Only describe a
+concrete wrapper when the page targets that specific deployment. When
+describing GUI administration forms, use the exact literal names of buttons,
 form fields, and menus in English. Specify if menus are dropdown, right-click, 
 left-click, or mouseover.
 
@@ -94,14 +98,14 @@ This is how they render:
    
 Use double-backticks for inline code and command examples::
   
-  ``sudo -E -u www-data php occ libresign:configure:check --help``
-  ``libresign:uninstall --jsignpdf``
+  ``occ app:enable webhook_listeners``
+  ``occ webhook_listeners:list``
   
 This is how they render:
 
-``sudo -E -u www-data php occ libresign:configure:check --help``
+``occ app:enable webhook_listeners``
 
-``libresign:uninstall --jsignpdf``
+``occ webhook_listeners:list``
 
 When you are giving hyperlinks as examples, use double-backticks rather than 
 creating a live hyperlink::

@@ -21,6 +21,7 @@ Start here
 - :doc:`getting-started/tests` — choose and run the appropriate validation.
 - :doc:`api/index` — work with the public API.
 - :doc:`integration/index` — choose an integration architecture for an existing system.
+- :doc:`webhooks/index` — configure webhook subscriptions for signing workflows.
 - :doc:`translation` — contribute translations and document source-string context.
 - :doc:`release-process` — maintain and publish releases.
 
@@ -51,6 +52,7 @@ For professional services or partnerships,
    development-workflow
    api/index
    integration/index
+   webhooks/index
    translation
    requesting-features
    release-process
