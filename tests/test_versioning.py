@@ -195,6 +195,8 @@ class PublicationTests(unittest.TestCase):
         self.assertIn('href="ecosystem-nav.css"', page)
         self.assertIn('href="ecosystem-footer.css"', page)
         self.assertIn('src="ecosystem-nav.js"', page)
+        self.assertIn('src="scroll-navigation.js"', page)
+        self.assertIn('class="page-header libresign-scroll-header"', page)
 
     def test_shared_footer_uses_release_accurate_local_urls_and_official_links(self):
         catalog = {"current_stable": "15", "versions": [
@@ -260,7 +262,7 @@ class PublicationTests(unittest.TestCase):
                     directory = root / slug / manual
                     directory.mkdir(parents=True, exist_ok=True)
                     (directory / "index.html").write_text("Manual")
-            for filename in ("home.css", "home-theme.js", "ecosystem-nav.js", "ecosystem-footer.css", "logo.png"):
+            for filename in ("home.css", "home-theme.js", "ecosystem-nav.js", "scroll-navigation.js", "ecosystem-footer.css", "logo.png"):
                 (root / filename).write_text("asset")
             with patch.dict("os.environ", {"LIBRESIGN_PREVIEW_PR": "127"}):
                 legacy_redirects(root, "15", routes={})

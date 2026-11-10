@@ -194,3 +194,26 @@ nav.libresign-ecosystem-nav .libresign-nav-surface { display: none; }
     animation: none;
   }
 }
+
+/* Keep the resource navigation accessible without covering the document while reading. */
+@media (min-width: 769px) {
+  .libresign-scroll-header {
+    position: sticky;
+    top: 0;
+    z-index: 85;
+    transform: translateY(0);
+  }
+  .libresign-scroll-header.is-scrolled {
+    box-shadow: 0 8px 24px rgb(0 0 0 / .17);
+  }
+  .libresign-scroll-header.is-hidden {
+    transform: translateY(calc(-100% - 12px));
+    pointer-events: none;
+  }
+  html { scroll-padding-top: 100px; }
+}
+@media (min-width: 769px) and (prefers-reduced-motion: no-preference) {
+  .libresign-scroll-header {
+    transition: transform .24s cubic-bezier(.22, 1, .36, 1), box-shadow .18s ease;
+  }
+}
