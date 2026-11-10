@@ -107,9 +107,9 @@ class DocumentationSeoTests(unittest.TestCase):
 
     def test_unsafe_and_generic_legacy_destinations_are_rejected(self):
         source = self.root / "src"
-        (source / "versioned").mkdir(parents=True)
+        (source / "versioning").mkdir(parents=True)
         for bad in ("15/user_manual/index.html", "../../private.html"):
-            (source / "versioned/legacy-routes.json").write_text(json.dumps({
+            (source / "versioning/legacy-routes.json").write_text(json.dumps({
                 "user_manual/functionality.html": bad
             }))
             with self.assertRaises(ValueError):

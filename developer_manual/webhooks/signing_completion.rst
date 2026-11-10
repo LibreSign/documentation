@@ -7,10 +7,6 @@ Signing workflow completed
 
 **Event:** ``OCA\Libresign\Events\SigningRequestCompletedEvent``
 
-**Available from:** LibreSign 16 on Nextcloud 36. This event is not available
-in LibreSign 13, 14 or 15. Verify that your installed LibreSign build includes
-the event before registering a listener.
-
 When it is emitted
 ------------------
 
@@ -57,7 +53,9 @@ Use the same ``eventId`` to avoid repeated processing of duplicate deliveries.
 If a completed workflow is later reopened, check its current status before
 acting on a new notification with the same identifier.
 
-The LibreSign event data does not contain signer email addresses, private file
-URLs, document contents or credentials. Nextcloud may include information about
-the current user in its outer ``user`` field. Retrieve any signed document or
-evidence separately, using an authenticated and authorized LibreSign API call.
+The event delivers metadata only; it does not contain a signed PDF or grant
+file-download permissions. The LibreSign event data does not contain signer
+email addresses, private file URLs, document contents or credentials.
+Nextcloud may include information about the current user in its outer
+``user`` field. Retrieve signed documents and evidence separately using
+authenticated, authorized LibreSign and Nextcloud file operations.

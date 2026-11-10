@@ -6,10 +6,12 @@ SPDX-License-Identifier: CC-BY-3.0
 from __future__ import annotations
 
 import json
+import tempfile
 from pathlib import Path
 from typing import Any, Callable
 
 from versioning.catalog import fetch_source
+from versioning.sources import branch_sources
 
 PREFIX = "/ocs/v2.php/apps/libresign/api/{apiVersion}"
 REQUIRED_OPERATIONS = {
@@ -208,44 +210,55 @@ def validate_site_external_samples(
     """
     catalog = json.loads((site / "versions.json").read_text())
     verified = []
-    for entry in catalog["versions"]:
-        slug = entry["slug"]
-        fixture_file = repository / FIXTURE_FOLDER / f"request-{slug}.json"
-        partial_file = repository / (
-            Path("developer_manual/api") if slug == "main"
-            else Path("versioned") / slug / "developer_manual/api"
-        ) / PARTIAL_NAME
-        if not fixture_file.is_file() or not partial_file.is_file():
-            raise ValueError(f"{slug}: missing reviewed fixture or release-specific guide")
-        spec_file = site / slug / "developer_manual/api/openapi.json"
-        spec = json.loads(spec_file.read_text())
-        fixture = json.loads(fixture_file.read_text())
-        identity_field = validate_external_sample(spec, fixture)
-        partial = partial_file.read_text()
-        if f"request-{slug}.json" not in partial or f"LIBRESIGN_DOC_LINE={slug}" not in partial:
-            raise ValueError(f"{slug}: documentation does not select its own fixture")
-        if entry["branch"] not in partial:
-            raise ValueError(f"{slug}: wrong stable-branch evidence link")
-        documented = extract_rst_json(partial)
-        if documented != fixture:
-            raise ValueError(f"{slug}: shown JSON differs from executable fixture")
-        if identity_field not in partial:
-            raise ValueError(f"{slug}: identify-method contract not described")
-        request_fields = request_schema(operation(spec, "post", "/request-signature"))["properties"]
-        if "signatureFlow" in request_fields:
-            if "accepts" not in partial or "ordered_numeric" not in partial:
-                raise ValueError(f"{slug}: ordered signing request options not documented")
-        elif "does **not** declare" not in partial:
-            raise ValueError(f"{slug}: undocumented signatureFlow field not ruled out")
-        html_file = site / slug / "developer_manual/api/external-email-signers.html"
-        if not html_file.is_file():
-            raise ValueError(f"{slug}: guide is missing from rendered site")
-        html = html_file.read_text()
-        if entry["app_version"] not in html:
-            raise ValueError(f"{slug}: exact application release missing from page")
-        for path in ("/request-signature", "/notify/signers", "/file/list"):
-            if path not in html:
-                raise ValueError(f"{slug}: operation absent from rendered page: {path}")
-        verify_source_evidence(entry, fetch=fetch)
-        verified.append(slug)
+    with tempfile.TemporaryDirectory(prefix="libresign-doc-contracts-") as tmp:
+        branches = Path(tmp)
+        for entry in catalog["versions"]:
+            slug = entry["slug"]
+            fixture_file = repository / FIXTURE_FOLDER / f"request-{slug}.json"
+            if not fixture_file.is_file():
+                raise ValueError(f"{slug}: missing reviewed fixture")
+            source = branch_sources(
+                branches, slug, repository=repository,
+                expected_commit=entry.get("documentation_commit"),
+            )
+            partial_file = source / "developer_manual/api" / PARTIAL_NAME
+            if not partial_file.is_file():
+                raise ValueError(f"{slug}: missing release-specific guide")
+            _check_release_example(site, entry, fixture_file, partial_file, fetch)
+            verified.append(slug)
     return verified
+
+
+def _check_release_example(site: Path, entry: dict, fixture_file: Path,
+                           partial_file: Path, fetch) -> None:
+    slug = entry["slug"]
+    spec_file = site / slug / "developer_manual/api/openapi.json"
+    spec = json.loads(spec_file.read_text())
+    fixture = json.loads(fixture_file.read_text())
+    identity_field = validate_external_sample(spec, fixture)
+    partial = partial_file.read_text()
+    if f"request-{slug}.json" not in partial or f"LIBRESIGN_DOC_LINE={slug}" not in partial:
+        raise ValueError(f"{slug}: documentation does not select its own fixture")
+    if entry["branch"] not in partial:
+        raise ValueError(f"{slug}: wrong stable-branch evidence link")
+    documented = extract_rst_json(partial)
+    if documented != fixture:
+        raise ValueError(f"{slug}: shown JSON differs from executable fixture")
+    if identity_field not in partial:
+        raise ValueError(f"{slug}: identify-method contract not described")
+    request_fields = request_schema(operation(spec, "post", "/request-signature"))["properties"]
+    if "signatureFlow" in request_fields:
+        if "accepts" not in partial or "ordered_numeric" not in partial:
+            raise ValueError(f"{slug}: ordered signing request options not documented")
+    elif "does **not** declare" not in partial:
+        raise ValueError(f"{slug}: undocumented signatureFlow field not ruled out")
+    html_file = site / slug / "developer_manual/api/external-email-signers.html"
+    if not html_file.is_file():
+        raise ValueError(f"{slug}: guide is missing from rendered site")
+    html = html_file.read_text()
+    if entry["app_version"] not in html:
+        raise ValueError(f"{slug}: exact application release missing from page")
+    for path in ("/request-signature", "/notify/signers", "/file/list"):
+        if path not in html:
+            raise ValueError(f"{slug}: operation absent from rendered page: {path}")
+    verify_source_evidence(entry, fetch=fetch)

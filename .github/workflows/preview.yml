@@ -96,6 +96,29 @@ jobs:
           qr-code: false
           token: ${{ steps.preview-token.outputs.token }}
 
+      - name: Wait until GitHub Pages serves this exact preview revision
+        if: github.event.pull_request.head.repo.full_name == github.repository
+        env:
+          PREVIEW_ROOT: https://libresign.github.io/site-preview/docs-preview/pr-${{ github.event.pull_request.number }}
+        run: |
+          # The deploy action pushes gh-pages, but Pages publishes it
+          # asynchronously. Byte equality of versions.json proves the
+          # exact documentation revision has reached the public origin.
+          for attempt in $(seq 1 108); do
+            if curl -fsSL --max-time 15 -H 'Cache-Control: no-cache' \
+              -o /tmp/libresign-live-versions.json \
+              "$PREVIEW_ROOT/versions.json?run=$GITHUB_RUN_ID&attempt=$attempt" &&
+              cmp -s _publish/versions.json /tmp/libresign-live-versions.json; then
+              echo "GitHub Pages serves the expected documentation revision"
+              break
+            fi
+            if [ "$attempt" -eq 108 ]; then
+              echo "::error::GitHub Pages did not publish this preview revision" >&2
+              exit 1
+            fi
+            sleep 10
+          done
+
       - name: Check every navigable preview route on the public origin
         if: github.event.pull_request.head.repo.full_name == github.repository
         env:
@@ -121,7 +144,7 @@ jobs:
             fi
             url="$PREVIEW_ROOT$route"
             success=false
-            for attempt in $(seq 1 24); do
+            for attempt in $(seq 1 4); do
               if curl -fsSL --max-time 15 -H 'Cache-Control: no-cache' \
                 -o /tmp/libresign-preview-page.html \
                 "$url?run=$GITHUB_RUN_ID&attempt=$attempt" &&

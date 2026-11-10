@@ -8,22 +8,42 @@ Configure webhook deliveries
 Native LibreSign webhooks use Nextcloud's **Webhook Listeners** application.
 A Nextcloud administrator registers a receiving HTTPS endpoint and selects
 which event class should trigger it. A separate receiver application can keep
-its own authentication and user interface.
+its own authentication and user interface. The complete procedure, from
+creating an external signing request to fetching its PDF, is in
+:doc:`external-signing-flow`.
 
 Prerequisites
 -------------
 
-- LibreSign must include the event you want to subscribe to. See the event
-  reference pages for availability and payloads.
-- Enable **Webhook Listeners** in Nextcloud. On an installation where the
-  web-server account is ``www-data``, an administrator can run:
+Nextcloud documents ``occ`` subcommands independently of the operating
+system and installation method. Execute them through the appropriate Nextcloud
+administration CLI for your installation, rather than assuming ``sudo``, an
+HTTP-user name or a container name. See Nextcloud's
+`Using the occ command <https://docs.nextcloud.com/server/stable/admin_manual/occ_command.html>`_,
+`Docker instructions <https://github.com/nextcloud/docker#accessing-the-nextcloud-command-line-interface-occ>`_
+and `Snap instructions <https://github.com/nextcloud-snap/nextcloud-snap/wiki/OCC-management-console>`_.
+
+- Choose an event class from :doc:`event-catalog`.
+- Enable **Webhook Listeners** from the Nextcloud **Apps** administration page,
+  or use the Nextcloud command:
 
   .. code-block:: console
 
-     sudo -u www-data php occ app:enable webhook_listeners
+     occ app:enable webhook_listeners
 
-- Configure Nextcloud background jobs in **Cron** mode and allow the server to
-  reach the receiver over HTTPS.
+- Select **Cron** mode under Nextcloud background-job settings, or use:
+
+  .. code-block:: console
+
+     occ background:cron
+
+  This only selects the execution mode; it **does not install a scheduler**.
+  Configure an actual scheduler to run ``cron.php`` periodically (or use the
+  equivalent provided by your installation) and verify jobs execute.
+  Follow Nextcloud's
+  `background-jobs configuration <https://docs.nextcloud.com/server/stable/admin_manual/configuration_server/background_jobs_configuration.html>`_.
+
+- Allow the Nextcloud server to reach the receiver over HTTPS.
 - Provide a receiver that accepts JSON requests, authenticates the sender,
   and can process duplicate messages safely.
 
@@ -69,10 +89,3 @@ of failed HTTP requests. Inspect the Nextcloud log and the receiver log when
 notifications are missing. Reconcile the current workflow using authenticated
 LibreSign API operations and the permissions of the integrating account.
 Never use a webhook payload as authorization to download a signed file.
-
-Event availability
-------------------
-
-Event pages describe the version and precise workflow condition for each
-subscription. Do not assume that an event documented for the development
-line exists on an older installed LibreSign version.

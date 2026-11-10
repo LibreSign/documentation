@@ -58,7 +58,7 @@
           <article class="version-row {% if entry.status == 'current' %}version-current{% endif %}" data-version="{{ entry.slug }}">
             <div class="version-identification">
               <h3><a href="{{ entry.slug }}/">
-                {% if entry.slug == 'main' %}main{% else %}LibreSign {{ entry.slug }}{% endif %}
+                {% if entry.slug == 'main' %}{% if entry.app_version is defined %}LibreSign {{ entry.app_version.split('.')[0] }}{% else %}Development{% endif %}{% else %}LibreSign {{ entry.slug }}{% endif %}
               </a></h3>
               <p class="release-status">
                 {% if entry.status == 'development' %}Development (not a stable release)
@@ -68,7 +68,7 @@
               </p>
               <p class="compatibility">Nextcloud {{ entry.nextcloud_min }}{% if entry.nextcloud_min != entry.nextcloud_max %}–{{ entry.nextcloud_max }}{% endif %}</p>
             </div>
-            <nav class="manual-links" aria-label="{% if entry.slug == 'main' %}Development{% else %}LibreSign {{ entry.slug }}{% endif %} manuals">
+            <nav class="manual-links" aria-label="{% if entry.slug == 'main' %}{% if entry.app_version is defined %}LibreSign {{ entry.app_version.split('.')[0] }}{% else %}Development{% endif %}{% else %}LibreSign {{ entry.slug }}{% endif %} manuals">
               <a href="{{ entry.slug }}/user_manual/">User manual</a>
               <a href="{{ entry.slug }}/admin_manual/">Administrator manual</a>
               <a href="{{ entry.slug }}/developer_manual/">Developer manual and API</a>
