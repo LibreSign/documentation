@@ -142,7 +142,7 @@ def discover(policy: dict, refs: dict[str, str] | None = None,
                   key=lambda e: int(e["slug"]), default=None)
     if current:
         current["status"] = "current"
-    entries.sort(key=lambda e: (-int(e["slug"]) if e["slug"] != "main" else 1, e["slug"]))
+    entries.sort(key=lambda e: (e["slug"] != "main", -(int(e["slug"]) if e["slug"] != "main" else 0)))
     catalog = {
         "schema": 1, "application_repository": REPOSITORY,
         "current_stable": current["slug"] if current else None, "versions": entries,

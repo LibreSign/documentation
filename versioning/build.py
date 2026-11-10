@@ -100,9 +100,12 @@ def version_overview(catalog: dict) -> str:
     """Generate the public entry page from the same version catalog as Sphinx."""
     versions = sorted(
         catalog["versions"],
-        key=lambda v: (v["slug"] == "main",
+        key=lambda v: (v["slug"] != "main",
                        -(int(v["slug"]) if v["slug"] != "main" else 0)),
     )
+    stable = [entry for entry in versions
+              if entry["slug"] != "main" and entry["status"] != "eol"]
+    oldest_stable = min(stable, key=lambda entry: int(entry["slug"]))["slug"] if stable else None
     environment = Environment(
         loader=FileSystemLoader(str(ROOT / "_templates")),
         autoescape=select_autoescape(["html"]),
@@ -110,6 +113,9 @@ def version_overview(catalog: dict) -> str:
     return environment.get_template("home.html").render(
         versions=versions,
         current_stable=catalog["current_stable"],
+        oldest_stable=oldest_stable,
+        docs_home_href="./",
+        docs_stable_href=f'{catalog["current_stable"]}/',
         preview_pr=os.environ.get("LIBRESIGN_PREVIEW_PR", ""),
     )
 
@@ -195,6 +201,10 @@ def build(output: Path, selected: str = "all") -> dict:
         json.dumps(catalog, indent=2) + "\n", encoding="utf-8"
     )
     shutil.copy2(ROOT / "assets/home.css", output / "home.css")
+    shutil.copy2(ROOT / "assets/ecosystem-nav.css", output / "ecosystem-nav.css")
+    shutil.copy2(ROOT / "assets/ecosystem-footer.css", output / "ecosystem-footer.css")
+    shutil.copy2(ROOT / "assets/ecosystem-nav.js", output / "ecosystem-nav.js")
+    shutil.copy2(ROOT / "assets/scroll-navigation.js", output / "scroll-navigation.js")
     shutil.copy2(ROOT / "assets/home-theme.js", output / "home-theme.js")
     shutil.copy2(ROOT / "images/logo.png", output / "logo.png")
 

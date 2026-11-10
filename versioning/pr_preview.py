@@ -9,15 +9,53 @@ import argparse
 import html
 import json
 import re
+from datetime import datetime, timezone
 from pathlib import Path
+from urllib.parse import urlsplit
 
 PREVIEW_MARKER = "<!-- libresign-documentation-preview-links -->"
 
+def preview_comment(preview_url: str, major: str, *,
+                    action_version: str = "", built_at: str = "") -> str:
+    """Render the same preview card as the LibreSign and LibreCode websites."""
+    if action_version and not re.fullmatch(r"[A-Za-z0-9._+-]{1,80}", action_version):
+        raise ValueError("Invalid preview action version")
+    timestamp = built_at or datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+    if not re.fullmatch(r"\d{4}-\d{2}-\d{2} \d{2}:\d{2} UTC", timestamp):
+        raise ValueError("Invalid preview build timestamp")
+    version = f" {action_version}" if action_version else ""
+    qr_url = "https://qr.rossjrw.com/?color.dark=0d1117&url=" + preview_url
+    pages = "https://github.com/LibreSign/site-preview"
+    return "\n".join([
+        f"[PR Preview Action](https://github.com/LibreSign/pr-preview-action){version}",
+        ":---:",
+        f'| <p><img src="{qr_url}" height="100" align="right" '
+        f'alt="QR code for preview link"></p> :rocket: View preview at '
+        f'<br> {preview_url} <br><br>',
+        f'| <h6>Built to branch [`gh-pages`]({pages}/tree/gh-pages) at {timestamp}. '
+        f'<br> Preview will be ready when the [GitHub Pages deployment]'
+        f'({pages}/deployments) is complete. <br><br> </h6>',
+        "",
+        f"**Documentation:** [All versions]({preview_url}) · "
+        f"[LibreSign {major} development manual]({preview_url}main/developer_manual/) · "
+        f"[Review notes]({preview_url}_review/)",
+        "",
+        f"Preview is separate from production. LibreSign {major} has not been released; "
+        "the development manual describes the upcoming version.",
+        "",
+        PREVIEW_MARKER,
+        "",
+    ])
 
-def preview_unreleased(site: Path, preview_root: str) -> list[str]:
+def preview_unreleased(site: Path, preview_root: str, *,
+                       action_version: str = "", built_at: str = "") -> list[str]:
     """Link to the real development manual; never invent a future release tree."""
-    if not preview_root.startswith("https://"):
-        raise ValueError("Preview links must use HTTPS")
+    url_parts = urlsplit(preview_root)
+    if (url_parts.scheme != "https" or not url_parts.hostname or
+            url_parts.username or url_parts.password or url_parts.query or
+            url_parts.fragment or not re.fullmatch(
+                r"https://[A-Za-z0-9.-]+(?::[0-9]+)?(?:/[A-Za-z0-9_./-]*)?", preview_root)):
+        raise ValueError("Preview links must use a safe HTTPS URL")
     catalog = json.loads((site / "versions.json").read_text(encoding="utf-8"))
     main = next(entry for entry in catalog["versions"] if entry["slug"] == "main")
     major = main["app_version"].split(".", 1)[0]
@@ -47,17 +85,8 @@ def preview_unreleased(site: Path, preview_root: str) -> list[str]:
         '</main></body></html>', encoding="utf-8",
     )
     (review / "preview-comment.md").write_text(
-        "\n".join([
-            PREVIEW_MARKER,
-            "### Navigable documentation preview",
-            "",
-            f"- [All published versions]({url}/)",
-            f"- [LibreSign {major} development manual]({development_url})",
-            "",
-            "This preview is isolated from production. Documentation for the"
-            " next release lives in the development branch until it is released.",
-            "",
-        ]), encoding="utf-8",
+        preview_comment(f"{url}/", major, action_version=action_version,
+                        built_at=built_at), encoding="utf-8",
     )
     (review / "routes.txt").write_text("\n".join(routes) + "\n", encoding="utf-8")
     return routes
@@ -67,8 +96,12 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Prepare a preview for documentation")
     parser.add_argument("--site", type=Path, default=Path("_publish"))
     parser.add_argument("--preview-root", required=True)
+    parser.add_argument("--action-version", default="")
+    parser.add_argument("--built-at", default="")
     args = parser.parse_args()
-    routes = preview_unreleased(args.site.resolve(), args.preview_root)
+    routes = preview_unreleased(args.site.resolve(), args.preview_root,
+                                action_version=args.action_version,
+                                built_at=args.built_at)
     print(f"Prepared {len(routes)} navigable preview URLs")
 
 

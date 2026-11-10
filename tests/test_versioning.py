@@ -45,9 +45,9 @@ class CatalogTests(unittest.TestCase):
                                      refs, lambda sha, path: data[sha, path])
         self.assertEqual(result["current_stable"], "16")
         self.assertEqual([v["slug"] for v in result["versions"]],
-                         ["16", "15", "14", "13", "main"])
+                         ["main", "16", "15", "14", "13"])
         self.assertEqual(contracts["13"], sample_spec("/b"))
-        self.assertEqual(result["versions"][-1]["status"], "development")
+        self.assertEqual(result["versions"][0]["status"], "development")
 
     def test_eol_comes_only_from_explicit_policy(self):
         refs = {"main": "a" * 40, "stable35": "b" * 40, "stable36": "c" * 40}
@@ -104,8 +104,9 @@ class PublicationTests(unittest.TestCase):
             self.assertEqual((result / "14/index.html").read_text(), "14-original")
             self.assertEqual((result / "main/index.html").read_text(), "main-original")
             self.assertEqual((result / "15/index.html").read_text(), "15-updated")
-            self.assertEqual(result_catalog["versions"][1]["app_commit"], "a"*40)
-            self.assertEqual(result_catalog["versions"][0]["app_commit"], "b"*40)
+            by_slug = {entry["slug"]: entry for entry in result_catalog["versions"]}
+            self.assertEqual(by_slug["14"]["app_commit"], "a"*40)
+            self.assertEqual(by_slug["15"]["app_commit"], "b"*40)
 
     def test_partial_without_existing_pages_is_rejected(self):
         with tempfile.TemporaryDirectory() as temp:
@@ -148,7 +149,7 @@ class PublicationTests(unittest.TestCase):
                 (root / "15/help.html").unlink()
                 self.assertEqual(len(inspect_links(root, page)), 1)
 
-    def test_homepage_lists_latest_stable_first_and_main_last(self):
+    def test_homepage_lists_upcoming_first_and_identifies_oldest_stable(self):
         catalog = {
             "current_stable": "15",
             "versions": [
@@ -164,12 +165,76 @@ class PublicationTests(unittest.TestCase):
         }
         page = version_overview(catalog)
         positions = [page.index(f'data-version="{v}"')
-                     for v in ("15", "14", "13", "main")]
+                     for v in ("main", "15", "14", "13")]
         self.assertEqual(positions, sorted(positions))
         self.assertIn('href="15/developer_manual/"', page)
-        self.assertIn('Latest stable', page)
-        self.assertIn('Development (not a stable release)', page)
+        self.assertIn('Latest stable release', page)
+        self.assertIn('Upcoming release', page)
+        self.assertIn('Oldest documented stable release', page)
+        self.assertIn('Nextcloud 32', page)
+        self.assertIn('No verified end-of-life manuals', page)
+        self.assertNotIn('href="12/user_manual/"', page)
         self.assertNotIn('http-equiv="refresh"', page)
+
+    def test_homepage_links_to_official_ecosystem_without_cloning_product_pages(self):
+        catalog = {"current_stable": "15", "versions": [
+            {"slug": "main", "status": "development", "nextcloud_min": 36,
+             "nextcloud_max": 36},
+            {"slug": "15", "status": "current", "nextcloud_min": 35,
+             "nextcloud_max": 35}]}
+        page = version_overview(catalog)
+        self.assertIn('aria-label="LibreSign ecosystem"', page)
+        self.assertIn('href="./"', page)
+        self.assertEqual(page.count('class="libresign-nav-group"'), 4)
+        self.assertEqual(page.count('class="libresign-nav-docs"'), 1)
+        self.assertNotIn('class="brand-subtitle"', page)
+        self.assertIn('class="libresign-nav-toggle"', page)
+        self.assertIn('aria-controls="libresign-ecosystem-links"', page)
+        self.assertIn('aria-label="Documentation source on GitHub"', page)
+        self.assertIn("https://libresign.coop/features/", page)
+        self.assertIn("https://libresign.coop/faq/", page)
+        self.assertIn("https://libresign.coop/pricing/", page)
+        self.assertIn("https://libresign.coop/contact-us/", page)
+        self.assertIn("https://github.com/LibreSign/libresign/blob/main/CONTRIBUTING.md", page)
+        self.assertIn("Request a quote", page)
+        self.assertIn('href="ecosystem-nav.css"', page)
+        self.assertIn('href="ecosystem-footer.css"', page)
+        self.assertIn('src="ecosystem-nav.js"', page)
+        self.assertIn('src="scroll-navigation.js"', page)
+        self.assertIn('class="page-header libresign-scroll-header"', page)
+
+    def test_shared_footer_uses_release_accurate_local_urls_and_official_links(self):
+        catalog = {"current_stable": "15", "versions": [
+            {"slug": "main", "status": "development", "nextcloud_min": 36,
+             "nextcloud_max": 36},
+            {"slug": "15", "status": "current", "nextcloud_min": 35,
+             "nextcloud_max": 35}]}
+        page = version_overview(catalog)
+        self.assertEqual(page.count('class="libresign-site-footer"'), 1)
+        self.assertIn('aria-label="Footer resources"', page)
+        for path in ("user_manual/", "admin_manual/", "developer_manual/",
+                     "lifecycle.html"):
+            self.assertIn(f'href="15/{path}"', page)
+        self.assertIn('src="./logo.png"', page)
+        self.assertIn('href="https://libresign.coop/pricing/"', page)
+        self.assertIn('href="https://librecode.coop/"', page)
+        self.assertIn('CC BY 3.0', page)
+
+    def test_footer_context_honors_isolated_preview_base_path(self):
+        from versioning.sphinx_config import configure
+        config = {"html_context": {}}
+        env = {"LIBRESIGN_DOC_BASE_PATH": "/site-preview/docs-preview/pr-141",
+               "LIBRESIGN_DOC_VERSION": "14",
+               "LIBRESIGN_VERSION_CATALOG":
+                   json.dumps({"current_stable": "15", "versions": []})}
+        with patch.dict("os.environ", env):
+            configure(config)
+        context = config["html_context"]
+        self.assertEqual(context["docs_home_href"],
+                         "/site-preview/docs-preview/pr-141/")
+        self.assertEqual(context["docs_stable_href"],
+                         "/site-preview/docs-preview/pr-141/15/")
+        self.assertIn("ecosystem-footer.css", config["html_css_files"])
 
     def test_homepage_loads_theme_before_css_and_exposes_accessible_toggle(self):
         catalog = {"current_stable": "15", "versions": [
@@ -202,7 +267,7 @@ class PublicationTests(unittest.TestCase):
                     directory = root / slug / manual
                     directory.mkdir(parents=True, exist_ok=True)
                     (directory / "index.html").write_text("Manual")
-            for filename in ("home.css", "home-theme.js", "logo.png"):
+            for filename in ("home.css", "home-theme.js", "ecosystem-nav.js", "scroll-navigation.js", "ecosystem-footer.css", "logo.png"):
                 (root / filename).write_text("asset")
             with patch.dict("os.environ", {"LIBRESIGN_PREVIEW_PR": "127"}):
                 legacy_redirects(root, "15", routes={})

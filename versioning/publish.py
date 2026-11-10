@@ -43,7 +43,7 @@ def assemble(built: Path, destination: Path, selected: str,
         shutil.copytree(built / selected, destination / selected)
         old_versions[selected] = new_versions[selected]
         entries = sorted(old_versions.values(), key=lambda v:
-                         (v["slug"] == "main", -(int(v["slug"]) if v["slug"] != "main" else 0)))
+                         (v["slug"] != "main", -(int(v["slug"]) if v["slug"] != "main" else 0)))
         stable = [e for e in entries if e["slug"] != "main" and e["status"] != "eol"]
         latest = max(stable, key=lambda v: int(v["slug"]), default=None)
         for entry in entries:
@@ -57,7 +57,7 @@ def assemble(built: Path, destination: Path, selected: str,
         (destination / "versions.json").write_text(
             json.dumps(output_catalog, indent=2) + "\n", encoding="utf-8"
         )
-        for filename in ("home.css", "home-theme.js", "logo.png"):
+        for filename in ("home.css", "ecosystem-nav.css", "ecosystem-footer.css", "ecosystem-nav.js", "scroll-navigation.js", "home-theme.js", "logo.png"):
             candidate = built / filename
             if candidate.is_file():
                 shutil.copy2(candidate, destination / filename)

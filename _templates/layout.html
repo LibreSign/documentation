@@ -1,5 +1,5 @@
 {% extends "!layout.html" %}
-{% block body %}
+{% block content %}
   {% if libresign_preview_pr %}
     <div class="libresign-preview-banner" role="note">
       <strong>Pull request preview</strong> ·
@@ -7,5 +7,11 @@
       <span> — Not published</span>
     </div>
   {% endif %}
+  <div class="libresign-manual-navigation libresign-scroll-header">
+    {% include "ecosystem-nav.html" %}
+  </div>
   {{ super() }}
+{% endblock %}
+{% block footer %}
+  {% include "ecosystem-footer.html" %}
 {% endblock %}

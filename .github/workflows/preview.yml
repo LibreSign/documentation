@@ -48,7 +48,7 @@ jobs:
           python -m versioning.verify --output _build
           python -m versioning.publish --built _build --destination _publish
           python -m versioning.verify --output _publish
-          rm _publish/CNAME
+          rm _publish/CNAME _publish/.nojekyll
 
       - name: Render navigable HTML for unpublished release documentation
         env:
@@ -79,6 +79,7 @@ jobs:
           permission-contents: write
 
       - name: Deploy preview to separate GitHub Pages origin
+        id: preview-deploy
         if: github.event.pull_request.head.repo.full_name == github.repository
         uses: LibreSign/pr-preview-action@2a6da1177b47dc23173ba9a75e01da0a0d800978
         with:
@@ -131,7 +132,7 @@ jobs:
           {
             cat _publish/_review/routes.txt
             find _publish -type f -name '*.html' -printf '/%P\n'
-            printf '%s\n' '/home.css' '/home-theme.js' '/versions.json'
+            printf '%s\n' '/home.css' '/ecosystem-nav.css' '/ecosystem-nav.js' '/scroll-navigation.js' '/home-theme.js' '/versions.json'
           } | sort -u | while IFS= read -r route; do
             [ -n "$route" ] || continue
             local_page="_publish$route"
@@ -166,12 +167,19 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
+          PREVIEW_ROOT: https://libresign.github.io/site-preview/docs-preview/pr-${{ github.event.pull_request.number }}
+          ACTION_VERSION: ${{ steps.preview-deploy.outputs.action-version }}
+          ACTION_START_TIME: ${{ steps.preview-deploy.outputs.action-start-time }}
         run: |
+          python -m versioning.pr_preview \
+            --site _publish --preview-root "$PREVIEW_ROOT" \
+            --action-version "$ACTION_VERSION" --built-at "$ACTION_START_TIME"
           body=$(cat _publish/_review/preview-comment.md)
           marker='<!-- libresign-documentation-preview-links -->'
           legacy='<!-- libresign-documentation-review-screenshots -->'
+          native='<!-- Sticky Pull Request Commentpr-preview -->'
           comment_id=$(gh api "repos/$GITHUB_REPOSITORY/issues/$PR_NUMBER/comments?per_page=100" \
-            --paginate --jq ".[] | select(.body | contains(\"$marker\") or contains(\"$legacy\")) | .id" | head -n 1)
+            --paginate --jq ".[] | select(.body | contains(\"$marker\") or contains(\"$legacy\") or contains(\"$native\")) | .id" | head -n 1)
           if [ -n "$comment_id" ]; then
             gh api --method PATCH "repos/$GITHUB_REPOSITORY/issues/comments/$comment_id" \
               -f body="$body" >/dev/null
