@@ -22,11 +22,12 @@ function mount({ desktop = true, initialY = 0, focused = false } = {}) {
     focusTarget: {},
     contains: element => element === header.focusTarget,
     querySelector: name => {
-      assert.equal(name, '.libresign-nav-group[open]');
-      return header.hasOpenMenu ? {} : null;
+      assert.equal(name, '.libresign-nav-group[open], .libresign-nav-shell.is-open');
+      return header.hasOpenMenu || header.hasOpenCompact ? {} : null;
     },
     addEventListener: (name, fn) => { headerEvents[name] = fn; },
     hasOpenMenu: false,
+    hasOpenCompact: false,
   };
   const document = {
     activeElement: focused ? header.focusTarget : {},
@@ -112,4 +113,14 @@ test('keyboard traversal reveals a hidden navigation header', () => {
   assert.equal(state.has('is-hidden'), true);
   state.emit('document:keydown', { key: 'Tab' });
   assert.equal(state.has('is-hidden'), false);
+});
+
+test('an expanded compact menu prevents the scroll header from disappearing', () => {
+  const state = mount({ initialY: 220 });
+  state.header.hasOpenCompact = true;
+  state.scroll(300);
+  assert.equal(state.has('is-hidden'), false);
+  state.header.hasOpenCompact = false;
+  state.scroll(330);
+  assert.equal(state.has('is-hidden'), true);
 });

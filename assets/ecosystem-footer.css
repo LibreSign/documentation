@@ -80,6 +80,11 @@
   list-style: none;
 }
 .libresign-footer-column li { margin: 0; padding: 0; }
+.libresign-footer-column li a {
+  display: inline-block;
+  padding: 2px 0;
+  overflow-wrap: anywhere;
+}
 .libresign-footer-bottom {
   display: flex;
   justify-content: space-between;
@@ -106,6 +111,14 @@
 @media (max-width: 580px) {
   .libresign-site-footer { padding-top: 36px; }
   .libresign-footer-container { padding: 0 22px; }
-  .libresign-footer-nav { gap: 28px 14px; }
-  .libresign-footer-bottom { margin-top: 34px; }
+  .libresign-footer-nav {
+    gap: 24px 18px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .libresign-footer-about p { max-width: 26rem; }
+  .libresign-footer-bottom { margin-top: 30px; }
+}
+}
+@media (max-width: 350px) {
+  .libresign-footer-nav { grid-template-columns: minmax(0, 1fr); }
 }

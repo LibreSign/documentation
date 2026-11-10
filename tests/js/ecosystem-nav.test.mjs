@@ -8,7 +8,7 @@ import vm from 'node:vm';
 
 const script = readFileSync(new URL('../../assets/ecosystem-nav.js', import.meta.url), 'utf8');
 
-function mount(hover) {
+function mount(hover, compact = !hover) {
   const document = {
     handlers: {},
     activeElement: null,
@@ -43,6 +43,7 @@ function mount(hover) {
       };
     }
     setAttribute(name, value) { (this.attributes ||= {})[name] = value; }
+    getClientRects() { return this.visible ? [{ width: 42 }] : []; }
     appendChild(child) { child.parent = this; (this.children ||= []).push(child); }
     getBoundingClientRect() {
       if (this.kind === 'nav') return { left: 50, top: 20, width: 520, height: 40 };
@@ -66,15 +67,17 @@ function mount(hover) {
       return false;
     }
     closest(selector) {
-      assert.equal(selector, '.libresign-nav-group');
+      assert.ok(['.libresign-nav-group', '.libresign-nav-shell'].includes(selector));
       for (let here = this; here; here = here.parent) {
-        if (here.kind === 'group') return here;
+        if (selector === '.libresign-nav-group' && here.kind === 'group') return here;
+        if (selector === '.libresign-nav-shell' && here.kind === 'shell') return here;
       }
       return null;
     }
     querySelector(name) {
       if (name === 'summary') return this.summary;
       if (name === '.libresign-nav-menu') return this.menu;
+      if (name === '.libresign-nav-toggle') return this.toggle;
       throw new Error('Unexpected selector: ' + name);
     }
     querySelectorAll(name) {
@@ -84,7 +87,10 @@ function mount(hover) {
     }
     focus() { document.activeElement = this; }
   }
-  const nav = new Element('nav');
+  const shell = new Element('shell');
+  shell.toggle = new Element('button', shell);
+  shell.toggle.visible = compact;
+  const nav = new Element('nav', shell);
   const groups = Array.from({ length: 3 }, (_, index) => {
     const group = new Element('group', nav);
     group.index = index;
@@ -102,7 +108,7 @@ function mount(hover) {
   };
   vm.runInNewContext(script, { document, window });
   document.emit('DOMContentLoaded');
-  return { document, groups, nav, links, outside, surface: nav.children[0], window };
+  return { document, groups, nav, links, outside, surface: nav.children[0], window, shell, toggle: shell.toggle };
 }
 
 function openGroups(groups) {
@@ -208,4 +214,41 @@ test('touch mode does not show the animated surface', () => {
   groups[0].summary.emit('click', { detail: 1 });
   assert.equal(groups[0].open, true);
   assert.equal(surface.classList.contains('is-visible'), false);
+});
+
+test('compact navigation stays collapsed until Menu is activated', () => {
+  const { shell, toggle, groups } = mount(true, true);
+  assert.equal(shell.classList.contains('is-open'), false);
+  toggle.emit('click');
+  assert.equal(shell.classList.contains('is-open'), true);
+  assert.equal(toggle.attributes['aria-expanded'], 'true');
+  groups[0].emit('pointerenter', { pointerType: 'mouse' });
+  assert.deepEqual(openGroups(groups), []);
+  groups[0].summary.emit('click', { detail: 1 });
+  assert.deepEqual(openGroups(groups), [0]);
+  groups[1].summary.emit('click', { detail: 1 });
+  assert.deepEqual(openGroups(groups), [1]);
+  toggle.emit('click');
+  assert.deepEqual(openGroups(groups), []);
+  assert.equal(toggle.attributes['aria-expanded'], 'false');
+});
+
+test('compact navigation closes on Escape and outside interaction', () => {
+  const { shell, toggle, document, outside } = mount(false);
+  toggle.emit('click');
+  document.emit('keydown', { key: 'Escape', preventDefault() {} });
+  assert.equal(shell.classList.contains('is-open'), false);
+  assert.equal(document.activeElement, toggle);
+  toggle.emit('click');
+  document.emit('pointerdown', { target: outside });
+  assert.equal(shell.classList.contains('is-open'), false);
+});
+
+test('desktop navigation remains accessible after compact viewport resize', () => {
+  const { shell, toggle, window } = mount(true, true);
+  toggle.emit('click');
+  toggle.visible = false;
+  window.handlers.resize();
+  assert.equal(shell.classList.contains('is-open'), false);
+  assert.equal(toggle.attributes['aria-expanded'], 'false');
 });

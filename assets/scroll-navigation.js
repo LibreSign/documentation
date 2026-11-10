@@ -22,7 +22,7 @@
       // Don't hide the navigation near the top or while it is being used.
       if (!desktop.matches || currentY < Math.max(160, header.offsetHeight * 1.5) ||
           header.contains(document.activeElement) ||
-          header.querySelector('.libresign-nav-group[open]')) {
+          header.querySelector('.libresign-nav-group[open], .libresign-nav-shell.is-open')) {
         distance = 0;
         reveal();
         return;
