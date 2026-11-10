@@ -1,8 +1,0 @@
-{
-  "minimum_nextcloud": 33,
-  "lifecycle": {
-    "13": {"status": "undetermined", "eol_date": null},
-    "14": {"status": "undetermined", "eol_date": null},
-    "15": {"status": "undetermined", "eol_date": null}
-  }
-}

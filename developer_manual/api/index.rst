@@ -1,10 +1,11 @@
-=================
-API Documentation
-=================
+API reference
+=============
+
+The schema below is built from the exact ``openapi.json`` in this
+release's application source revision, not from ``main``.
 
 .. toctree::
-    :maxdepth: 2
+   :maxdepth: 2
 
-    guide-api
-    external-email-signers
-    openapi
+   external-email-signers
+   openapi

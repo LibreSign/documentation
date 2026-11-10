@@ -1,69 +1,41 @@
-Installation
-===============
+Install and initialize LibreSign
+================================
 
-Get start
------------------
+Prerequisites
+-------------
 
-Install libresign app
-^^^^^^^^^^^^^^^^^^^^^^^^
+Use a supported Nextcloud instance and the matching LibreSign release. The
+application declares compatibility in its ``appinfo/info.xml``; this site's
+release selector distinguishes LibreSign versions from Nextcloud versions.
+Use an administrator account and plan for adequate disk space and network
+access if the application must download signing dependencies.
 
-1. Click on your profile picture in the top right corner of the screen and select "+ Apps".
+Install the app
+---------------
 
-    .. figure:: images/main_screen.png
-     :alt: Main screen.
+#. Open Nextcloud's **Apps** administration page.
+#. Search for **LibreSign** and install or enable the release offered for
+   your compatible Nextcloud version.
+#. Open the LibreSign administration settings and inspect **Configuration
+   check** for resources requiring attention.
+#. In **Dependencies**, use **Download binaries** if prompted, then
+   **Validate setup** to check the installation. The operation can take time
+   and requires server resources.
+#. Configure the certificate engine and the **Root certificate data**
+   appropriate to your organization. For the OpenSSL engine, the root
+   certificate form asks for a **Common Name (CN)** and allows generating a
+   root certificate when the installation requires it.
+#. Resolve remaining configuration errors before sending real invitations.
 
-2. Search for "libresign" in the search bar and select the app from the list.
+The location and presentation of some settings differ between LibreSign
+releases; see :doc:`configuration`. Do not regenerate an existing production
+root certificate merely to repeat initial setup.
 
-    .. figure:: images/find_libresign_app.png
-     :alt: App search.
+Check the installation
+----------------------
 
-This screen you can find two way to find the app:
-    * 1 - Search bar
-    * 2 - Search on the categories "Office & Text"
-
-3. Click on the "Download and enable" button to install the app.
-
-    .. figure:: images/download_libresign.png
-     :alt: Install libresign app.
-
-4. LibreSign is installed and enabled. You can now access it from the "Apps" section in your profile menu.
-
-    .. figure:: images/libresign_installed.png
-     :alt: LibreSign installed.
-
-    * 1 - In the top of menu you can see the app icon.
-
-5. Click on the LibreSign icon to open the app.
-
-    .. figure:: images/acess_screen_libresign.png
-     :alt: LibreSign opened.
-
-    * 1 - In the top of menu you can see the app icon.
-    * 2 - Here you will finish the setup of the app. Cleick on the "Finish setup" button to continue.
-
-6. Download the dependencies for LibreSign.
-
-    .. figure:: images/download_dependencies.png
-     :alt: Download dependencies.
-
-    * 1 - Click on the "Download binaries" button to download the required files.
-
-7. In this screen you will configurate your certificate data.
-
-    .. figure:: images/root_certificate_data.png
-     :alt: Configure certificate data.
-
-    * 1 - Here you will configure your certificate data.
-    * 2 - Click on the "Generate root certificate" button to save your configuration.
-
-    .. figure:: images/certificate_generated.png
-     :alt: Certificate generated.
-
-    Here you can see your certificate data.
-
-8. After this configurates you will click the libresign icon in the top menu to access the app again.
-
-    .. figure:: images/libresign_screen.png
-     :alt: Access LibreSign.
-
-    There it is! Now you can use LibreSign to sign your documents.
+Open LibreSign with a permitted user account. In a test environment, create
+a request, complete its supported signing method, and open **Validate
+signature** on the result. A successful installation check is not equivalent
+to verifying mail delivery, external identity providers, or production
+certificate policy; exercise those separately when enabled.
