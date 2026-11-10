@@ -115,6 +115,7 @@ def version_overview(catalog: dict) -> str:
         current_stable=catalog["current_stable"],
         oldest_stable=oldest_stable,
         docs_home_href="./",
+        docs_stable_href=f'{catalog["current_stable"]}/',
         preview_pr=os.environ.get("LIBRESIGN_PREVIEW_PR", ""),
     )
 
@@ -201,6 +202,7 @@ def build(output: Path, selected: str = "all") -> dict:
     )
     shutil.copy2(ROOT / "assets/home.css", output / "home.css")
     shutil.copy2(ROOT / "assets/ecosystem-nav.css", output / "ecosystem-nav.css")
+    shutil.copy2(ROOT / "assets/ecosystem-footer.css", output / "ecosystem-footer.css")
     shutil.copy2(ROOT / "assets/ecosystem-nav.js", output / "ecosystem-nav.js")
     shutil.copy2(ROOT / "assets/home-theme.js", output / "home-theme.js")
     shutil.copy2(ROOT / "images/logo.png", output / "logo.png")

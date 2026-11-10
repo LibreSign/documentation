@@ -8,6 +8,7 @@
   <script src="home-theme.js"></script>
   <link rel="stylesheet" href="home.css">
   <link rel="stylesheet" href="ecosystem-nav.css">
+  <link rel="stylesheet" href="ecosystem-footer.css">
   <script src="ecosystem-nav.js" defer></script>
 </head>
 <body>
@@ -119,11 +120,8 @@
         consult the <a href="{{ current_stable }}/lifecycle.html">release lifecycle</a> for support information.
       </p>
     </main>
-    <footer class="page-footer">
-      <span>LibreSign · Free and open source digital signatures</span>
-      <a href="{{ current_stable }}/lifecycle.html">Release lifecycle</a>
-    </footer>
   </div>
+  {% include "ecosystem-footer.html" %}
   <button class="theme-switcher" id="themeSwitcher" type="button"
           aria-label="Dark mode" aria-pressed="false" hidden>
     <svg class="theme-icon-moon" aria-hidden="true" viewBox="0 0 24 24"

@@ -163,16 +163,6 @@ h2 { margin: 0; font-size: 1.35rem; font-weight: 650; }
   font-size: .875rem;
   line-height: 1.7;
 }
-.page-footer {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  justify-content: space-between;
-  border-top: 1px solid var(--border);
-  padding: 24px 0 58px;
-  font-size: .82rem;
-  color: var(--muted-subtle);
-}
 .preview-banner {
   margin: 0 -28px;
   padding: 10px 28px;

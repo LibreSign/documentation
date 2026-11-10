@@ -193,7 +193,41 @@ class PublicationTests(unittest.TestCase):
         self.assertIn("https://github.com/LibreSign/libresign/blob/main/CONTRIBUTING.md", page)
         self.assertIn("Request a quote", page)
         self.assertIn('href="ecosystem-nav.css"', page)
+        self.assertIn('href="ecosystem-footer.css"', page)
         self.assertIn('src="ecosystem-nav.js"', page)
+
+    def test_shared_footer_uses_release_accurate_local_urls_and_official_links(self):
+        catalog = {"current_stable": "15", "versions": [
+            {"slug": "main", "status": "development", "nextcloud_min": 36,
+             "nextcloud_max": 36},
+            {"slug": "15", "status": "current", "nextcloud_min": 35,
+             "nextcloud_max": 35}]}
+        page = version_overview(catalog)
+        self.assertEqual(page.count('class="libresign-site-footer"'), 1)
+        self.assertIn('aria-label="Footer resources"', page)
+        for path in ("user_manual/", "admin_manual/", "developer_manual/",
+                     "lifecycle.html"):
+            self.assertIn(f'href="15/{path}"', page)
+        self.assertIn('src="./logo.png"', page)
+        self.assertIn('href="https://libresign.coop/pricing/"', page)
+        self.assertIn('href="https://librecode.coop/"', page)
+        self.assertIn('CC BY 3.0', page)
+
+    def test_footer_context_honors_isolated_preview_base_path(self):
+        from versioning.sphinx_config import configure
+        config = {"html_context": {}}
+        env = {"LIBRESIGN_DOC_BASE_PATH": "/site-preview/docs-preview/pr-141",
+               "LIBRESIGN_DOC_VERSION": "14",
+               "LIBRESIGN_VERSION_CATALOG":
+                   json.dumps({"current_stable": "15", "versions": []})}
+        with patch.dict("os.environ", env):
+            configure(config)
+        context = config["html_context"]
+        self.assertEqual(context["docs_home_href"],
+                         "/site-preview/docs-preview/pr-141/")
+        self.assertEqual(context["docs_stable_href"],
+                         "/site-preview/docs-preview/pr-141/15/")
+        self.assertIn("ecosystem-footer.css", config["html_css_files"])
 
     def test_homepage_loads_theme_before_css_and_exposes_accessible_toggle(self):
         catalog = {"current_stable": "15", "versions": [
@@ -226,7 +260,7 @@ class PublicationTests(unittest.TestCase):
                     directory = root / slug / manual
                     directory.mkdir(parents=True, exist_ok=True)
                     (directory / "index.html").write_text("Manual")
-            for filename in ("home.css", "home-theme.js", "ecosystem-nav.js", "logo.png"):
+            for filename in ("home.css", "home-theme.js", "ecosystem-nav.js", "ecosystem-footer.css", "logo.png"):
                 (root / filename).write_text("asset")
             with patch.dict("os.environ", {"LIBRESIGN_PREVIEW_PR": "127"}):
                 legacy_redirects(root, "15", routes={})
