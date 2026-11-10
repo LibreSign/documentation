@@ -175,6 +175,24 @@ class PublicationTests(unittest.TestCase):
         self.assertNotIn('href="12/user_manual/"', page)
         self.assertNotIn('http-equiv="refresh"', page)
 
+    def test_homepage_links_to_official_ecosystem_without_cloning_product_pages(self):
+        catalog = {"current_stable": "15", "versions": [
+            {"slug": "main", "status": "development", "nextcloud_min": 36,
+             "nextcloud_max": 36},
+            {"slug": "15", "status": "current", "nextcloud_min": 35,
+             "nextcloud_max": 35}]}
+        page = version_overview(catalog)
+        self.assertIn('aria-label="LibreSign ecosystem"', page)
+        self.assertIn('href="./"', page)
+        self.assertEqual(page.count('class="libresign-nav-group"'), 4)
+        self.assertIn("https://libresign.coop/features/", page)
+        self.assertIn("https://libresign.coop/faq/", page)
+        self.assertIn("https://libresign.coop/pricing/", page)
+        self.assertIn("https://libresign.coop/contact-us/", page)
+        self.assertIn("https://github.com/LibreSign/libresign/blob/main/CONTRIBUTING.md", page)
+        self.assertIn("Request a quote", page)
+        self.assertIn('href="ecosystem-nav.css"', page)
+
     def test_homepage_loads_theme_before_css_and_exposes_accessible_toggle(self):
         catalog = {"current_stable": "15", "versions": [
             {"slug": "15", "status": "current", "nextcloud_min": 35,

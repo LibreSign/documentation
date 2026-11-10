@@ -1,0 +1,87 @@
+/* One small navigation shared by the landing page and Sphinx manuals. */
+nav.libresign-ecosystem-nav {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: .3rem .5rem;
+  font: 500 .875rem/1.35 system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+nav.libresign-ecosystem-nav a,
+nav.libresign-ecosystem-nav summary {
+  color: #f0fffa;
+  text-decoration: none;
+  border-radius: 4px;
+  padding: .55rem .65rem;
+}
+nav.libresign-ecosystem-nav > a:hover,
+nav.libresign-ecosystem-nav > a:focus-visible,
+nav.libresign-ecosystem-nav summary:hover,
+nav.libresign-ecosystem-nav summary:focus-visible {
+  background: #236567;
+  color: #fff;
+}
+nav.libresign-ecosystem-nav a:focus-visible,
+nav.libresign-ecosystem-nav summary:focus-visible {
+  outline: 3px solid #f4ce70;
+  outline-offset: 2px;
+}
+.libresign-nav-docs { font-weight: 700; }
+.libresign-nav-group { position: relative; }
+.libresign-nav-group summary { cursor: pointer; list-style: none; white-space: nowrap; }
+.libresign-nav-group summary::-webkit-details-marker { display: none; }
+.libresign-nav-group summary::after { content: " ▾"; font-size: .8em; }
+.libresign-nav-group[open] summary { background: #236567; }
+nav.libresign-ecosystem-nav .libresign-nav-menu {
+  position: absolute;
+  top: calc(100% + .2rem);
+  left: 0;
+  z-index: 60;
+  display: grid;
+  gap: .1rem;
+  min-width: 225px;
+  padding: .4rem;
+  background: #f8fbfa;
+  border: 1px solid #b8d2cf;
+  border-radius: 6px;
+  box-shadow: 0 9px 20px rgb(0 0 0 / .2);
+}
+nav.libresign-ecosystem-nav .libresign-nav-menu a {
+  display: block;
+  padding: .65rem .7rem;
+  color: #173f41;
+  font-weight: 500;
+  line-height: 1.4;
+}
+nav.libresign-ecosystem-nav .libresign-nav-menu a:hover,
+nav.libresign-ecosystem-nav .libresign-nav-menu a:focus-visible {
+  background: #e1f1ee;
+  color: #103f3e;
+}
+nav.libresign-ecosystem-nav .libresign-nav-quote {
+  margin-left: .3rem;
+  border: 1px solid #d8f1e7;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.libresign-manual-navigation {
+  position: relative;
+  z-index: 30;
+  margin: 0 0 1.2rem;
+  padding: .35rem .55rem;
+  background: #184c4e;
+  border-radius: 5px;
+}
+@media (max-width: 680px) {
+  nav.libresign-ecosystem-nav { gap: .1rem .2rem; }
+  nav.libresign-ecosystem-nav a,
+  nav.libresign-ecosystem-nav summary { padding: .55rem .5rem; }
+  .libresign-nav-group { position: static; }
+  nav.libresign-ecosystem-nav .libresign-nav-menu {
+    left: 0;
+    right: 0;
+    top: auto;
+    min-width: min(225px, 100%);
+    max-width: 100%;
+  }
+  nav.libresign-ecosystem-nav .libresign-nav-quote { margin-left: 0; }
+}

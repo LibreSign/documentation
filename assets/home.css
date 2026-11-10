@@ -230,3 +230,52 @@ html[data-theme="dark"] .theme-icon-moon { display: none; }
 @media (prefers-reduced-motion: no-preference) {
   body, .version-row, .theme-switcher { transition: background-color .16s ease, color .16s ease; }
 }
+
+/* Distinguish development documentation without presenting it as stable. */
+.version-row.version-upcoming {
+  border-left: 3px solid var(--border);
+  padding-left: 13px;
+}
+.product-shortcuts { font-size: .91rem !important; }
+.product-shortcuts a { font-weight: 600; }
+.archived-releases {
+  margin-top: 22px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface);
+}
+.archived-releases > summary {
+  padding: 15px 20px;
+  color: var(--link);
+  font-weight: 650;
+  cursor: pointer;
+}
+.archived-releases > summary:focus-visible { outline: 3px solid #d4a634; }
+.archived-content {
+  padding: 0 20px 18px;
+  color: var(--muted);
+  font-size: .92rem;
+  line-height: 1.6;
+}
+.archived-content p { margin: 12px 0; }
+.archive-row {
+  padding: 15px 0;
+  display: grid;
+  gap: 7px;
+  border-top: 1px solid var(--border);
+}
+.archive-row strong { color: var(--text); }
+.archive-row .manual-links { margin-top: 4px; }
+.page-header { flex-wrap: wrap; }
+.page-header > .libresign-ecosystem-nav { flex: 1; justify-content: center; }
+.page-header .source-link { white-space: nowrap; }
+@media (max-width: 820px) {
+  .page-header > .libresign-ecosystem-nav {
+    flex-basis: 100%;
+    order: 3;
+    justify-content: flex-start;
+  }
+}
+@media (max-width: 680px) {
+  .version-row.version-upcoming { padding-left: 9px; }
+}

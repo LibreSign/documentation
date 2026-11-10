@@ -7,6 +7,7 @@
   <title>LibreSign documentation · Versions and manuals</title>
   <script src="home-theme.js"></script>
   <link rel="stylesheet" href="home.css">
+  <link rel="stylesheet" href="ecosystem-nav.css">
 </head>
 <body>
   <div class="page-shell">
@@ -21,6 +22,7 @@
         <img src="logo.png" alt="LibreSign" width="110" height="49">
         <span class="brand-subtitle">Documentation</span>
       </a>
+      {% include "ecosystem-nav.html" %}
       <a class="source-link" href="https://github.com/LibreSign/documentation">Documentation source</a>
     </header>
     <main id="main-content">
@@ -35,6 +37,11 @@
           {% for entry in versions if entry.slug == current_stable %}
             · Nextcloud {{ entry.nextcloud_min }}{% if entry.nextcloud_min != entry.nextcloud_max %}–{{ entry.nextcloud_max }}{% endif %}
           {% endfor %}
+        </p>
+        <p class="product-shortcuts">New to LibreSign?
+          <a href="https://libresign.coop/features/">Explore product features</a> ·
+          <a href="https://apps.nextcloud.com/apps/libresign">Get the Nextcloud app</a> ·
+          <a href="https://libresign.coop/contact-us/">Talk to our team</a>
         </p>
       </div>
       <section class="versions-section" aria-labelledby="versions-title">

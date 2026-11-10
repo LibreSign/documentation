@@ -57,7 +57,7 @@ def assemble(built: Path, destination: Path, selected: str,
         (destination / "versions.json").write_text(
             json.dumps(output_catalog, indent=2) + "\n", encoding="utf-8"
         )
-        for filename in ("home.css", "home-theme.js", "logo.png"):
+        for filename in ("home.css", "ecosystem-nav.css", "home-theme.js", "logo.png"):
             candidate = built / filename
             if candidate.is_file():
                 shutil.copy2(candidate, destination / filename)

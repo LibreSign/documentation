@@ -37,6 +37,7 @@ def configure(config: dict) -> None:
     context = dict(config.get("html_context", {}))
     context.update({
         "libresign_site_root": site_root,
+        "docs_home_href": f"{site_root}/",
         "libresign_preview_pr": preview_pr,
         "libresign_doc_manual": manual,
         "libresign_doc_version": slug,
@@ -52,7 +53,7 @@ def configure(config: dict) -> None:
     config["html_context"] = context
     config["templates_path"] = [str(root / "_templates")]
     config["html_static_path"] = [str(root / "assets")]
-    config["html_css_files"] = ["version-switcher.css"]
+    config["html_css_files"] = ["version-switcher.css", "ecosystem-nav.css"]
     config["html_js_files"] = ["version-switcher.js"]
     config["rst_prolog"] = (
         f".. |LibreSignRelease| replace:: {app_version}\n"
