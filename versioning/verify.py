@@ -108,6 +108,10 @@ def verify_site(output: Path, versions: list[str] | None = None,
                       "nextcloud_min", "nextcloud_max"):
             if entry[field] != provenance[field]:
                 errors.append(f"OpenAPI provenance field differs: {slug}.{field}")
+        # Older, already-published versions may predate documentation SHA
+        # provenance; new builds must keep the source SHA consistent.
+        if entry.get("documentation_commit") != provenance.get("documentation_commit"):
+            errors.append(f"Documentation source SHA mismatch for {slug}")
         if slug != "main" and (provenance["branch"] == "main" or
                                  not provenance["branch"].startswith("stable")):
             errors.append(f"Stable {slug} is displaying a development branch")

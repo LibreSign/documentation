@@ -17,64 +17,30 @@ from pathlib import Path
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 from versioning.catalog import discover, get_version, load_policy
+from versioning.sources import branch_sources
 
 ROOT = Path(__file__).resolve().parent.parent
 MANUALS = ("main", "user_manual", "admin_manual", "developer_manual")
 
 
-def shared_sources(manual: str) -> list[tuple[Path, Path]]:
-    """Read declarative shared sections; never assume development-only pages are stable."""
-    config = json.loads((ROOT / "versioned/shared.json").read_text(encoding="utf-8"))
-    sections = config.get(manual, [])
-    if not isinstance(sections, list):
-        raise ValueError(f"Shared sections must be a list: {manual}")
-    root = (ROOT / manual).resolve()
-    result = []
-    for name in sections:
-        if not isinstance(name, str) or not name or name.startswith("/"):
-            raise ValueError(f"Invalid shared section: {name!r}")
-        relative = Path(name)
-        if (relative == Path(".") or "//" in name or
-                any(part in ("..", ".") for part in relative.parts) or "\\" in name):
-            raise ValueError(f"Unsafe shared section: {name!r}")
-        source = (root / relative).resolve()
-        if not source.is_relative_to(root) or not source.is_dir():
-            raise ValueError(f"Missing or outside shared section: {name!r}")
-        result.append((relative, source))
-    return result
-
-
 def source_tree(stage: Path, slug: str, manual: str) -> Path:
+    """Stage one manual from the checked-out documentation release branch."""
+    repository = branch_sources(stage, slug, repository=ROOT)
     target = stage / slug / manual
-    if slug == "main":
-        shutil.copytree(ROOT / manual, target)
-    else:
-        target.mkdir(parents=True, exist_ok=True)
-        # Stable base documentation takes precedence over shared sections.
-        for relative, source in shared_sources(manual):
-            shutil.copytree(source, target / relative, dirs_exist_ok=True)
-        shutil.copytree(ROOT / "versioned/base" / manual, target, dirs_exist_ok=True)
-        overlay = ROOT / "versioned" / slug / manual
-        if overlay.exists():
-            shutil.copytree(overlay, target, dirs_exist_ok=True)
-        if manual == "developer_manual":
-            shutil.copytree(ROOT / "developer_manual/html", target / "html")
-            (target / "api").mkdir(parents=True, exist_ok=True)
-            shutil.copy2(ROOT / "developer_manual/api/openapi.rst",
-                         target / "api/openapi.rst")
-        # Keep these manuals independent of main while retaining the shared
-        # Sphinx config and shared (version-neutral) Swagger UI assets.
+    shutil.copytree(repository / manual, target)
+    if slug != "main":
+        # Sphinx renders temporary sources; GitHub edit links must still point
+        # at the real file in the stableNN branch, not at a staging directory.
         config = (
             "import os, sys\n"
             "from pathlib import Path\n"
             "root = Path(os.environ['LIBRESIGN_DOC_ROOT'])\n"
             "sys.path.insert(0, str(root))\n"
             "from conf import *\n"
-            "html_context = {**html_context, 'conf_py_path': '/versioned/base/"
-            + manual + "/'}\n"
-            "html_logo = str(root / 'images/logo.png' if "
-            "(root / 'images/logo.png').is_file() else "
-            "root / 'main/images/logo.png')\n"
+            "html_context = {**html_context, "
+            f"'github_version': 'stable{slug}', "
+            f"'conf_py_path': '/{manual}/'" + "}\n"
+            "html_logo = str(root / 'images/logo.png')\n"
             "html_extra_path = [str(root / 'developer_manual/html')] "
             "if os.environ.get('LIBRESIGN_DOC_MANUAL') == 'developer_manual' "
             "else []\n"
@@ -196,6 +162,16 @@ def build(output: Path, selected: str = "all") -> dict:
         stage = Path(tmp)
         for slug in targets:
             entry = get_version(catalog, slug)
+            source = branch_sources(stage, slug, repository=ROOT)
+            if slug == "main":
+                entry["documentation_commit"] = subprocess.check_output(
+                    ["git", "-C", str(ROOT), "rev-parse", "HEAD"],
+                    text=True, timeout=20,
+                ).strip()
+            else:
+                entry["documentation_commit"] = (
+                    source / ".source-commit"
+                ).read_text().strip()
             for manual in MANUALS:
                 source = source_tree(stage, slug, manual)
                 run_sphinx(source, output / slug / ("" if manual == "main" else manual), entry, catalog)
@@ -205,6 +181,7 @@ def build(output: Path, selected: str = "all") -> dict:
             provenance = {
                 "slug": slug, "branch": entry["branch"], "app_commit": entry["app_commit"],
                 "app_version": entry["app_version"],
+                "documentation_commit": entry["documentation_commit"],
                 "source_url": entry["source_url"],
                 "openapi_sha256": entry["openapi_sha256"],
                 "manifest_sha256": entry["manifest_sha256"],

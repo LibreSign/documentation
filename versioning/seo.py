@@ -101,7 +101,7 @@ def apply_seo(site: Path, catalog: dict, *, preview: bool = False) -> None:
 
 def read_legacy_routes(root: Path) -> dict[str, str]:
     """The historic unversioned routes are an immutable migration contract."""
-    routes = json.loads((root / "versioned/legacy-routes.json").read_text(encoding="utf-8"))
+    routes = json.loads((root / "versioning/legacy-routes.json").read_text(encoding="utf-8"))
     if not isinstance(routes, dict) or not routes:
         raise ValueError("Legacy URL mapping must be a nonempty object")
     for old, target in routes.items():
