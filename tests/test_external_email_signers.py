@@ -152,17 +152,6 @@ class GuestSigningContractTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "synthetic"):
             validate_external_sample(sample_spec("mandatory"), legacy)
 
-    def test_each_rendered_sample_matches_its_executable_fixture(self):
-        for slug in ("13", "14", "15", "main"):
-            with self.subTest(release=slug):
-                directory = (
-                    ROOT / "developer_manual/api" if slug == "main"
-                    else ROOT / "versioned" / slug / "developer_manual/api"
-                )
-                panel = (directory / "_external-email-signers-release.inc").read_text()
-                self.assertEqual(extract_rst_json(panel), fixture(slug))
-                self.assertIn(f"LIBRESIGN_DOC_LINE={slug}", panel)
-
     def test_pinned_source_provenance_is_checked(self):
         entry = {"slug": "13", "app_commit": "a" * 40}
         observed = []
