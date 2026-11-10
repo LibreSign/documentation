@@ -48,7 +48,7 @@ jobs:
           python -m versioning.verify --output _build
           python -m versioning.publish --built _build --destination _publish
           python -m versioning.verify --output _publish
-          rm _publish/CNAME
+          rm _publish/CNAME _publish/.nojekyll
 
       - name: Render navigable HTML for unpublished release documentation
         env:
