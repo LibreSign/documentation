@@ -5,3 +5,4 @@ sys.path.insert(0, os.path.abspath('../'))
 from conf import *
 
 html_context = {**html_context, 'conf_py_path': '/developer_manual/'}
+html_extra_path = ['html']

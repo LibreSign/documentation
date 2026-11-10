@@ -1,78 +1,45 @@
 # SPDX-FileCopyrightText: 2026 LibreCode coop and contributors
 # SPDX-License-Identifier: CC-BY-3.0
 
-name: Documentation
+name: Documentation stable14
 
 on:
   pull_request:
+    branches: [stable14]
   push:
-    branches: [main]
-    paths:
-      - '.github/workflows/docs.yml'
-      - '.github/workflows/deploy.yml'
-      - 'versioning/**'
-      - 'versioned/**'
-      - 'assets/**'
-      - '_templates/**'
-      - 'main/**'
-      - 'admin_manual/**'
-      - 'user_manual/**'
-      - 'developer_manual/**'
-      - 'conf.py'
-      - 'requirements.txt'
-      - 'tests/**'
+    branches: [stable14]
 
 permissions:
   contents: read
 
 jobs:
-  test:
-    name: Sphinx, OpenAPI, links and multiversion checks
+  sphinx:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 15
+    env:
+      LIBRESIGN_DOC_VERSION: "14"
+      LIBRESIGN_APP_VERSION: "14"
+      LIBRESIGN_DOC_STATUS: previous
     steps:
       - name: Checkout documentation
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-
       - name: Set up Python
         uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: '3.13'
           cache: pip
-
       - name: Install dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Validate every manual
         run: |
-          python -m pip install --upgrade pip
-          python -m pip install -r requirements.txt openapi-spec-validator==0.7.2
-
-      - name: Test version discovery and deploy invariants
-        run: python -m unittest discover -s tests -v
-
-      - name: Test version selection navigation
-        run: node --test tests/js/*.test.mjs
-
-      - name: Build every Sphinx version independently
-        run: python -m versioning.build --output _build
-
-      - name: Check links, exact OpenAPI provenance and version isolation
-        run: python -m versioning.verify --output _build
-
-      - name: Check external signing guide against each pinned OpenAPI
-        run: |
-          python -c 'from pathlib import Path; from versioning.external_contract import validate_site_external_samples; print(validate_site_external_samples(Path("_build"), Path(".")))'
-
-      - name: Syntax check executable signing examples
-        run: |
-          bash -n examples/external-email-signers/flow.sh
-          php -l examples/external-email-signers/flow.php
-          for template in examples/external-email-signers/request-*.json; do
-            python -m json.tool "$template" >/dev/null
+          for manual in main user_manual admin_manual developer_manual; do
+            sphinx-build -b html -n -W --keep-going "$manual" "_build/$manual"
           done
-
-      - name: Assemble complete atomic Pages candidate
-        run: python -m versioning.publish --built _build --destination _publish
-
-      - name: Verify deployed candidate preserves every version
-        run: python -m versioning.verify --output _publish
+      - name: Upload reviewable HTML
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: stable14-documentation-html
+          path: _build/
+          if-no-files-found: error
