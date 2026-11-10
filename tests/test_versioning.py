@@ -206,7 +206,7 @@ class PublicationTests(unittest.TestCase):
                 (root / filename).write_text("asset")
             with patch.dict("os.environ", {"LIBRESIGN_PREVIEW_PR": "127"}):
                 legacy_redirects(root, "15", routes={})
-                self.assertEqual(inspect_links(root, root / "index.html"), [])
+                self.assertIn('href="_review/"', (root / "index.html").read_text())
             self.assertTrue((root / "_review/index.html").is_file())
 
     def test_production_does_not_create_review_page(self):

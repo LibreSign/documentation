@@ -89,8 +89,11 @@ jobs:
           deploy-repository: LibreSign/site-preview
           preview-branch: gh-pages
           pages-base-url: libresign.github.io/site-preview
-          wait-for-pages-deployment: true
-          qr-code: true
+          # A newer deployment from another PR can supersede this Pages build.
+          # Verify our published revision over HTTP instead of waiting on its run ID.
+          wait-for-pages-deployment: false
+          comment: false
+          qr-code: false
           token: ${{ steps.preview-token.outputs.token }}
 
       - name: Check every navigable preview route on the public origin
@@ -98,24 +101,42 @@ jobs:
         env:
           PREVIEW_ROOT: https://libresign.github.io/site-preview/docs-preview/pr-${{ github.event.pull_request.number }}
         run: |
-          while IFS= read -r route; do
+          # GitHub Pages is shared with other PR previews. Its deployment run
+          # can be superseded even when this preview's HTML is publicly served.
+          # Compare rendered pages with the public origin instead of a specific
+          # Pages run or PR merge SHA.
+          {
+            cat _publish/_review/routes.txt
+            find _publish -type f -name '*.html' -printf '/%P\n'
+            printf '%s\n' '/home.css' '/home-theme.js' '/versions.json'
+          } | sort -u | while IFS= read -r route; do
             [ -n "$route" ] || continue
+            local_page="_publish$route"
+            if [[ "$route" == */ ]]; then
+              local_page="${local_page}index.html"
+            fi
+            if [ ! -f "$local_page" ]; then
+              echo "::error::Missing generated preview page: $local_page" >&2
+              exit 1
+            fi
             url="$PREVIEW_ROOT$route"
             success=false
             for attempt in $(seq 1 24); do
-              if curl -fsSL --max-time 15 -o /tmp/libresign-preview-page.html "$url" &&
-                grep -Eq 'libresign-version-toggle|Documentation by release|Preview-only documentation' /tmp/libresign-preview-page.html; then
-                echo "Public preview available: $url"
+              if curl -fsSL --max-time 15 -H 'Cache-Control: no-cache' \
+                -o /tmp/libresign-preview-page.html \
+                "$url?run=$GITHUB_RUN_ID&attempt=$attempt" &&
+                cmp -s "$local_page" /tmp/libresign-preview-page.html; then
+                echo "Published preview matches generated content: $url"
                 success=true
                 break
               fi
               sleep 5
             done
             if [ "$success" != true ]; then
-              echo "::error::Preview page unavailable: $url" >&2
+              echo "::error::Public preview missing or stale: $url" >&2
               exit 1
             fi
-          done < _publish/_review/routes.txt
+          done
 
       - name: Comment with navigable preview links
         if: github.event.pull_request.head.repo.full_name == github.repository

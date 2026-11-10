@@ -1,17 +1,28 @@
 Administrator manual — LibreSign |LibreSignRelease|
 ===================================================
 
-The LibreSign |LibreSignRelease| line requires a compatible Nextcloud
-|NextcloudRelease| instance, as declared by its application manifest.
+This manual covers LibreSign |LibreSignRelease| for Nextcloud
+|NextcloudRelease|. Check the matching app release before changing server
+settings or restoring data. Procedures are limited to the stable versions
+listed in the documentation version selector.
 
-Install or upgrade the application version compatible with your Nextcloud
-release, and inspect the application configuration in the Nextcloud
-administration interface. Before upgrading, consult the release notes in
-`LibreSign/libresign <https://github.com/LibreSign/libresign/releases>`_.
+Choose an operation
+-------------------
 
-This manual intentionally omits unverified configuration steps from
-the development branch. Version-specific operational guides can be
-added here without changing other published release lines.
+- :doc:`installation` — install LibreSign and complete initial setup.
+- :doc:`configuration` — find the signing and certificate configuration.
+- :doc:`maintenance` — back up, upgrade, and troubleshoot an installation.
+- :doc:`security` — protect signing credentials and review security choices.
 
-For support-lifecycle information see the
-`release lifecycle guide <../lifecycle.html>`_.
+For the signing experience, see the `user manual
+<../user_manual/index.html>`_; for API authentication and integration,
+consult the `developer manual <../developer_manual/index.html>`_.
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Operations
+
+   installation
+   configuration
+   maintenance
+   security

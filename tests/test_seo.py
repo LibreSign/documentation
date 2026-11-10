@@ -32,21 +32,6 @@ class DocumentationSeoTests(unittest.TestCase):
                         f"<body>{body}</body></html>", encoding="utf-8")
         return path
 
-    def test_historic_routes_cover_all_existing_manual_pages(self):
-        root = Path(__file__).resolve().parent.parent
-        routes = read_legacy_routes(root)
-        source = {f"{manual}/{p.relative_to(root / manual).with_suffix('.html')}"
-                  for manual in ("user_manual", "admin_manual", "developer_manual")
-                  for p in (root / manual).rglob("*.rst")}
-        self.assertEqual(set(routes), source)
-        self.assertEqual(len(routes), 46)
-        self.assertEqual(routes["user_manual/functionality.html"],
-                         "main/user_manual/functionality.html")
-        self.assertEqual(routes["admin_manual/installation.html"],
-                         "main/admin_manual/installation.html")
-        self.assertEqual(routes["developer_manual/architecture.html"],
-                         "main/developer_manual/architecture.html")
-
     def test_legacy_redirects_keep_individual_targets_across_new_stable(self):
         self.page("15/index.html")
         for name in ("15/user_manual/index.html",

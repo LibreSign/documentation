@@ -1,9 +1,9 @@
 {
-  "admin_manual/configuration.html": "main/admin_manual/configuration.html",
+  "admin_manual/configuration.html": "15/admin_manual/configuration.html",
   "admin_manual/index.html": "15/admin_manual/index.html",
-  "admin_manual/installation.html": "main/admin_manual/installation.html",
-  "admin_manual/maintenance.html": "main/admin_manual/maintenance.html",
-  "admin_manual/security.html": "main/admin_manual/security.html",
+  "admin_manual/installation.html": "15/admin_manual/installation.html",
+  "admin_manual/maintenance.html": "15/admin_manual/maintenance.html",
+  "admin_manual/security.html": "15/admin_manual/security.html",
   "developer_manual/api/external-email-signers.html": "15/developer_manual/api/external-email-signers.html",
   "developer_manual/api/guide-api.html": "main/developer_manual/api/guide-api.html",
   "developer_manual/api/index.html": "15/developer_manual/api/index.html",
@@ -40,9 +40,9 @@
   "developer_manual/release-process/versioning.html": "main/developer_manual/release-process/versioning.html",
   "developer_manual/requesting-features.html": "main/developer_manual/requesting-features.html",
   "developer_manual/translation.html": "main/developer_manual/translation.html",
-  "user_manual/faq.html": "main/user_manual/faq.html",
-  "user_manual/functionality.html": "main/user_manual/functionality.html",
+  "user_manual/faq.html": "15/user_manual/faq.html",
+  "user_manual/functionality.html": "15/user_manual/functionality.html",
   "user_manual/index.html": "15/user_manual/index.html",
-  "user_manual/start.html": "main/user_manual/start.html",
-  "user_manual/suport.html": "main/user_manual/suport.html"
+  "user_manual/start.html": "15/user_manual/start.html",
+  "user_manual/suport.html": "15/user_manual/support.html"
 }

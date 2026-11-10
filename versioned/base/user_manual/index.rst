@@ -1,14 +1,28 @@
 User manual — LibreSign |LibreSignRelease|
 ==========================================
 
-This manual is for LibreSign |LibreSignRelease| running with
-Nextcloud |NextcloudRelease|.
+Use this manual for LibreSign |LibreSignRelease| on Nextcloud
+|NextcloudRelease|. It covers the signing and validation workflows available
+in this release, rather than features under development in ``main``.
 
-The version-specific manual is being expanded. It deliberately does not
-inherit development screenshots or workflows from ``main`` until they have
-been checked against this release line. For interface behavior, check the
-LibreSign application installed on your Nextcloud instance.
+Choose a task
+-------------
 
-You can switch versions using the documentation version selector. The
-`release lifecycle guide <../lifecycle.html>`_ explains the meaning of
-current, earlier and end-of-support versions.
+- :doc:`start` — find the correct entry point for requesting or signing.
+- :doc:`functionality` — prepare a document, invite signers, follow progress,
+  sign a request, or validate a PDF.
+- :doc:`faq` — understand account, certificate, and legal considerations.
+- :doc:`support` — troubleshoot a problem and find support channels.
+
+For installation and server configuration, use the
+`administrator manual <../admin_manual/index.html>`_. Integrations belong in
+the `developer manual <../developer_manual/index.html>`_.
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Tasks
+
+   start
+   functionality
+   faq
+   support
