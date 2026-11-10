@@ -42,17 +42,18 @@ configuration instruction, rendered example, or troubleshooting step:
    Check nested required request fields, types/enums, responses, authentication,
    feature availability, signing state and error cases. OpenAPI shape alone
    does not prove runtime behavior; the presence of a test is not proof it ran.
-3. **Choose the source scope deliberately.** `developer_manual/` is the
-   development line. `versioned/base/` is for behavior verified in **every**
-   published stable line; `versioned/<major>/` overrides it when any stable
-   behavior differs. The `main/` directory contains site navigation, not the
-   development developer manual. Never copy development-only claims into the
-   stable base, or assume newer features were backported. For an unverified
-   release, omit or explicitly qualify the claim rather than invent support.
+3. **Choose the release branch deliberately.** The `main` branch is
+   development; `stableNN` contains the complete documentation for LibreSign
+   major NN. Do not mix Nextcloud major numbers with LibreSign major numbers.
+   Changes to multiple versions require explicit backports and verification
+   against the corresponding application contract.
 4. **Verify executable examples per release.** Use the correct version-specific
    fixtures and checks; never make older guides silently use a newer payload.
-   Add regression coverage for incompatibilities, including negative cases.
-   Do not weaken a contract check just to keep inherited prose passing.
+   For ordinary RST pages, do not add Python tests that enumerate page paths,
+   assert editorial wording or mirror the documentation tree. The existing
+   Sphinx, link, OpenAPI and multiversion build checks validate those changes.
+   Add focused regression coverage only when executable contracts or the
+   documentation tooling itself change. Do not weaken existing contract checks.
 5. **Review versioned links and surrounding pages.** Avoid silently linking
    older manuals to `/main/`, `/latest/`, or moving source-branch URLs when
    claiming version-specific support. Inspect related pages across all three
@@ -65,14 +66,13 @@ configuration instruction, rendered example, or troubleshooting step:
    scenarios, and behaviors are verified versus untested. Green Sphinx/CI
    checks are not proof of real signing, SMTP, policies, or file permissions.
 
-This repository builds stable versions from `versioned/base/` plus overlays,
-not from separate documentation branches as Nextcloud does. Directory scopes
-shared from the development manual into stable builds are declared in
-`versioned/shared.json`, never hardcoded per page in build scripts. Preserve the
-existing dynamic discovery and build infrastructure. For authoring details
-and the external-email-signers fixture conventions, read
-[CONTRIBUTING.md](CONTRIBUTING.md). Application behavior and API contract
-changes belong in `LibreSign/libresign` and require a separate change there.
+Each release branch contains complete `main/`, `user_manual/`, `admin_manual/`
+and `developer_manual/` source directories. There is no `versioned/base` or
+per-file overlay mechanism. The central publishing tool checks out the exact
+documentation branch and pins the application OpenAPI separately. A missing
+stable documentation branch must fail rather than inherit development prose.
+For authoring instructions read [CONTRIBUTING.md](CONTRIBUTING.md).
+Application source and API changes belong to `LibreSign/libresign`.
 
 ## Quality gates
 
