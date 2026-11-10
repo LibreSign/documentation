@@ -65,7 +65,7 @@ jobs:
           preview-branch: gh-pages
           pages-base-url: libresign.github.io/site-preview
           wait-for-pages-deployment: true
-          qr-code: false
+          qr-code: true
           token: ${{ steps.preview-token.outputs.token }}
 
       - name: Verify navigable public preview
