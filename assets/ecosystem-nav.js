@@ -19,8 +19,39 @@
 
     for (const nav of document.querySelectorAll('.libresign-ecosystem-nav')) {
       const groups = [...nav.querySelectorAll('.libresign-nav-group')];
+      // A single surface transitions its position and size between submenus.
+      // The native details elements retain keyboard and touch behavior.
+      const surface = document.createElement('div');
+      surface.className = 'libresign-nav-surface';
+      surface.setAttribute('aria-hidden', 'true');
+      nav.appendChild(surface);
+      nav.classList.add('libresign-nav-animated');
+
+      const moveSurface = (group) => {
+        if (!group || !hoverMedia.matches) {
+          surface.classList.remove('is-visible');
+          return;
+        }
+        const menu = group.querySelector('.libresign-nav-menu');
+        const trigger = group.querySelector('summary');
+        if (!menu || !trigger) return;
+
+        const bounds = menu.getBoundingClientRect();
+        const container = nav.getBoundingClientRect();
+        const anchor = trigger.getBoundingClientRect();
+        if (!bounds.width || !bounds.height) return;
+
+        surface.style.width = `${bounds.width}px`;
+        surface.style.height = `${bounds.height}px`;
+        surface.style.transform = `translate3d(${bounds.left - container.left}px, ${bounds.top - container.top}px, 0)`;
+        const arrowX = Math.max(15, Math.min(bounds.width - 15,
+          anchor.left + anchor.width / 2 - bounds.left));
+        surface.style.setProperty('--arrow-x', `${arrowX}px`);
+        surface.classList.add('is-visible');
+      };
       const showOnly = (selected) => {
         for (const group of groups) group.open = group === selected;
+        moveSurface(selected);
       };
 
       for (const group of groups) {
@@ -41,6 +72,7 @@
             for (const other of groups) {
               if (other !== group) other.open = false;
             }
+            moveSurface(group);
           }
         });
       }
@@ -73,6 +105,8 @@
         opened.querySelector('summary')?.focus();
         showOnly(null);
       });
+      window.addEventListener('resize', () => moveSurface(groups.find(group => group.open)));
+      hoverMedia.addEventListener?.('change', () => moveSurface(groups.find(group => group.open)));
     }
   });
 })();

@@ -15,6 +15,7 @@ function mount(hover) {
     addEventListener(name, fn) {
       (this.handlers[name] ||= []).push(fn);
     },
+    createElement(name) { return new Element(name); },
     querySelectorAll(name) {
       assert.equal(name, '.libresign-ecosystem-nav');
       return [nav];
@@ -30,6 +31,29 @@ function mount(hover) {
       this.parent = parent;
       this.handlers = {};
       this.open = false;
+      this.classList = {
+        names: new Set(),
+        add(name) { this.names.add(name); },
+        remove(name) { this.names.delete(name); },
+        contains(name) { return this.names.has(name); },
+      };
+      this.style = {
+        values: {},
+        setProperty(name, value) { this.values[name] = value; },
+      };
+    }
+    setAttribute(name, value) { (this.attributes ||= {})[name] = value; }
+    appendChild(child) { child.parent = this; (this.children ||= []).push(child); }
+    getBoundingClientRect() {
+      if (this.kind === 'nav') return { left: 50, top: 20, width: 520, height: 40 };
+      if (this.kind === 'summary') {
+        return { left: 140 + 100 * this.parent.index, top: 55, width: 98, height: 35 };
+      }
+      if (this.kind === 'menu') {
+        return { left: 140 + 100 * this.parent.index, top: 100,
+          width: 225 + 20 * this.parent.index, height: 140 + 35 * this.parent.index };
+      }
+      return { left: 0, top: 0, width: 0, height: 0 };
     }
     addEventListener(name, fn) { (this.handlers[name] ||= []).push(fn); }
     emit(name, options = {}) {
@@ -49,8 +73,9 @@ function mount(hover) {
       return null;
     }
     querySelector(name) {
-      assert.equal(name, 'summary');
-      return this.summary;
+      if (name === 'summary') return this.summary;
+      if (name === '.libresign-nav-menu') return this.menu;
+      throw new Error('Unexpected selector: ' + name);
     }
     querySelectorAll(name) {
       if (name === '.libresign-nav-group') return groups;
@@ -60,20 +85,24 @@ function mount(hover) {
     focus() { document.activeElement = this; }
   }
   const nav = new Element('nav');
-  const groups = Array.from({ length: 3 }, () => {
+  const groups = Array.from({ length: 3 }, (_, index) => {
     const group = new Element('group', nav);
+    group.index = index;
     group.summary = new Element('summary', group);
-    group.link = new Element('a', group);
+    group.menu = new Element('menu', group);
+    group.link = new Element('a', group.menu);
     return group;
   });
   const links = [new Element('a', nav)];
   const outside = new Element('outside');
-  vm.runInNewContext(script, {
-    document,
-    window: { matchMedia() { return { matches: hover }; } }
-  });
+  const window = {
+    handlers: {},
+    addEventListener(name, fn) { this.handlers[name] = fn; },
+    matchMedia() { return { matches: hover, addEventListener() {} }; },
+  };
+  vm.runInNewContext(script, { document, window });
   document.emit('DOMContentLoaded');
-  return { document, groups, nav, links, outside };
+  return { document, groups, nav, links, outside, surface: nav.children[0], window };
 }
 
 function openGroups(groups) {
@@ -146,4 +175,37 @@ test('native details toggle and pointer focus do not reopen closed menus', () =>
   assert.deepEqual(openGroups(groups), [1]);
   document.emit('pointerdown', { target: outside });
   assert.deepEqual(openGroups(groups), []);
+});
+
+test('shared surface travels and resizes between desktop menus without opening two', () => {
+  const { groups, surface } = mount(true);
+  assert.equal(surface.attributes['aria-hidden'], 'true');
+  groups[0].emit('pointerenter', { pointerType: 'mouse' });
+  assert.equal(surface.classList.contains('is-visible'), true);
+  assert.equal(surface.style.transform, 'translate3d(90px, 80px, 0)');
+  assert.equal(surface.style.width, '225px');
+  assert.equal(surface.style.height, '140px');
+  groups[1].emit('pointerenter', { pointerType: 'mouse' });
+  assert.deepEqual(openGroups(groups), [1]);
+  assert.equal(surface.style.transform, 'translate3d(190px, 80px, 0)');
+  assert.equal(surface.style.width, '245px');
+  assert.equal(surface.style.height, '175px');
+  assert.equal(surface.style.values['--arrow-x'], '49px');
+});
+
+test('surface hides outside and updates when resizing an open menu', () => {
+  const { groups, surface, nav, window } = mount(true);
+  groups[2].emit('pointerenter', { pointerType: 'mouse' });
+  assert.equal(surface.classList.contains('is-visible'), true);
+  window.handlers.resize();
+  assert.equal(surface.style.height, '210px');
+  nav.emit('pointerleave', { pointerType: 'mouse' });
+  assert.equal(surface.classList.contains('is-visible'), false);
+});
+
+test('touch mode does not show the animated surface', () => {
+  const { groups, surface } = mount(false);
+  groups[0].summary.emit('click', { detail: 1 });
+  assert.equal(groups[0].open, true);
+  assert.equal(surface.classList.contains('is-visible'), false);
 });

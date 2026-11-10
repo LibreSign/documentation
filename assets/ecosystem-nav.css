@@ -49,7 +49,7 @@ nav.libresign-ecosystem-nav summary:focus-visible {
 }
 nav.libresign-ecosystem-nav .libresign-nav-menu {
   position: absolute;
-  top: 100%;
+  top: calc(100% + 10px);
   left: 50%;
   z-index: 60;
   display: grid;
@@ -65,14 +65,14 @@ nav.libresign-ecosystem-nav .libresign-nav-menu {
 nav.libresign-ecosystem-nav .libresign-nav-menu::before {
   content: "";
   position: absolute;
-  top: -6px;
+  top: -10px;
   left: 50%;
-  width: 10px;
-  height: 10px;
-  transform: translateX(-50%) rotate(45deg);
-  background: #f8fbfa;
-  border-top: 1px solid #b8d2cf;
-  border-left: 1px solid #b8d2cf;
+  width: 0;
+  height: 0;
+  transform: translateX(-50%);
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 10px solid #f8fbfa;
   pointer-events: none;
 }
 nav.libresign-ecosystem-nav .libresign-nav-menu a {
@@ -119,4 +119,78 @@ nav.libresign-ecosystem-nav .libresign-nav-quote {
 }
 @media (prefers-reduced-motion: reduce) {
   .libresign-nav-group summary::after { transition: none; }
+}
+
+/* One moving surface gives dropdowns a continuous shape/position transition. */
+nav.libresign-ecosystem-nav .libresign-nav-surface { display: none; }
+@media (hover: hover) and (pointer: fine) {
+  /* Keep the pointer within the group while crossing the arrow gap. */
+  nav.libresign-ecosystem-nav .libresign-nav-group[open]::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: -12px;
+    right: -12px;
+    height: 10px;
+  }
+  nav.libresign-ecosystem-nav.libresign-nav-animated .libresign-nav-surface {
+    position: absolute;
+    z-index: 1;
+    display: block;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    border: 1px solid #b8d2cf;
+    border-radius: 6px;
+    background: #f8fbfa;
+    box-shadow: 0 9px 20px rgb(0 0 0 / .2);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform .24s cubic-bezier(.22, 1, .36, 1),
+      width .24s cubic-bezier(.22, 1, .36, 1),
+      height .24s cubic-bezier(.22, 1, .36, 1),
+      opacity .14s ease;
+  }
+  nav.libresign-ecosystem-nav .libresign-nav-surface.is-visible { opacity: 1; }
+  nav.libresign-ecosystem-nav .libresign-nav-surface::before {
+    content: "";
+    position: absolute;
+    top: -10px;
+    left: var(--arrow-x, 50%);
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 10px solid #f8fbfa;
+    transition: left .24s cubic-bezier(.22, 1, .36, 1);
+  }
+  nav.libresign-ecosystem-nav.libresign-nav-animated .libresign-nav-group {
+    z-index: 2;
+  }
+  nav.libresign-ecosystem-nav.libresign-nav-animated .libresign-nav-menu {
+    background: transparent;
+    border-color: transparent;
+    box-shadow: none;
+  }
+  nav.libresign-ecosystem-nav.libresign-nav-animated .libresign-nav-menu::before {
+    display: none;
+  }
+  nav.libresign-ecosystem-nav.libresign-nav-animated .libresign-nav-group[open] .libresign-nav-menu {
+    animation: libresign-menu-reveal .18s ease-out both;
+  }
+}
+@keyframes libresign-menu-reveal {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  nav.libresign-ecosystem-nav.libresign-nav-animated .libresign-nav-surface,
+  nav.libresign-ecosystem-nav.libresign-nav-animated .libresign-nav-surface::before {
+    transition: none;
+  }
+  nav.libresign-ecosystem-nav.libresign-nav-animated .libresign-nav-group[open] .libresign-nav-menu {
+    animation: none;
+  }
 }
