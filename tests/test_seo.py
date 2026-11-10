@@ -22,8 +22,10 @@ class DocumentationSeoTests(unittest.TestCase):
         self.root = Path(self.tmp.name)
         self.site = self.root / "site"
         self.site.mkdir()
-        self.catalog = {"versions": [{"slug": "15"}, {"slug": "main"}],
-                        "current_stable": "15"}
+        self.catalog = {"versions": [
+            {"slug": "main", "status": "development", "nextcloud_min": 36, "nextcloud_max": 36},
+            {"slug": "15", "status": "current", "nextcloud_min": 35, "nextcloud_max": 35}],
+            "current_stable": "15"}
 
     def page(self, name: str, body: str = "<h1>Article</h1>"):
         path = self.site / name

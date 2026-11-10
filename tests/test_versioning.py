@@ -104,8 +104,9 @@ class PublicationTests(unittest.TestCase):
             self.assertEqual((result / "14/index.html").read_text(), "14-original")
             self.assertEqual((result / "main/index.html").read_text(), "main-original")
             self.assertEqual((result / "15/index.html").read_text(), "15-updated")
-            self.assertEqual(result_catalog["versions"][1]["app_commit"], "a"*40)
-            self.assertEqual(result_catalog["versions"][0]["app_commit"], "b"*40)
+            by_slug = {entry["slug"]: entry for entry in result_catalog["versions"]}
+            self.assertEqual(by_slug["14"]["app_commit"], "a"*40)
+            self.assertEqual(by_slug["15"]["app_commit"], "b"*40)
 
     def test_partial_without_existing_pages_is_rejected(self):
         with tempfile.TemporaryDirectory() as temp:

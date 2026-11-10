@@ -131,7 +131,7 @@ jobs:
           {
             cat _publish/_review/routes.txt
             find _publish -type f -name '*.html' -printf '/%P\n'
-            printf '%s\n' '/home.css' '/home-theme.js' '/versions.json'
+            printf '%s\n' '/home.css' '/ecosystem-nav.css' '/home-theme.js' '/versions.json'
           } | sort -u | while IFS= read -r route; do
             [ -n "$route" ] || continue
             local_page="_publish$route"
