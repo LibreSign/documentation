@@ -36,6 +36,13 @@ function mount(hover, compact = !hover) {
         add(name) { this.names.add(name); },
         remove(name) { this.names.delete(name); },
         contains(name) { return this.names.has(name); },
+        toggle(name, force) {
+          if (force === undefined ? !this.names.has(name) : force) {
+            this.names.add(name);
+          } else {
+            this.names.delete(name);
+          }
+        },
       };
       this.style = {
         values: {},

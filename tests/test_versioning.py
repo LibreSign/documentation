@@ -186,7 +186,7 @@ class PublicationTests(unittest.TestCase):
         self.assertIn('aria-label="LibreSign ecosystem"', page)
         self.assertIn('href="./"', page)
         self.assertEqual(page.count('class="libresign-nav-group"'), 4)
-        self.assertEqual(page.count('>Documentation</a>'), 1)
+        self.assertEqual(page.count('class="libresign-nav-docs"'), 1)
         self.assertNotIn('class="brand-subtitle"', page)
         self.assertIn('class="libresign-nav-toggle"', page)
         self.assertIn('aria-controls="libresign-ecosystem-links"', page)
