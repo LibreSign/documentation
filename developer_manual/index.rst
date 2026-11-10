@@ -1,56 +1,33 @@
-.. _dev-index:
+Developer manual — LibreSign |LibreSignRelease|
+===============================================
 
-Developer manual
-================
+This is the **release-specific API contract** for LibreSign
+|LibreSignRelease| and Nextcloud |NextcloudRelease|. The schema is pinned
+to an application commit on the corresponding stable branch. Development-only
+API calls and payloads are not presented as features of this release.
 
-Thank you for your interest in contributing to LibreSign.
+Integrate an external application
+---------------------------------
 
-This manual is the canonical source for durable LibreSign developer knowledge.
-Repository-local guidance may point here for architecture, environment, testing
-and contribution workflows instead of duplicating those topics.
+- :doc:`integration/index` — choose an integration architecture for an
+  existing application.
+- :doc:`api/external-email-signers` — follow a release-specific API example
+  for inviting an external email signer.
+- :doc:`api/openapi` — inspect the OpenAPI schema pinned to this release.
 
-Start here
-----------
+Contribute or develop LibreSign
+-------------------------------
 
-- :doc:`architecture` — understand the application boundaries and code map.
-- :doc:`error-handling` — handle exceptions, statuses and errors safely.
-- :doc:`getting-started/development-environment/index` — prepare a development
-  runtime.
-- :doc:`development-workflow` — follow work from an issue to a reviewed pull
-  request.
-- :doc:`getting-started/tests` — choose and run the appropriate validation.
-- :doc:`api/index` — work with the public API.
-- :doc:`integration/index` — choose an integration architecture for an existing system.
-- :doc:`translation` — contribute translations and document source-string context.
-- :doc:`release-process` — maintain and publish releases.
-
-There are many ways to help the project:
-
-- Write code or fix bugs.
-- Test and reproduce reported issues.
-- Improve the documentation.
-- Translate to other languages.
-- Help improve security and privacy.
-- Give LibreSign a star on
-  `GitHub <https://github.com/LibreSign/libresign>`_.
-
-You can also support LibreSign through
-`GitHub Sponsors <https://github.com/sponsors/LibreSign/>`_.
-
-For professional services or partnerships,
-`contact us <https://libresign.coop/#contact>`_.
+Source architecture, coding standards, development environment, tests, and
+release engineering follow the project's current development branch. They
+are available in the `development and contributor manual
+<../../main/developer_manual/index.html>`_. That manual may describe
+unreleased functionality. For integrating with LibreSign |LibreSignRelease|,
+continue to use the version-specific reference above.
 
 .. toctree::
    :maxdepth: 2
-   :hidden:
+   :caption: Release-specific integration
 
-   prologue/index
-   architecture
-   error-handling
-   getting-started/index
-   development-workflow
    api/index
    integration/index
-   translation
-   requesting-features
-   release-process

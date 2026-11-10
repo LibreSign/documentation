@@ -1,4 +1,7 @@
 import os
+os.environ.setdefault("LIBRESIGN_DOC_VERSION", "15")
+os.environ.setdefault("LIBRESIGN_DOC_STATUS", "previous")
+os.environ.setdefault("LIBRESIGN_APP_VERSION", "15")
 import sys
 import datetime
 sys.path.insert(0, os.path.abspath('.'))
@@ -38,7 +41,7 @@ html_context = {
     'display_github': True,
     'github_user': 'LibreSign',
     'github_repo': 'documentation',
-    'github_version': 'main',
+    'github_version': 'stable15',
     'conf_py_path': '/',
 }
 
