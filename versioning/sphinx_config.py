@@ -54,7 +54,7 @@ def configure(config: dict) -> None:
     config["templates_path"] = [str(root / "_templates")]
     config["html_static_path"] = [str(root / "assets")]
     config["html_css_files"] = ["version-switcher.css", "ecosystem-nav.css"]
-    config["html_js_files"] = ["version-switcher.js"]
+    config["html_js_files"] = ["version-switcher.js", "ecosystem-nav.js"]
     config["rst_prolog"] = (
         f".. |LibreSignRelease| replace:: {app_version}\n"
         f".. |NextcloudRelease| replace:: {nextcloud}\n"

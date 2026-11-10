@@ -1,5 +1,7 @@
 /* One small navigation shared by the landing page and Sphinx manuals. */
 nav.libresign-ecosystem-nav {
+  position: relative;
+  z-index: 40;
   display: flex;
   align-items: center;
   flex-wrap: wrap;
@@ -16,7 +18,8 @@ nav.libresign-ecosystem-nav summary {
 nav.libresign-ecosystem-nav > a:hover,
 nav.libresign-ecosystem-nav > a:focus-visible,
 nav.libresign-ecosystem-nav summary:hover,
-nav.libresign-ecosystem-nav summary:focus-visible {
+nav.libresign-ecosystem-nav summary:focus-visible,
+nav.libresign-ecosystem-nav .libresign-nav-group[open] > summary {
   background: #236567;
   color: #fff;
 }
@@ -29,21 +32,48 @@ nav.libresign-ecosystem-nav summary:focus-visible {
 .libresign-nav-group { position: relative; }
 .libresign-nav-group summary { cursor: pointer; list-style: none; white-space: nowrap; }
 .libresign-nav-group summary::-webkit-details-marker { display: none; }
-.libresign-nav-group summary::after { content: " ▾"; font-size: .8em; }
-.libresign-nav-group[open] summary { background: #236567; }
+.libresign-nav-group summary::marker { content: ""; }
+.libresign-nav-group summary::after {
+  content: "";
+  display: inline-block;
+  width: .4rem;
+  height: .4rem;
+  margin-left: .6rem;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: translateY(-2px) rotate(45deg);
+  transition: transform .15s ease;
+}
+.libresign-nav-group[open] summary::after {
+  transform: translateY(2px) rotate(225deg);
+}
 nav.libresign-ecosystem-nav .libresign-nav-menu {
   position: absolute;
-  top: calc(100% + .2rem);
-  left: 0;
+  top: 100%;
+  left: 50%;
   z-index: 60;
   display: grid;
   gap: .1rem;
   min-width: 225px;
   padding: .4rem;
+  transform: translateX(-50%);
   background: #f8fbfa;
   border: 1px solid #b8d2cf;
   border-radius: 6px;
   box-shadow: 0 9px 20px rgb(0 0 0 / .2);
+}
+nav.libresign-ecosystem-nav .libresign-nav-menu::before {
+  content: "";
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  transform: translateX(-50%) rotate(45deg);
+  background: #f8fbfa;
+  border-top: 1px solid #b8d2cf;
+  border-left: 1px solid #b8d2cf;
+  pointer-events: none;
 }
 nav.libresign-ecosystem-nav .libresign-nav-menu a {
   display: block;
@@ -79,9 +109,14 @@ nav.libresign-ecosystem-nav .libresign-nav-quote {
   nav.libresign-ecosystem-nav .libresign-nav-menu {
     left: 0;
     right: 0;
-    top: auto;
-    min-width: min(225px, 100%);
+    top: 100%;
+    min-width: 0;
     max-width: 100%;
+    transform: none;
   }
+  nav.libresign-ecosystem-nav .libresign-nav-menu::before { display: none; }
   nav.libresign-ecosystem-nav .libresign-nav-quote { margin-left: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .libresign-nav-group summary::after { transition: none; }
 }

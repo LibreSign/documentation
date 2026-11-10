@@ -201,6 +201,7 @@ def build(output: Path, selected: str = "all") -> dict:
     )
     shutil.copy2(ROOT / "assets/home.css", output / "home.css")
     shutil.copy2(ROOT / "assets/ecosystem-nav.css", output / "ecosystem-nav.css")
+    shutil.copy2(ROOT / "assets/ecosystem-nav.js", output / "ecosystem-nav.js")
     shutil.copy2(ROOT / "assets/home-theme.js", output / "home-theme.js")
     shutil.copy2(ROOT / "images/logo.png", output / "logo.png")
 
