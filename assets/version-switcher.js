@@ -40,9 +40,18 @@
       const response = await fetch(root + "/versions.json", { cache: "no-store" });
       if (response.ok) {
         const catalog = await response.json();
+        const versions = (catalog.versions || []).filter(entry => validSlug(entry.slug));
+        const stable = versions.filter(entry => entry.slug !== "main" && entry.status !== "eol");
+        const oldest = stable.length
+          ? Math.min(...stable.map(entry => Number(entry.slug))).toString()
+          : null;
+        versions.sort((a, b) => {
+          if (a.slug === "main") return -1;
+          if (b.slug === "main") return 1;
+          return Number(b.slug) - Number(a.slug);
+        });
         const rows = [];
-        for (const entry of catalog.versions || []) {
-          if (!validSlug(entry.slug)) continue;
+        for (const entry of versions) {
           const li = document.createElement("li");
           const link = document.createElement("a");
           const name = document.createElement("span");
@@ -53,9 +62,10 @@
           name.className = "libresign-version-name";
           name.textContent = entry.slug === "main" ? "main" : "LibreSign " + entry.slug;
           detail.className = "libresign-version-detail";
-          detail.textContent = entry.slug === "main" ? "Development" :
+          detail.textContent = entry.slug === "main" ? "Not released" :
             entry.status === "eol" ? "EOL" :
             entry.status === "current" ? "Latest stable" :
+            entry.slug === oldest ? "Oldest documented" :
             "NC " + entry.nextcloud_min +
             (entry.nextcloud_max !== entry.nextcloud_min ? "–" + entry.nextcloud_max : "");
           link.append(name, detail);

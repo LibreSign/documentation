@@ -1,5 +1,7 @@
-{# Sphinx RTD theme includes versions.html outside the page body. Keep the
-   release chooser at the bottom of the sidebar, like Nextcloud Server docs. #}
+{# Sphinx RTD theme includes versions.html outside the page body.
+   The catalog lists development first, followed by stable releases. #}
+{% set active_stables = libresign_versions | rejectattr('slug', 'equalto', 'main') | rejectattr('status', 'equalto', 'eol') | list %}
+{% set oldest_stable = active_stables[-1].slug if active_stables else none %}
 <div class="rst-versions libresign-rst-versions"
      id="libresign-release-picker"
      data-version="{{ libresign_doc_version|e }}"
@@ -8,9 +10,9 @@
      role="navigation"
      aria-label="Documentation versions">
   <button type="button" id="libresign-version-toggle" class="rst-current-version"
-          aria-label="{% if libresign_doc_version == 'main' %}Development documentation, main branch{% else %}LibreSign {{ libresign_doc_version|e }} documentation{% endif %}; choose version"
+          aria-label="{% if libresign_doc_version == 'main' %}Upcoming LibreSign documentation, not released, main branch{% else %}LibreSign {{ libresign_doc_version|e }} documentation{% endif %}; choose version"
           aria-controls="libresign-version-menu" aria-expanded="false">
-    <span class="libresign-version-current">{% if libresign_doc_version == 'main' %}main · development{% else %}LibreSign {{ libresign_doc_version|e }}{% endif %}</span>
+    <span class="libresign-version-current">{% if libresign_doc_version == 'main' %}Upcoming · main{% else %}LibreSign {{ libresign_doc_version|e }}{% endif %}</span>
     <span class="libresign-version-chevron" aria-hidden="true">▴</span>
   </button>
   <div id="libresign-version-menu" class="rst-other-versions" hidden>
@@ -25,7 +27,7 @@
               {% if entry.slug == 'main' %}main{% else %}LibreSign {{ entry.slug }}{% endif %}
             </span>
             <span class="libresign-version-detail">
-              {% if entry.slug == 'main' %}Development{% elif entry.status == 'eol' %}EOL{% elif entry.status == 'current' %}Latest stable{% else %}NC {{ entry.nextcloud_min }}{% if entry.nextcloud_min != entry.nextcloud_max %}–{{ entry.nextcloud_max }}{% endif %}{% endif %}
+              {% if entry.slug == 'main' %}Not released{% elif entry.status == 'eol' %}EOL{% elif entry.status == 'current' %}Latest stable{% elif entry.slug == oldest_stable %}Oldest documented{% else %}NC {{ entry.nextcloud_min }}{% if entry.nextcloud_min != entry.nextcloud_max %}–{{ entry.nextcloud_max }}{% endif %}{% endif %}
             </span>
           </a>
         </li>

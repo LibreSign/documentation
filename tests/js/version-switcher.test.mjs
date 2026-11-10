@@ -112,13 +112,14 @@ async function mount({ root = '', current = '15', manual = 'developer_manual', p
   };
 }
 
-test('latest stable comes first; main is labelled development', async () => {
+test('upcoming development comes first; stable support labels are clear', async () => {
   const ui = await mount({});
   const links = ui.list.children.map(li => li.children[0]);
-  assert.deepEqual(links.map(a => a.dataset.versionTarget), ['15', '14', '13', 'main']);
-  assert.equal(links[0].attributes['aria-current'], 'true');
-  assert.equal(links[3].children[1].textContent, 'Development');
-  assert.equal(links[0].children[1].textContent, 'Latest stable');
+  assert.deepEqual(links.map(a => a.dataset.versionTarget), ['main', '15', '14', '13']);
+  assert.equal(links[1].attributes['aria-current'], 'true');
+  assert.equal(links[0].children[1].textContent, 'Not released');
+  assert.equal(links[1].children[1].textContent, 'Latest stable');
+  assert.equal(links[3].children[1].textContent, 'Oldest documented');
 });
 
 test('menu starts collapsed, opens on click and closes with Escape', async () => {

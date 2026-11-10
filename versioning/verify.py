@@ -143,11 +143,11 @@ def verify_site(output: Path, versions: list[str] | None = None,
             errors.append("Public homepage has no functioning shared theme switcher")
         expected_slugs = sorted(
             all_versions,
-            key=lambda slug: (slug == "main", -(int(slug) if slug != "main" else 0)),
+            key=lambda slug: (slug != "main", -(int(slug) if slug != "main" else 0)),
         )
         positions = [home.find(f'data-version="{slug}"') for slug in expected_slugs]
         if -1 in positions or positions != sorted(positions):
-            errors.append("Homepage versions are not ordered newest stable first")
+            errors.append("Homepage versions are not ordered development first, then newest stable")
         if check_links:
             errors.extend(inspect_links(output, homepage))
     if check_links:

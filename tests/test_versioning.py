@@ -45,9 +45,9 @@ class CatalogTests(unittest.TestCase):
                                      refs, lambda sha, path: data[sha, path])
         self.assertEqual(result["current_stable"], "16")
         self.assertEqual([v["slug"] for v in result["versions"]],
-                         ["16", "15", "14", "13", "main"])
+                         ["main", "16", "15", "14", "13"])
         self.assertEqual(contracts["13"], sample_spec("/b"))
-        self.assertEqual(result["versions"][-1]["status"], "development")
+        self.assertEqual(result["versions"][0]["status"], "development")
 
     def test_eol_comes_only_from_explicit_policy(self):
         refs = {"main": "a" * 40, "stable35": "b" * 40, "stable36": "c" * 40}
@@ -148,7 +148,7 @@ class PublicationTests(unittest.TestCase):
                 (root / "15/help.html").unlink()
                 self.assertEqual(len(inspect_links(root, page)), 1)
 
-    def test_homepage_lists_latest_stable_first_and_main_last(self):
+    def test_homepage_lists_upcoming_first_and_identifies_oldest_stable(self):
         catalog = {
             "current_stable": "15",
             "versions": [
@@ -164,11 +164,15 @@ class PublicationTests(unittest.TestCase):
         }
         page = version_overview(catalog)
         positions = [page.index(f'data-version="{v}"')
-                     for v in ("15", "14", "13", "main")]
+                     for v in ("main", "15", "14", "13")]
         self.assertEqual(positions, sorted(positions))
         self.assertIn('href="15/developer_manual/"', page)
-        self.assertIn('Latest stable', page)
-        self.assertIn('Development (not a stable release)', page)
+        self.assertIn('Latest stable release', page)
+        self.assertIn('Upcoming release', page)
+        self.assertIn('Oldest documented stable release', page)
+        self.assertIn('Nextcloud 32', page)
+        self.assertIn('No verified end-of-life manuals', page)
+        self.assertNotIn('href="12/user_manual/"', page)
         self.assertNotIn('http-equiv="refresh"', page)
 
     def test_homepage_loads_theme_before_css_and_exposes_accessible_toggle(self):

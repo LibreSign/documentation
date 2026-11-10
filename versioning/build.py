@@ -100,9 +100,12 @@ def version_overview(catalog: dict) -> str:
     """Generate the public entry page from the same version catalog as Sphinx."""
     versions = sorted(
         catalog["versions"],
-        key=lambda v: (v["slug"] == "main",
+        key=lambda v: (v["slug"] != "main",
                        -(int(v["slug"]) if v["slug"] != "main" else 0)),
     )
+    stable = [entry for entry in versions
+              if entry["slug"] != "main" and entry["status"] != "eol"]
+    oldest_stable = min(stable, key=lambda entry: int(entry["slug"]))["slug"] if stable else None
     environment = Environment(
         loader=FileSystemLoader(str(ROOT / "_templates")),
         autoescape=select_autoescape(["html"]),
@@ -110,6 +113,7 @@ def version_overview(catalog: dict) -> str:
     return environment.get_template("home.html").render(
         versions=versions,
         current_stable=catalog["current_stable"],
+        oldest_stable=oldest_stable,
         preview_pr=os.environ.get("LIBRESIGN_PREVIEW_PR", ""),
     )
 
