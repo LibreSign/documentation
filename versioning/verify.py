@@ -81,6 +81,8 @@ def verify_site(output: Path, versions: list[str] | None = None,
                     'class="rst-versions libresign-rst-versions"' not in content or
                     'id="libresign-version-menu"' not in content):
                 errors.append(f"Missing version selector in {index}")
+            if 'class="libresign-manual-navigation libresign-scroll-header"' not in content:
+                errors.append(f"Missing shared navigation in {index}")
             if slug == "main" and "Development documentation" not in content:
                 errors.append("Development version is not labelled as such")
         api = version_dir / "developer_manual/api"
