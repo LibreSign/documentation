@@ -39,8 +39,27 @@ All four documented release lines use this OCS prefix:
    https://cloud.example.com/ocs/v2.php/apps/libresign/api/v1
 
 The request structure is selected for this documentation release. Use only
-the version-specific fixture below with the executable cURL or PHP clients
-in ``examples/external-email-signers``. The version selector is mandatory.
+the version-specific fixture below with the cURL/Bash or PHP clients.
+The version selector is mandatory.
+
+The runnable clients and matching fixture are kept in this documentation
+branch (not in another release's source):
+
+* `Bash client (flow.sh) <https://github.com/LibreSign/documentation/blob/stable15/examples/external-email-signers/flow.sh>`_
+* `PHP client (flow.php) <https://github.com/LibreSign/documentation/blob/stable15/examples/external-email-signers/flow.php>`_
+* `LibreSign 15 fixture (request-15.json) <https://github.com/LibreSign/documentation/blob/stable15/examples/external-email-signers/request-main.json>`_
+
+Clone the **matching documentation branch**, then work in the examples
+directory (Git required):
+
+.. code-block:: bash
+
+   git clone --depth 1 --branch main https://github.com/LibreSign/documentation.git
+   cd documentation/examples/external-email-signers
+
+Keep the clients and their ``request-*.json`` fixtures together. Consult this
+release's :doc:`openapi` and its pinned `OpenAPI JSON <openapi.json>`_ when
+adapting the request to a real integration.
 
 .. include:: _external-email-signers-release.inc
 
@@ -56,18 +75,62 @@ the scripts explicitly POST /notify/signers with the returned file ID:
 A processed notification request is not proof of email delivery.
 Do not send duplicate invitations. Use an actual test inbox.
 
+Run the examples **only on a disposable test installation**, never on a
+production service. Prerequisites are HTTPS, the LibreSign release described
+by this page installed on a compatible Nextcloud, email delivery to a
+controlled test inbox, enabled email identification/signing methods, and a
+signing certificate engine. The requesting Nextcloud account needs permission
+to request signatures and access to the relevant Files folder. Create a
+revocable **App Password** for this dedicated account under Nextcloud's
+**Personal settings > Security**. Do not share it with the external signer.
+
+For Bash, install Bash, cURL, jq and GNU ``stat`` (Linux). For PHP, use
+PHP 8.1+ with the cURL extension. From the cloned examples directory, set
+the common variables below; ``PDF_PATH`` must be an **absolute path** to a
+valid, synthetic PDF, and the signer email must be a deliverable test inbox
+you control (replace all illustrative values):
+
 .. code-block:: bash
 
-   export NC_BASE_URL=https://cloud.example.com
+   export NC_BASE_URL=https://your-test-nextcloud.example.org
    export NC_USER=integration-user
-   export PDF_PATH=./synthetic.pdf
-   export SIGNER_EMAIL=signer@controlled-mailbox.example
-   # cURL: use a private netrc file (mode 0600) with App Password
+   export PDF_PATH=/absolute/path/to/synthetic.pdf
+   export SIGNER_EMAIL=signer@your-controlled-test-domain.example.org
+
+Use **one** client for ``start``, not both: each invocation creates a new
+signature request and can send a new invitation.
+
+For **Bash**, keep the App Password in a private ``netrc`` file whose
+``machine`` matches the host in ``NC_BASE_URL``:
+
+.. code-block:: text
+
+   machine your-test-nextcloud.example.org
+     login integration-user
+     password YOUR_NEXTCLOUD_APP_PASSWORD
+
+.. code-block:: bash
+
    export NC_NETRC="$HOME/.config/libresign-integration.netrc"
-   ./flow.sh start
-   # PHP: obtain the App Password from private environment
-   export NC_APP_PASSWORD=provided-by-secret-manager
+   umask 077
+   mkdir -p "$HOME/.config"
+   touch "$NC_NETRC"
+   chmod 600 "$NC_NETRC"
+   ${EDITOR:-vi} "$NC_NETRC"  # enter the netrc contents shown above
+   bash flow.sh start
+
+For **PHP instead**, provide the App Password privately, not as a literal
+shell command argument or a checked-in file:
+
+.. code-block:: bash
+
+   read -r -s -p "Nextcloud App Password: " NC_APP_PASSWORD; printf '\\n'
+   export NC_APP_PASSWORD
    php flow.php start
+
+Keep the resulting ``fileId`` and ``fileUuid``; the scripts do not sign
+on the external person's behalf. Clear ``NC_APP_PASSWORD`` from the
+shell environment when finished with the PHP client.
 
 The signer receives an individual invitation link, opens the public
 signing browser page and completes the configured identification and
@@ -85,8 +148,7 @@ required signers and envelope children before marking completion.
 .. code-block:: bash
 
    export FILE_UUID=UUID_RETURNED_BY_START
-   ./flow.sh check
-   php flow.php check
+   bash flow.sh check  # or: php flow.php check
 
 GET /file/validate/file_id/{fileId} enforces file access and returns
 available validation data. Public /file/validate/uuid/{uuid} is
@@ -96,8 +158,7 @@ access. Validation output is not a guaranteed standalone audit dossier.
 .. code-block:: bash
 
    export FILE_ID=ID_RETURNED_BY_START
-   ./flow.sh validate
-   php flow.php validate
+   bash flow.sh validate  # or: php flow.php validate
 
 The OCS specification has no generic binary GET /file/download/{id}.
 The public LibreSign PDF viewer is governed by validation privacy, not
@@ -110,10 +171,22 @@ authenticated WebDAV PROPFIND if necessary. Then use WebDAV GET:
    /remote.php/dav/files/<integration-user>/<encoded-signed-PDF-path>
 
 Neither a LibreSign file ID, nodeId, signedNodeId nor sign-request UUID
-is a WebDAV path. Both scripts support retrieve with SIGNED_DAV_URL
-and SIGNED_OUTPUT set to a private output path. Verify the downloaded
-PDF signature and certificate chain independently. Do not bypass file
-permissions or query LibreSign database tables directly.
+is a WebDAV path. After confirming the workflow is signed, locate the actual
+PDF in **Nextcloud Files** with the same authorized integration account (or
+use authenticated WebDAV PROPFIND to find the file's path). Set the full URL
+with URL-encoded path segments and a private local destination; replace this
+illustrative path with the real authorized location:
+
+.. code-block:: bash
+
+   export SIGNED_DAV_URL="$NC_BASE_URL/remote.php/dav/files/$NC_USER/Signed%20Documents/synthetic.pdf"
+   export SIGNED_OUTPUT="$HOME/signed-synthetic.pdf"
+   bash flow.sh retrieve  # or: php flow.php retrieve
+
+Both clients require the App Password again for later commands (the Bash
+client reads ``NC_NETRC``; the PHP client reads ``NC_APP_PASSWORD``).
+Verify the downloaded PDF signature and certificate chain independently.
+Do not bypass file permissions or query LibreSign database tables directly.
 
 Ordering, release differences, errors and security
 --------------------------------------------------
