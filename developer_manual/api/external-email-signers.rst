@@ -61,6 +61,16 @@ Keep the clients and their ``request-*.json`` fixtures together. Consult this
 release's :doc:`openapi` and its pinned `OpenAPI JSON <openapi.json>`_ when
 adapting the request to a real integration.
 
+For a ready-to-import n8n workflow, see the `shared LibreSign + n8n guide
+<https://github.com/LibreSign/documentation/blob/c2ae3bcb8cf49a9abfc10d2a95b5b9f1e4678d18/examples/n8n/README.md>`_. It uses a single external signer, explicit invitation,
+bounded OCS polling and an authorized WebDAV download. Select this
+LibreSign release in the workflow configuration: versions 13/14 use
+``mandatory: 1``; versions 15/development use
+``requirement: "required"``. Native completion events belong to the
+development documentation and are not required by the polling workflow.
+The n8n files are maintained on the development branch; do not replace
+the release-specific cURL/PHP fixtures with development payloads.
+
 .. include:: _external-email-signers-release.inc
 
 The scripts POST /request-signature,
