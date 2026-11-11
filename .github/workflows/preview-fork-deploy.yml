@@ -1,7 +1,7 @@
 # SPDX-FileCopyrightText: 2026 LibreCode coop and contributors
 # SPDX-License-Identifier: CC-BY-3.0
 
-name: Documentation Fork PR Preview Deploy
+name: Documentation PR Preview Deploy
 
 on:
   workflow_run:
@@ -15,18 +15,37 @@ permissions:
 
 jobs:
   deploy:
-    # The privileged workflow consumes static HTML only, never fork code.
+    # Only verified unprivileged preview artifacts are consumed; never execute PR code.
     if: >-
       github.event.workflow_run.event == 'pull_request' &&
       github.event.workflow_run.conclusion == 'success' &&
-      github.event.workflow_run.pull_requests[0].number > 0 &&
-      github.event.workflow_run.head_repository.id != github.event.repository.id
+      github.event.workflow_run.pull_requests[0].number > 0
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 25
     concurrency:
       group: documentation-preview-${{ github.event.workflow_run.pull_requests[0].number }}
       cancel-in-progress: false
     steps:
+      # Use default-branch helpers, never executable code from the PR.
+      - name: Checkout trusted preview helper
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+          persist-credentials: false
+
+      - name: Verify source PR is open at the tested HEAD
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.workflow_run.pull_requests[0].number }}
+          RUN_HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
+        run: |
+          pr_state="$(gh api "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER" --jq '.state')"
+          pr_head="$(gh api "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER" --jq '.head.sha')"
+          if [ "$pr_state" != open ] || [ "$pr_head" != "$RUN_HEAD_SHA" ]; then
+            echo "::error::Preview source run is stale or PR is closed" >&2
+            exit 1
+          fi
+
       - name: Download validated preview HTML
         uses: actions/download-artifact@70fc10c6e5e1ce46ad2ea6f2b72d43f7d47b13c3 # v8.0.0
         with:
@@ -43,6 +62,7 @@ jobs:
           test -s _publish/_review/index.html
           test -s _publish/_review/routes.txt
           ! test -e _publish/CNAME
+          test -z "$(find _publish -type l -print -quit)"
 
       - name: Create scoped Pages deployment token
         id: preview-token
@@ -54,7 +74,8 @@ jobs:
           repositories: site-preview
           permission-contents: write
 
-      - name: Publish preview and comment on PR
+      - name: Publish preview to isolated Pages origin
+        id: preview-deploy
         uses: LibreSign/pr-preview-action@2a6da1177b47dc23173ba9a75e01da0a0d800978
         with:
           action: deploy
@@ -64,21 +85,95 @@ jobs:
           deploy-repository: LibreSign/site-preview
           preview-branch: gh-pages
           pages-base-url: libresign.github.io/site-preview
-          wait-for-pages-deployment: true
-          qr-code: true
+          wait-for-pages-deployment: false
+          qr-code: false
+          comment: false
           token: ${{ steps.preview-token.outputs.token }}
 
-      - name: Verify navigable public preview
+      - name: Wait until GitHub Pages serves this exact preview revision
         env:
           PREVIEW_ROOT: https://libresign.github.io/site-preview/docs-preview/pr-${{ github.event.workflow_run.pull_requests[0].number }}
         run: |
-          while IFS= read -r route; do
-            case "$route" in
-              /*) ;;
-              *) echo "Invalid preview route: $route" >&2; exit 1 ;;
-            esac
-            curl --fail --silent --show-error --location \
-              --proto '=https' --proto-redir '=https' \
-              --retry 6 --retry-delay 2 --retry-all-errors \
-              --max-time 15 --output /dev/null "$PREVIEW_ROOT$route"
-          done < _publish/_review/routes.txt
+          # The deploy action pushes gh-pages, but Pages publishes it
+          # asynchronously. Byte equality of versions.json proves the
+          # exact documentation revision has reached the public origin.
+          for attempt in $(seq 1 108); do
+            if curl -fsSL --max-time 15 -H 'Cache-Control: no-cache' \
+              -o /tmp/libresign-live-versions.json \
+              "$PREVIEW_ROOT/versions.json?run=$GITHUB_RUN_ID&attempt=$attempt" &&
+              cmp -s _publish/versions.json /tmp/libresign-live-versions.json; then
+              echo "GitHub Pages serves the expected documentation revision"
+              break
+            fi
+            if [ "$attempt" -eq 108 ]; then
+              echo "::error::GitHub Pages did not publish this preview revision" >&2
+              exit 1
+            fi
+            sleep 10
+          done
+
+      - name: Check every navigable preview route on the public origin
+        env:
+          PREVIEW_ROOT: https://libresign.github.io/site-preview/docs-preview/pr-${{ github.event.workflow_run.pull_requests[0].number }}
+        run: |
+          # GitHub Pages is shared with other PR previews. Its deployment run
+          # can be superseded even when this preview's HTML is publicly served.
+          # Compare rendered pages with the public origin instead of a specific
+          # Pages run or PR merge SHA.
+          {
+            cat _publish/_review/routes.txt
+            find _publish -type f -name '*.html' -printf '/%P\n'
+            printf '%s\n' '/home.css' '/ecosystem-nav.css' '/ecosystem-nav.js' '/scroll-navigation.js' '/home-theme.js' '/versions.json'
+          } | sort -u | while IFS= read -r route; do
+            [ -n "$route" ] || continue
+            local_page="_publish$route"
+            if [[ "$route" == */ ]]; then
+              local_page="${local_page}index.html"
+            fi
+            if [ ! -f "$local_page" ]; then
+              echo "::error::Missing generated preview page: $local_page" >&2
+              exit 1
+            fi
+            url="$PREVIEW_ROOT$route"
+            success=false
+            for attempt in $(seq 1 4); do
+              if curl -fsSL --max-time 15 -H 'Cache-Control: no-cache' \
+                -o /tmp/libresign-preview-page.html \
+                "$url?run=$GITHUB_RUN_ID&attempt=$attempt" &&
+                cmp -s "$local_page" /tmp/libresign-preview-page.html; then
+                echo "Published preview matches generated content: $url"
+                success=true
+                break
+              fi
+              sleep 5
+            done
+            if [ "$success" != true ]; then
+              echo "::error::Public preview missing or stale: $url" >&2
+              exit 1
+            fi
+          done
+
+      - name: Comment with navigable preview links
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.workflow_run.pull_requests[0].number }}
+          PREVIEW_ROOT: https://libresign.github.io/site-preview/docs-preview/pr-${{ github.event.workflow_run.pull_requests[0].number }}
+          ACTION_VERSION: ${{ steps.preview-deploy.outputs.action-version }}
+          ACTION_START_TIME: ${{ steps.preview-deploy.outputs.action-start-time }}
+        run: |
+          python -m versioning.pr_preview \
+            --site _publish --preview-root "$PREVIEW_ROOT" \
+            --action-version "$ACTION_VERSION" --built-at "$ACTION_START_TIME"
+          body=$(cat _publish/_review/preview-comment.md)
+          marker='<!-- libresign-documentation-preview-links -->'
+          legacy='<!-- libresign-documentation-review-screenshots -->'
+          native='<!-- Sticky Pull Request Commentpr-preview -->'
+          comment_id=$(gh api "repos/$GITHUB_REPOSITORY/issues/$PR_NUMBER/comments?per_page=100" \
+            --paginate --jq ".[] | select(.body | contains(\"$marker\") or contains(\"$legacy\") or contains(\"$native\")) | .id" | head -n 1)
+          if [ -n "$comment_id" ]; then
+            gh api --method PATCH "repos/$GITHUB_REPOSITORY/issues/comments/$comment_id" \
+              -f body="$body" >/dev/null
+          else
+            gh api --method POST "repos/$GITHUB_REPOSITORY/issues/$PR_NUMBER/comments" \
+              -f body="$body" >/dev/null
+          fi
