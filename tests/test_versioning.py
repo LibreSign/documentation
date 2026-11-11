@@ -134,8 +134,10 @@ class PublicationTests(unittest.TestCase):
             with patch("versioning.publish.legacy_redirects"), patch("versioning.publish.apply_seo"):
                 result = assemble(new, output, "16", old)
             self.assertEqual(result["current_stable"], "16")
-            self.assertIn("url=/16/index.html", (output / "stable/index.html").read_text())
-            self.assertIn("url=/main/index.html", (output / "latest/index.html").read_text())
+            # Preview deployments have a site prefix; the alias verifier checks
+            # the full prefix and the matching versioned target.
+            self.assertIn("/16/index.html", (output / "stable/index.html").read_text())
+            self.assertIn("/main/index.html", (output / "latest/index.html").read_text())
             self.assertNotIn("STALE", (output / "stable/index.html").read_text())
             self.assertTrue((output / "14/index.html").exists())
             self.assertEqual(verify_version_aliases(output, result), [])
