@@ -124,7 +124,7 @@ shell command argument or a checked-in file:
 
 .. code-block:: bash
 
-   read -r -s -p "Nextcloud App Password: " NC_APP_PASSWORD; printf '\\n'
+   read -r -s -p "Nextcloud App Password: " NC_APP_PASSWORD; echo
    export NC_APP_PASSWORD
    php flow.php start
 
