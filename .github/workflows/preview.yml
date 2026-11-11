@@ -58,7 +58,7 @@ jobs:
             --site _publish --preview-root "$PREVIEW_ROOT"
 
       - name: Upload unprivileged preview for fork PRs
-        if: github.event.pull_request.head.repo.full_name != github.repository
+        if: github.event.pull_request.head.repo.full_name != github.repository || github.actor == 'dependabot[bot]'
         uses: actions/upload-artifact@v4
         with:
           name: documentation-preview-site
@@ -68,7 +68,7 @@ jobs:
           retention-days: 3
 
       - name: Create scoped preview deployment token
-        if: github.event.pull_request.head.repo.full_name == github.repository
+        if: github.event.pull_request.head.repo.full_name == github.repository && github.actor != 'dependabot[bot]'
         id: preview-token
         uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
         with:
@@ -79,7 +79,7 @@ jobs:
           permission-contents: write
 
       - name: Deploy preview to separate GitHub Pages origin
-        if: github.event.pull_request.head.repo.full_name == github.repository
+        if: github.event.pull_request.head.repo.full_name == github.repository && github.actor != 'dependabot[bot]'
         uses: LibreSign/pr-preview-action@2a6da1177b47dc23173ba9a75e01da0a0d800978
         with:
           action: deploy
@@ -94,7 +94,7 @@ jobs:
           token: ${{ steps.preview-token.outputs.token }}
 
       - name: Check every navigable preview route on the public origin
-        if: github.event.pull_request.head.repo.full_name == github.repository
+        if: github.event.pull_request.head.repo.full_name == github.repository && github.actor != 'dependabot[bot]'
         env:
           PREVIEW_ROOT: https://libresign.github.io/site-preview/docs-preview/pr-${{ github.event.pull_request.number }}
         run: |
@@ -118,7 +118,7 @@ jobs:
           done < _publish/_review/routes.txt
 
       - name: Comment with navigable preview links
-        if: github.event.pull_request.head.repo.full_name == github.repository
+        if: github.event.pull_request.head.repo.full_name == github.repository && github.actor != 'dependabot[bot]'
         env:
           GH_TOKEN: ${{ github.token }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
