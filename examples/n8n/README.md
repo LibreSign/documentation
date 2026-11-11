@@ -4,11 +4,14 @@
 # LibreSign + n8n: external signer (C2)
 
 This is an **importable n8n workflow** using public LibreSign OCS v1 requests and
-an authenticated Nextcloud WebDAV download. It creates a **single-document,
-one-email-signer** request, asks LibreSign to send the invitation, polls a
-bounded number of times, and downloads an **already identified, authorized**
-signed PDF. No custom n8n node, callback URL, direct database access, or
-new LibreSign endpoint is needed.
+authenticated Nextcloud WebDAV discovery and download. It creates a
+**single-document, one-email-signer** request, asks LibreSign to send the
+invitation, polls a bounded number of times, then identifies the signed PDF
+in the requester's own Nextcloud Files folder. It matches the OCS source
+``nodeId`` to WebDAV ``oc:fileid`` and requires **exactly one other PDF in
+that folder** before downloading the returned DAV path. No filename guess,
+custom n8n node, callback URL, database access, or new LibreSign endpoint is
+needed. Ambiguous or inaccessible files stop the workflow.
 
 [Import the workflow](libresign-external-signature.json). For equivalent cURL
 and PHP flows, reuse the existing
@@ -58,13 +61,14 @@ experimental policy fields.
 3. An n8n installation providing the built-in Manual Trigger, Code,
    HTTP Request, Loop Over Items, If, and Wait nodes. No community node,
    npm package, or public incoming webhook is required.
-4. For the **final download**, determine the actual signed PDF's *relative*
-   path under the integration account's authenticated WebDAV folder.
-   Discover it with Nextcloud Files or an authenticated WebDAV `PROPFIND`.
-   **Do not assume that the uploaded filename is the signed filename** or
-   derive a path from a LibreSign file ID, UUID, node ID, or invitation link.
-   When the path is unknown in advance, test request/notification/status first
-   and configure the final download only after the path is verified.
+4. For **automatic final download**, the integration account needs to list
+   its ``LibreSign/`` folder (the default local LibreSign file location), read
+   the request's original PDF, and read the completed PDF. The example uses
+   **authenticated WebDAV `PROPFIND`** to identify one eligible PDF sibling.
+   It does not construct a filename from any LibreSign ID, UUID or invitation
+   link. If the installation uses a custom folder, grants different access,
+   or keeps more than one non-source PDF beside the original, discovery will
+   stop for review rather than download an arbitrary file.
 
 ## Import and configure
 
@@ -73,14 +77,15 @@ experimental policy fields.
    It is disabled by default and begins with a **Manual Trigger**.
 2. Create a **Generic HTTP Basic Auth** credential in n8n: username is the
    Nextcloud integration account; password is its **App Password**. Associate
-   *that same credential* with these four HTTP Request nodes: **Create request**,
-   **Invite signer once**, **Get file state**, **Download signed PDF**.
+   *that same credential* with all six HTTP Request nodes: **Create request**,
+   **Invite signer once**, **Get file state**, **List LibreSign folders**,
+   **Inspect folder files**, **Download signed PDF**.
    Credentials are deliberately **not** bound or exported in the JSON.
 3. Edit only the public parameters in the **Configure** Code node:
    `baseUrl` (HTTPS Nextcloud origin, without `/ocs`), `version` (`13`, `14`,
    `15`, or `main`), `integrationUser`, `signerEmail` (a real **controlled test
-   inbox**), `signedPdfPath` (verified path relative to the DAV user root),
-   `maxAttempts`, and `waitSeconds`. Replace `pdfBase64` when testing your own
+   inbox**), `maxSearchFolders` (limit on the number of request folders scanned,
+   default 50, maximum 250), `maxAttempts`, and `waitSeconds`. Replace `pdfBase64` when testing your own
    *synthetic* PDF. The built-in sample is a one-page PDF without personal data.
 4. Ensure Nextcloud's email/notification background jobs work. Click **Execute
    Workflow**. Open the controlled mailbox, follow the **LibreSign-issued**
@@ -100,10 +105,15 @@ POST /notify/signers                (one explicit invitation request, not delive
   -> accepted for processing
 GET  /file/list?details=1&fileIds[]=ID   (13/14/15; main uses details=true)
   -> file status 0/1/2: wait and retry, at most maxAttempts
-  -> file status 3: authorized WebDAV GET using a verified path
+  -> file status 3: authorized WebDAV discovery, then authenticated GET
   -> file status 4, unknown status, OCS/HTTP error, or timeout: stop
-GET  /remote.php/dav/files/USER/VERIFIED-PATH   (authenticated, same HTTPS origin)
-  -> binary field signedPdf, PDF header check
+PROPFIND /remote.php/dav/files/USER/LibreSign/   (authenticated, Depth: 1)
+  -> list request folders; reject unbounded or unsafe paths
+PROPFIND /remote.php/dav/files/USER/LibreSign/REQUEST-FOLDER/   (authenticated, Depth: 1)
+  -> find the original PDF by comparing OCS source nodeId to DAV oc:fileid
+  -> require exactly one other non-empty PDF sibling and keep its actual DAV href
+GET  ACTUAL-AUTHORIZED-DAV-HREF   (authenticated, same HTTPS origin)
+  -> binary field signedPdf, PDF header check; independent PDF signature verification
 ```
 
 A `fileId` is **not** the file UUID or a signer-scoped signing UUID. The
@@ -136,12 +146,18 @@ checking child documents and each required signer.
 - The workflow only lets LibreSign send invitations. `POST /notify/signers`
   being accepted is **not** SMTP delivery or receipt confirmation; do not
   send your own guessed signer URL or blindly re-send notifications.
-- The workflow does **not** promise a guaranteed final signed-file path or
-  generic `GET /file/download/{id}`: no such universal authorized endpoint
-  is established by the reviewed public OpenAPI. Use WebDAV only with file
-  read rights and the **verified completed file** path. `GET
-  /file/validate/file_id/{fileId}` supplies authorization-checked metadata,
-  not a PDF file download or automatic certificate-chain validation.
+- The workflow does **not** promise a universal file-ID download endpoint or
+  signed filename: no such contract is established in the reviewed LibreSign
+  OpenAPI. After checking status ``3``, it lists the **requester's own** DAV
+  folder, matches the OCS source node ID to the returned DAV ``oc:fileid``,
+  and downloads only an **unambiguous, non-empty PDF sibling** under the same
+  folder. It stops when DAV access is denied, the folder cannot be found, the
+  root contains more than `maxSearchFolders` subfolders, or there are zero or
+  multiple candidate PDFs. This intentionally narrow discovery is **not a
+  generalized resolver** for envelope/parallel signers, custom storage, or
+  unlimited folders. It does not validate the PDF's cryptographic signature.
+  `GET /file/validate/file_id/{fileId}` supplies authorization-checked
+  metadata, not a PDF binary or automatic certificate-chain validation.
 
 ## Development: optional native event receiver
 
@@ -171,11 +187,20 @@ verification; they are not represented as already tested here.
 ## Verification and evidence
 
 `node --test examples/n8n/test-workflow.mjs` runs dependency-free, synthetic
-contract tests for the export, Code-node success/failure cases, status
-transitions and authorization boundary. This tests **our export and logic**,
-not n8n runtime import, a live Nextcloud, SMTP delivery, legal identity,
-cryptographic signing, or a real WebDAV completion path. Execute that E2E
-scenario in a disposable installation before using this in any real workflow.
+contract tests for the export, Code-node success/failure cases, WebDAV
+folder and file-ID correlation, ambiguity rejection, status transitions and
+authorization boundaries. This tests **the export and its logic**, not n8n
+runtime import, a live Nextcloud, SMTP delivery, legal identity, or
+cryptographic signing. The discovery and final GET were also executed on a
+**disposable Nextcloud 35 / LibreSign 15.0.12 / n8n 2.47.3 installation** with
+one already signed synthetic PDF: the 21-node graph successfully retrieved
+47,799 PDF bytes through authenticated WebDAV; `pdfsig` independently
+confirmed a cryptographically valid signature from the test-only CA. The
+creation, invitation, SMTP, external signing and polling were verified on
+that installation in a separate earlier run. This is **not** an uninterrupted
+end-to-end n8n run nor evidence of runtime compatibility with releases 13, 14,
+or development. Revalidate in the target disposable release before using it
+for live documents.
 
 References: [LibreSign stable API guide](https://docs.libresign.coop/stable/developer_manual/api/external-email-signers.html),
 [stable integration lifecycle](https://docs.libresign.coop/stable/developer_manual/integration/lifecycle.html),

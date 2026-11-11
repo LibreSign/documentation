@@ -25,6 +25,7 @@ on:
       - 'conf.py'
       - 'requirements.txt'
       - 'tests/**'
+      - 'examples/n8n/**'
 
 permissions:
   contents: read
@@ -56,6 +57,19 @@ jobs:
 
       - name: Test version selection navigation
         run: node --test tests/js/*.test.mjs
+
+      - name: Test n8n workflow graph, Code nodes and WebDAV discovery
+        run: node --test examples/n8n/test-workflow.mjs
+
+      - name: Import workflow using real n8n 2.47.3
+        run: |
+          mkdir -p "$RUNNER_TEMP/libresign-n8n-ci"
+          chmod 777 "$RUNNER_TEMP/libresign-n8n-ci"
+          docker run --rm \
+            -v "$PWD/examples/n8n:/work:ro" \
+            -v "$RUNNER_TEMP/libresign-n8n-ci:/home/node/.n8n" \
+            docker.n8n.io/n8nio/n8n:2.47.3 import:workflow \
+            --input=/work/libresign-external-signature.json
 
       - name: Build every Sphinx version independently
         run: python -m versioning.build --output _build
