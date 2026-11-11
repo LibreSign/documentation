@@ -72,6 +72,18 @@ test('request validation rejects placeholders and unsafe WebDAV paths', async ()
     { maxAttempts: 0 },
   ]) await assert.rejects(code('Prepare request', { ...config, ...bad }));
 });
+test('request validation works inside n8n Code without global URL', async () => {
+  const input = { ...config, baseUrl: 'https://nc.example.test:8443/' };
+  const output = (await code('Prepare request', input, {}, { URL: undefined }))[0].json;
+  assert.equal(output.baseUrl, 'https://nc.example.test:8443');
+  for (const baseUrl of [
+    'https://user:pass@nc.example.test',
+    'https://nc.example.test/path',
+    'https://nc.example.test?x=1',
+    'https://nc.example.test:99999',
+    'https://nc.example.test:0',
+  ]) await assert.rejects(code('Prepare request', { ...input, baseUrl }, {}, { URL: undefined }));
+});
 test('creation/notification require successful OCS envelope', async () => {
   const response = { ocs: { meta: { status: 'ok' }, data: { id: 17, uuid: created.fileUuid } } };
   const out = (await code('Verify created', response))[0].json;
