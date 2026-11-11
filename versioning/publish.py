@@ -7,10 +7,47 @@ import os
 import shutil
 from pathlib import Path
 
-from versioning.build import legacy_redirects
+from versioning.build import legacy_redirects, redirect_html
 from versioning.seo import apply_seo
 
 ROOT = Path(__file__).resolve().parent.parent
+
+
+def write_version_aliases(site: Path, catalog: dict) -> None:
+    """Publish Nextcloud-style moving aliases without replacing pinned releases.
+
+    GitHub Pages cannot issue server-side rewrite rules. Each HTML URL gets a
+    small redirect to the real version so that nested links work in previews
+    as well as production. Only the two OpenAPI JSON files are mirrored to
+    support clients requesting the contract directly.
+    """
+    current = catalog.get("current_stable")
+    if not isinstance(current, str) or not current.isdecimal() or current.startswith("0"):
+        raise ValueError("Cannot create /stable/ without a published stable release")
+
+    for alias, target in (("latest", "main"), ("stable", current)):
+        source = site / target
+        if not (source / "index.html").is_file():
+            raise ValueError(f"Missing version for /{alias}/: {target}")
+        destination = site / alias
+        if destination.is_symlink():
+            raise ValueError(f"Unsafe alias destination: {alias}")
+        if destination.exists():
+            shutil.rmtree(destination)
+        for page in source.rglob("*.html"):
+            relative = page.relative_to(source)
+            redirect = destination / relative
+            redirect.parent.mkdir(parents=True, exist_ok=True)
+            redirect.write_text(
+                redirect_html(f"/{target}/{relative.as_posix()}"),
+                encoding="utf-8",
+            )
+        for filename in ("openapi.json", "openapi.provenance.json"):
+            source_json = source / "developer_manual" / "api" / filename
+            if source_json.is_file():
+                target_json = destination / "developer_manual" / "api" / filename
+                target_json.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(source_json, target_json)
 
 
 def assemble(built: Path, destination: Path, selected: str,
@@ -62,6 +99,7 @@ def assemble(built: Path, destination: Path, selected: str,
             if candidate.is_file():
                 shutil.copy2(candidate, destination / filename)
         legacy_redirects(destination, output_catalog["current_stable"])
+    write_version_aliases(destination, output_catalog)
     (destination / "CNAME").write_text("docs.libresign.coop\n", encoding="utf-8")
     (destination / ".nojekyll").touch()
     apply_seo(destination, output_catalog, preview=bool(os.environ.get("LIBRESIGN_PREVIEW_PR")))

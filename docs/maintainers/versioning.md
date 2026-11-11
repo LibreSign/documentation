@@ -41,6 +41,15 @@ right branch. Backport changes explicitly when they apply to older releases.
 5. Validates links, API provenance, signing examples, redirects and the output
    of all other versions before deploying atomically to Pages.
 
+The moving aliases follow Nextcloud's documentation convention: `/latest/`
+redirects to the unreleased `/main/`, while `/stable/` redirects to the
+latest published stable major from `versions.json.current_stable`. Both
+support deep HTML paths, including `/stable/developer_manual/api/openapi.html`.
+The matching `openapi.json` and `openapi.provenance.json` are also available
+under each alias. Publish updates the aliases atomically on full and partial
+releases. For reproducible integrations, pin the exact numeric version and
+confirm the OpenAPI provenance: these aliases can change on release.
+
 Stable application releases are discovered dynamically, not maintained in a
 fixed list. EOL dates and policy remain in `versioning/lifecycle.json`.
 The API version is always taken from the application manifest, not from the

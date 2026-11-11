@@ -8,8 +8,8 @@ from unittest.mock import patch
 
 from versioning.catalog import discover, manifest_info, operations, sha256
 from versioning.build import legacy_redirects, redirect_html, version_overview
-from versioning.publish import assemble
-from versioning.verify import inspect_links, verify_site
+from versioning.publish import assemble, write_version_aliases
+from versioning.verify import inspect_links, verify_site, verify_version_aliases
 
 
 def sample_spec(path: str) -> bytes:
@@ -76,6 +76,72 @@ class CatalogTests(unittest.TestCase):
 
 
 class PublicationTests(unittest.TestCase):
+    def test_moving_aliases_cover_deep_links_openapi_and_preview_prefix(self):
+        catalog = {"current_stable": "15"}
+        with tempfile.TemporaryDirectory() as temp, patch.dict("os.environ", {
+            "LIBRESIGN_DOC_BASE_PATH": "/site-preview/docs-preview/pr-149"
+        }):
+            site = Path(temp)
+            for slug in ("main", "15"):
+                (site / slug / "index.html").parent.mkdir(parents=True)
+                (site / slug / "index.html").write_text(slug)
+                api = site / slug / "developer_manual/api"
+                api.mkdir(parents=True)
+                (api / "openapi.html").write_text("API")
+                (api / "openapi.json").write_text('{"pinned": "' + slug + '"}')
+                (api / "openapi.provenance.json").write_text('{"branch": "' + slug + '"}')
+            write_version_aliases(site, catalog)
+            self.assertEqual(verify_version_aliases(site, catalog), [])
+            self.assertIn("url=/site-preview/docs-preview/pr-149/main/developer_manual/api/openapi.html",
+                          (site / "latest/developer_manual/api/openapi.html").read_text())
+            self.assertIn("url=/site-preview/docs-preview/pr-149/15/developer_manual/api/openapi.html",
+                          (site / "stable/developer_manual/api/openapi.html").read_text())
+            self.assertIn("location.search",
+                          (site / "latest/developer_manual/api/openapi.html").read_text())
+            self.assertEqual(
+                (site / "stable/developer_manual/api/openapi.json").read_bytes(),
+                (site / "15/developer_manual/api/openapi.json").read_bytes(),
+            )
+            (site / "stable/developer_manual/api/openapi.html").unlink()
+            self.assertTrue(verify_version_aliases(site, catalog))
+
+    def test_partial_publish_refreshes_stable_alias_after_new_release(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            old, new, output = (root / "old", root / "new", root / "output")
+            entries = [
+                {"slug": "main", "status": "development"},
+                {"slug": "15", "status": "current"},
+                {"slug": "14", "status": "previous"},
+            ]
+            old.mkdir()
+            new.mkdir()
+            (old / "versions.json").write_text(json.dumps({
+                "versions": entries, "current_stable": "15",
+            }))
+            (new / "versions.json").write_text(json.dumps({
+                "versions": entries + [{"slug": "16", "status": "current"}],
+                "current_stable": "16",
+            }))
+            for slug in ("main", "15", "14"):
+                page = old / slug / "index.html"
+                page.parent.mkdir()
+                page.write_text(slug)
+            (old / "stable/index.html").parent.mkdir()
+            (old / "stable/index.html").write_text("STALE")
+            (new / "16/index.html").parent.mkdir()
+            (new / "16/index.html").write_text("16")
+            with patch("versioning.publish.legacy_redirects"), patch("versioning.publish.apply_seo"):
+                result = assemble(new, output, "16", old)
+            self.assertEqual(result["current_stable"], "16")
+            # Preview deployments have a site prefix; the alias verifier checks
+            # the full prefix and the matching versioned target.
+            self.assertIn("/16/index.html", (output / "stable/index.html").read_text())
+            self.assertIn("/main/index.html", (output / "latest/index.html").read_text())
+            self.assertNotIn("STALE", (output / "stable/index.html").read_text())
+            self.assertTrue((output / "14/index.html").exists())
+            self.assertEqual(verify_version_aliases(output, result), [])
+
     def test_updating_15_preserves_existing_13_14_and_main(self):
         with tempfile.TemporaryDirectory() as temp:
             folder = Path(temp)

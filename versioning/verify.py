@@ -16,6 +16,40 @@ from versioning.seo import verify_seo
 REQUIRED_MANUALS = ("user_manual", "admin_manual", "developer_manual")
 
 
+def verify_version_aliases(output: Path, catalog: dict) -> list[str]:
+    """Verify moving aliases resolve to actual, version-pinned pages."""
+    errors = []
+    current = catalog.get("current_stable")
+    if not isinstance(current, str) or not current.isdecimal() or current.startswith("0"):
+        return ["Missing valid current_stable for /stable/"]
+    prefix = os.environ.get("LIBRESIGN_DOC_BASE_PATH", "").rstrip("/")
+    for alias, target in (("latest", "main"), ("stable", current)):
+        source, redirect_root = output / target, output / alias
+        if not source.is_dir() or not redirect_root.is_dir():
+            errors.append(f"Missing /{alias}/ alias source or target")
+            continue
+        expected = {p.relative_to(source) for p in source.rglob("*.html")}
+        actual = {p.relative_to(redirect_root) for p in redirect_root.rglob("*.html")}
+        if expected != actual:
+            missing = sorted(str(p) for p in expected - actual)
+            extra = sorted(str(p) for p in actual - expected)
+            errors.append(f"/{alias}/ pages missing={missing[:5]} extra={extra[:5]}")
+        for relative in expected & actual:
+            path = redirect_root / relative
+            content = path.read_text(encoding="utf-8")
+            target_url = f"{prefix}/{target}/{relative.as_posix()}"
+            if (f"url={target_url}" not in content or
+                    "location.search" not in content or "location.hash" not in content):
+                errors.append(f"Incorrect /{alias}/ redirect: {relative}")
+        for filename in ("openapi.json", "openapi.provenance.json"):
+            relative = Path("developer_manual/api") / filename
+            pinned = source / relative
+            moving = redirect_root / relative
+            if pinned.is_file() and (not moving.is_file() or pinned.read_bytes() != moving.read_bytes()):
+                errors.append(f"/{alias}/ {filename} differs from {target}")
+    return errors
+
+
 class PageLinks(HTMLParser):
     def __init__(self) -> None:
         super().__init__()
@@ -157,6 +191,7 @@ def verify_site(output: Path, versions: list[str] | None = None,
             for page in (output / slug).rglob("*.html"):
                 errors.extend(inspect_links(output, page))
     if (output / ".nojekyll").exists():
+        errors.extend(verify_version_aliases(output, catalog))
         errors.extend(verify_seo(output, catalog,
                                  preview=bool(os.environ.get("LIBRESIGN_PREVIEW_PR"))))
     if errors:
