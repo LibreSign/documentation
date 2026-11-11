@@ -22,18 +22,27 @@ no account credential or live signer address.**
 an application major version. The workflow's `Configure` node selects the
 following exact request shape:
 
-| LibreSign | Documentation branch | `identifyMethods[]` | Completion signal |
-| --- | --- | --- | --- |
-| 13 | [`stable13`](https://github.com/LibreSign/documentation/tree/stable13) | `mandatory: 1` | OCS polling |
-| 14 | [`stable14`](https://github.com/LibreSign/documentation/tree/stable14) | `mandatory: 1` | OCS polling |
-| 15 | [`stable15`](https://github.com/LibreSign/documentation/tree/stable15) | `requirement: "required"` | OCS polling |
-| Development | [`main`](https://github.com/LibreSign/documentation/tree/main) | `requirement: "required"` | OCS polling; optional native events |
+| Installed LibreSign | `identifyMethods[]` | Completion signal |
+| --- | --- | --- |
+| 13 or 14 | `mandatory: 1` | OCS polling |
+| 15 | `requirement: "required"` | OCS polling |
+| Development (`main`) | `requirement: "required"` | OCS polling; optional native events |
 
-Check the [versioned OpenAPI](https://docs.libresign.coop/15/developer_manual/api/openapi.html)
-for your *installed* release and the corresponding
-[`request-13.json`/`request-14.json`/`request-15.json`/`request-main.json`
-fixtures](../external-email-signers/). This example intentionally omits
-`callback`, `signatureFlow`, and experimental policy fields.
+Start with the [stable integration guide](https://docs.libresign.coop/stable/developer_manual/integration/index.html)
+and [stable OpenAPI](https://docs.libresign.coop/stable/developer_manual/api/openapi.html).
+The `/stable/` alias always follows the **newest released** LibreSign version,
+not the version installed on your server. **If your installation is older,
+select its exact LibreSign major** on the
+[documentation version chooser](https://docs.libresign.coop/) before using
+payloads, endpoints or OpenAPI schemas. `/latest/` is the **unreleased**
+development documentation, following Nextcloud's convention; it is not a
+replacement for stable documentation.
+
+The [version-specific request fixtures](../external-email-signers/)
+(`request-13.json`, `request-14.json`, `request-15.json`,
+`request-main.json`) remain the source for the matching request body.
+This example intentionally omits `callback`, `signatureFlow`, and
+experimental policy fields.
 
 ## Prerequisites — use a disposable environment
 
@@ -140,8 +149,8 @@ The `main` development documentation publishes native LibreSign event classes
 for Nextcloud **Webhook Listeners**, notably
 `OCA\Libresign\Events\SigningRequestCompletedEvent` and
 `OCA\Libresign\Events\SigningRequestCanceledEvent`. See the
-[event catalog](../../developer_manual/webhooks/event-catalog.rst) and
-[configuration](../../developer_manual/webhooks/configuration.rst).
+[development event catalog](https://docs.libresign.coop/latest/developer_manual/webhooks/event-catalog.html) and
+[Webhook Listeners configuration](https://docs.libresign.coop/latest/developer_manual/webhooks/configuration.html).
 
 A production-oriented alternative may receive those events with n8n's
 **Webhook** node, configured with HTTPS and **Header Auth** or **Basic Auth**
@@ -168,8 +177,8 @@ not n8n runtime import, a live Nextcloud, SMTP delivery, legal identity,
 cryptographic signing, or a real WebDAV completion path. Execute that E2E
 scenario in a disposable installation before using this in any real workflow.
 
-References: [LibreSign API guide](../../developer_manual/api/external-email-signers.rst),
-[integration lifecycle](../../developer_manual/integration/lifecycle.rst),
+References: [LibreSign stable API guide](https://docs.libresign.coop/stable/developer_manual/api/external-email-signers.html),
+[stable integration lifecycle](https://docs.libresign.coop/stable/developer_manual/integration/lifecycle.html),
 [n8n HTTP Request](https://docs.n8n.io/integrations/builtin/core-nodes/n8n-nodes-base.httprequest/),
 [n8n Wait](https://docs.n8n.io/integrations/builtin/core-nodes/n8n-nodes-base.wait/),
 [n8n Webhook](https://docs.n8n.io/integrations/builtin/core-nodes/n8n-nodes-base.webhook/),
