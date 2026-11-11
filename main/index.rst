@@ -1,8 +1,8 @@
 LibreSign |LibreSignRelease| documentation
 ==========================================
 
-This is the documentation for **LibreSign |LibreSignRelease|** on
-**Nextcloud |NextcloudRelease|**. API contracts, compatibility and source
+This is the documentation for **LibreSign** |LibreSignRelease| on
+**Nextcloud** |NextcloudRelease|. API contracts, compatibility and source
 revisions are specific to this LibreSign release line.
 
 Choose the manual for your task:
