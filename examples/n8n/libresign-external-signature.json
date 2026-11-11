@@ -1,0 +1,530 @@
+{
+  "name": "LibreSign C2 - external email signature (polling)",
+  "nodes": [
+    {
+      "id": "c2-manual-trigger",
+      "name": "Manual trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        240
+      ],
+      "parameters": {},
+      "notes": "Run only against an isolated Nextcloud + LibreSign instance.",
+      "notesInFlow": false
+    },
+    {
+      "id": "c2-configure",
+      "name": "Configure",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        240,
+        240
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// Edit these example values before running. Never add a password here.\nreturn [{ json: {\n  baseUrl: 'https://nextcloud.example.invalid',\n  version: '15', // '13', '14', '15' or 'main' (development)\n  integrationUser: 'integration-user',\n  signerEmail: 'signer@example.invalid', // replace with a mailbox YOU control\n  signedPdfPath: 'Contracts/synthetic-n8n-signed.pdf', // verified relative WebDAV path, not an ID\n  maxAttempts: 20,\n  waitSeconds: 30,\n  pdfBase64: 'JVBERi0xLjQKJVN5bnRoZXRpYyBMaWJyZVNpZ24gbjhuIGZpeHR1cmUKMSAwIG9iago8PCAvVHlwZSAvQ2F0YWxvZyAvUGFnZXMgMiAwIFIgPj4KZW5kb2JqCjIgMCBvYmoKPDwgL1R5cGUgL1BhZ2VzIC9LaWRzIFszIDAgUl0gL0NvdW50IDEgPj4KZW5kb2JqCjMgMCBvYmoKPDwgL1R5cGUgL1BhZ2UgL1BhcmVudCAyIDAgUiAvTWVkaWFCb3ggWzAgMCA2MTIgNzkyXSAvUmVzb3VyY2VzIDw8IC9Gb250IDw8IC9GMSA0IDAgUiA+PiA+PiAvQ29udGVudHMgNSAwIFIgPj4KZW5kb2JqCjQgMCBvYmoKPDwgL1R5cGUgL0ZvbnQgL1N1YnR5cGUgL1R5cGUxIC9CYXNlRm9udCAvSGVsdmV0aWNhID4+CmVuZG9iago1IDAgb2JqCjw8IC9MZW5ndGggODMgPj4Kc3RyZWFtCkJUIC9GMSAxNiBUZiA3MiA3MjAgVGQgKFN5bnRoZXRpYyBMaWJyZVNpZ24gbjhuIGNvbnRyYWN0IC0gbm8gcGVyc29uYWwgZGF0YSkgVGogRVQKZW5kc3RyZWFtCmVuZG9iagp4cmVmCjAgNgowMDAwMDAwMDAwIDY1NTM1IGYgCjAwMDAwMDAwNDIgMDAwMDAgbiAKMDAwMDAwMDA5MSAwMDAwMCBuIAowMDAwMDAwMTQ4IDAwMDAwIG4gCjAwMDAwMDAyNzQgMDAwMDAgbiAKMDAwMDAwMDM0NCAwMDAwMCBuIAp0cmFpbGVyCjw8IC9TaXplIDYgL1Jvb3QgMSAwIFIgPj4Kc3RhcnR4cmVmCjQ3NgolJUVPRgo=', // public, one-page synthetic fixture\n} }];"
+      },
+      "notes": "Edit public parameters here; never paste App Password in this node.",
+      "notesInFlow": false
+    },
+    {
+      "id": "c2-prepare-request",
+      "name": "Prepare request",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        490,
+        240
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const c = $input.first().json;\nif (!['13', '14', '15', 'main'].includes(c.version)) throw new Error('Choose LibreSign 13, 14, 15 or main');\nlet url;\ntry { url = new URL(c.baseUrl); } catch { throw new Error('Invalid Nextcloud URL'); }\nif (url.protocol !== 'https:' || url.username || url.password || url.search || url.hash || url.pathname !== '/') throw new Error('Use an HTTPS Nextcloud origin with no credentials, path or query');\nif (url.hostname.endsWith('.invalid') || url.hostname === 'example.com') throw new Error('Replace the placeholder Nextcloud host');\nif (!/^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$/.test(c.signerEmail) || /@(?:example\\.(?:test|invalid|com|org|net))$/i.test(c.signerEmail)) throw new Error('Use an inbox under your control');\nif (!/^[A-Za-z0-9_.@-]+$/.test(c.integrationUser)) throw new Error('Use a simple integration account ID; URL-encode it for DAV');\nif (typeof c.signedPdfPath !== 'string' || !c.signedPdfPath || c.signedPdfPath.startsWith('/') || c.signedPdfPath.split('/').some(p => !p || p === '.' || p === '..' || p.includes('\\\\') || p.includes('?') || p.includes('#'))) throw new Error('Set a verified relative WebDAV PDF path');\nif (!Number.isInteger(c.maxAttempts) || c.maxAttempts < 1 || c.maxAttempts > 120) throw new Error('maxAttempts must be 1 to 120');\nif (!Number.isInteger(c.waitSeconds) || c.waitSeconds < 5 || c.waitSeconds > 3600) throw new Error('waitSeconds must be 5 to 3600');\nif (typeof c.pdfBase64 !== 'string' || !c.pdfBase64.startsWith('JVBERi0')) throw new Error('Provide a base64-encoded synthetic PDF');\nconst method = { method: 'email', value: c.signerEmail };\nif (c.version === '13' || c.version === '14') method.mandatory = 1;\nelse method.requirement = 'required';\nconst requestBody = { name: 'Synthetic service agreement', status: 1, file: { name: 'synthetic-n8n.pdf', base64: c.pdfBase64 }, signers: [{ displayName: 'External Test Signer', notify: 0, identifyMethods: [method] }] };\nreturn [{ json: { ...c, baseUrl: url.origin, requestBody } }];"
+      }
+    },
+    {
+      "id": "c2-create-request",
+      "name": "Create request",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        740,
+        240
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Prepare request').first().json.baseUrl + '/ocs/v2.php/apps/libresign/api/v1' + '/request-signature' }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "OCS-APIRequest",
+              "value": "true"
+            },
+            {
+              "name": "Accept",
+              "value": "application/json"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 30000,
+          "redirect": {
+            "redirect": {
+              "followRedirects": false
+            }
+          }
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($('Prepare request').first().json.requestBody) }}"
+      },
+      "notes": "Assign the same dedicated Nextcloud Generic HTTP Basic Auth credential after import. Do not enable automatic retries.",
+      "notesInFlow": false
+    },
+    {
+      "id": "c2-verify-created",
+      "name": "Verify created",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        990,
+        240
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const o = $input.first().json;\nif (o?.ocs?.meta?.status !== 'ok' || !o.ocs.data) throw new Error('LibreSign did not accept creation (OCS envelope)');\nconst { id, uuid } = o.ocs.data;\nif (!Number.isSafeInteger(id) || id < 1 || typeof uuid !== 'string' || !uuid) throw new Error('Creation lacks a safe file ID and UUID');\nreturn [{ json: { fileId: id, fileUuid: uuid } }];"
+      }
+    },
+    {
+      "id": "c2-invite-signer-once",
+      "name": "Invite signer once",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1240,
+        240
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Prepare request').first().json.baseUrl + '/ocs/v2.php/apps/libresign/api/v1' + '/notify/signers' }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "OCS-APIRequest",
+              "value": "true"
+            },
+            {
+              "name": "Accept",
+              "value": "application/json"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 30000,
+          "redirect": {
+            "redirect": {
+              "followRedirects": false
+            }
+          }
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ fileId: $('Verify created').first().json.fileId, signers: [{ email: $('Prepare request').first().json.signerEmail }] }) }}"
+      },
+      "notes": "Assign the same dedicated Nextcloud Generic HTTP Basic Auth credential after import. Do not enable automatic retries.",
+      "notesInFlow": false
+    },
+    {
+      "id": "c2-verify-invite-accepted",
+      "name": "Verify invite accepted",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1490,
+        240
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const o = $input.first().json;\nif (o?.ocs?.meta?.status !== 'ok' || o.ocs.data === undefined || o.ocs.data === null) throw new Error('LibreSign did not accept notification request');\n// API acknowledgement is NOT proof of email delivery. Never blindly retry.\nreturn [{ json: { notificationSubmitted: true, deliveryConfirmed: false } }];"
+      }
+    },
+    {
+      "id": "c2-prepare-bounded-attempts",
+      "name": "Prepare bounded attempts",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1740,
+        240
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const c = $('Prepare request').first().json;\nreturn Array.from({ length: c.maxAttempts }, (_, i) => ({ json: { attempt: i + 1 } }));"
+      }
+    },
+    {
+      "id": "c2-poll-attempts",
+      "name": "Poll attempts",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        1990,
+        240
+      ],
+      "parameters": {
+        "batchSize": 1,
+        "options": {}
+      },
+      "notes": "Output 1 processes a poll. Output 0 is intentionally unused; final success exits from Signed? directly.",
+      "notesInFlow": false
+    },
+    {
+      "id": "c2-get-file-state",
+      "name": "Get file state",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2240,
+        240
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $('Prepare request').first().json.baseUrl + '/ocs/v2.php/apps/libresign/api/v1' + '/file/list' }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "OCS-APIRequest",
+              "value": "true"
+            },
+            {
+              "name": "Accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 30000,
+          "redirect": {
+            "redirect": {
+              "followRedirects": false
+            }
+          }
+        },
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "details",
+              "value": "={{ $('Prepare request').first().json.version === 'main' ? 'true' : '1' }}"
+            },
+            {
+              "name": "fileIds[]",
+              "value": "={{ $('Verify created').first().json.fileId }}"
+            }
+          ]
+        }
+      },
+      "notes": "Assign the same dedicated Nextcloud Generic HTTP Basic Auth credential after import. Do not enable automatic retries.",
+      "notesInFlow": false
+    },
+    {
+      "id": "c2-reconcile-file-state",
+      "name": "Reconcile file state",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2490,
+        240
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const o = $input.first().json;\nif (o?.ocs?.meta?.status !== 'ok' || !Array.isArray(o?.ocs?.data?.data)) throw new Error('Status check failed or returned an invalid OCS envelope');\nconst { fileId, fileUuid } = $('Verify created').first().json;\nconst row = o.ocs.data.data.find(x => String(x.id) === String(fileId) && x.uuid === fileUuid);\nif (!row) throw new Error('File not returned: missing permission, unavailable, or filtered; not proof of deletion');\nconst status = Number(row.status);\nif (![0, 1, 2, 3, 4].includes(status)) throw new Error('Unknown file status; manual reconciliation required');\nif (status === 4) throw new Error('Signing request was deleted/terminated');\nconst attempt = $('Poll attempts').item.json.attempt;\nif (status !== 3 && attempt >= $('Prepare request').first().json.maxAttempts) throw new Error('Polling limit reached; reconcile before creating anything again');\nreturn [{ json: { signed: status === 3, status, attempt, fileId, fileUuid } }];"
+      }
+    },
+    {
+      "id": "c2-signed-",
+      "name": "Signed?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2740,
+        240
+      ],
+      "parameters": {
+        "options": {
+          "caseSensitive": true,
+          "leftValue": "",
+          "typeValidation": "strict",
+          "version": 2
+        },
+        "conditions": {
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "signed-true",
+              "leftValue": "={{ $json.signed }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "true"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "c2-wait-before-polling",
+      "name": "Wait before polling",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        2740,
+        480
+      ],
+      "parameters": {
+        "resume": "timeInterval",
+        "amount": "={{ $('Prepare request').first().json.waitSeconds }}",
+        "unit": "seconds"
+      },
+      "notes": "Not a notification-delivery guarantee. Once the budget is exhausted, fail explicitly.",
+      "notesInFlow": false
+    },
+    {
+      "id": "c2-download-signed-pdf",
+      "name": "Download signed PDF",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2990,
+        120
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "={{ (() => { const c = $('Prepare request').first().json; return c.baseUrl + '/remote.php/dav/files/' + encodeURIComponent(c.integrationUser) + '/' + c.signedPdfPath.split('/').map(encodeURIComponent).join('/'); })() }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "options": {
+          "timeout": 60000,
+          "redirect": {
+            "redirect": {
+              "followRedirects": false
+            }
+          },
+          "response": {
+            "response": {
+              "responseFormat": "file",
+              "outputPropertyName": "signedPdf"
+            }
+          }
+        }
+      },
+      "notes": "Use a verified path under the integration account DAV root, with file read access.",
+      "notesInFlow": false
+    },
+    {
+      "id": "c2-verify-pdf-bytes",
+      "name": "Verify PDF bytes",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3240,
+        120
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const item = $input.first();\nif (!item.binary?.signedPdf) throw new Error('WebDAV did not return a PDF binary');\nconst bytes = await this.helpers.getBinaryDataBuffer(0, 'signedPdf');\nif (bytes.toString('utf8', 0, 5) !== '%PDF-') throw new Error('Authenticated WebDAV response is not a PDF');\nconst { fileId, fileUuid } = $('Verify created').first().json;\nreturn [{ json: { fileId, fileUuid, downloadedBytes: bytes.length, retrieval: 'authorized WebDAV', cryptographicSignatureVerified: false }, binary: item.binary }];"
+      },
+      "notes": "A PDF header is not cryptographic signature verification.",
+      "notesInFlow": false
+    }
+  ],
+  "connections": {
+    "Manual trigger": {
+      "main": [
+        [
+          {
+            "node": "Configure",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Configure": {
+      "main": [
+        [
+          {
+            "node": "Prepare request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare request": {
+      "main": [
+        [
+          {
+            "node": "Create request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create request": {
+      "main": [
+        [
+          {
+            "node": "Verify created",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verify created": {
+      "main": [
+        [
+          {
+            "node": "Invite signer once",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Invite signer once": {
+      "main": [
+        [
+          {
+            "node": "Verify invite accepted",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verify invite accepted": {
+      "main": [
+        [
+          {
+            "node": "Prepare bounded attempts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare bounded attempts": {
+      "main": [
+        [
+          {
+            "node": "Poll attempts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Poll attempts": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Get file state",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get file state": {
+      "main": [
+        [
+          {
+            "node": "Reconcile file state",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reconcile file state": {
+      "main": [
+        [
+          {
+            "node": "Signed?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Signed?": {
+      "main": [
+        [
+          {
+            "node": "Download signed PDF",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait before polling",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait before polling": {
+      "main": [
+        [
+          {
+            "node": "Poll attempts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download signed PDF": {
+      "main": [
+        [
+          {
+            "node": "Verify PDF bytes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "pinData": {}
+}
