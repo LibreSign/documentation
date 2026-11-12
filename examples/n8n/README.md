@@ -186,21 +186,59 @@ verification; they are not represented as already tested here.
 
 ## Verification and evidence
 
-`node --test examples/n8n/test-workflow.mjs` runs dependency-free, synthetic
+`node --test examples/n8n/test-workflow.mjs` runs dependency-free synthetic
 contract tests for the export, Code-node success/failure cases, WebDAV
-folder and file-ID correlation, ambiguity rejection, status transitions and
-authorization boundaries. This tests **the export and its logic**, not n8n
-runtime import, a live Nextcloud, SMTP delivery, legal identity, or
-cryptographic signing. The discovery and final GET were also executed on a
-**disposable Nextcloud 35 / LibreSign 15.0.12 / n8n 2.47.3 installation** with
-one already signed synthetic PDF: the 21-node graph successfully retrieved
-47,799 PDF bytes through authenticated WebDAV; `pdfsig` independently
-confirmed a cryptographically valid signature from the test-only CA. The
-creation, invitation, SMTP, external signing and polling were verified on
-that installation in a separate earlier run. This is **not** an uninterrupted
-end-to-end n8n run nor evidence of runtime compatibility with releases 13, 14,
-or development. Revalidate in the target disposable release before using it
-for live documents.
+correlation, ambiguity rejection, status transitions and authorization
+boundaries. All **12/12** passed again on 2026-11-12. These tests alone do
+not prove live signing, SMTP delivery or certificate trust.
+
+### One uninterrupted disposable run: LibreSign 15.0.12
+
+On **2026-11-12**, one CLI execution in **n8n 2.47.3** (**execution ID 19**,
+temporary workflow ID `n8n-homolog-20261112-real`) ran from
+`14:53:25.963Z` to `14:54:44.615Z` with status **success** on
+**Nextcloud 35.0.2 + LibreSign 15.0.12 + Mailpit 1.31.4**. The published
+21-node graph and all processing Code nodes were unchanged; only the
+test-only `Configure` values and credential bindings differed. The test
+used `maxAttempts=80` and `waitSeconds=5`, not the default polling budget.
+
+In that **single execution**, one authenticated OCS creation and one invite
+POST succeeded; the controlled Mailpit inbox received the invitation at
+`14:53:27.798Z` and the signed-document notice at `14:54:41.434Z`.
+The external email signer had **no Nextcloud account** in the isolated
+installation. Polling observed status `1` for attempts 1-15 and status
+`3` at attempt 16 (`fileId=3`, source `nodeId=118`). Both authenticated
+WebDAV `PROPFIND` nodes and the final authorized GET succeeded **without
+a manually entered `signedPdfPath`**. The downloaded PDF was **47,797
+bytes**, SHA-256
+`d82577ce17455205f83ff28e1fb46165aafd72c2f95a3cd0d63b3ab859f7ba2a`.
+An **independent `pdfsig` check** reported `Signature is Valid` and
+`Total document signed`; the **private QA certificate issuer is not
+trusted** by the verification host. n8n itself still reports
+`cryptographicSignatureVerified: false` until a separate verifier runs.
+
+All 21 distinct nodes happened to execute because signing followed 15
+polling waits; **executing every conditional node is not an acceptance
+criterion**. Creation and invitation each ran once. Additional, separate
+negative checks covered invalid App Password (stops before invitation),
+permission denied, SMTP unavailability (notification acceptance is not
+delivery), and an HTTP timeout without automatic POST retry. The 12
+synthetic contract tests cover missing/wrong source IDs, ambiguous PDF
+siblings, unsafe WebDAV paths and bounded polling.
+
+The [sanitized execution summary](evidence-2026-11-12.json) includes the
+ephemeral execution ID, node counts and hash. Raw execution logs, invitation
+URLs, credentials and binary data remain **outside the repository**.
+
+**Limits:** runtime evidence applies only to LibreSign **15.0.12** with
+default storage, one document, one email signer and this signing policy.
+LibreSign 13, 14, development, custom folders and multi-signer/envelope
+flows remain unverified. Mailpit proves receipt by the local sink, not
+internet email delivery or signer identity assurance. A successful single
+run and disabled automatic POST retries **do not provide durable
+idempotency** across manual restarts or ambiguous POST failures: reconcile
+the existing request ID/UUID before manually retrying. Test CA trust and
+legal signature validity are outside this QA claim.
 
 References: [LibreSign stable API guide](https://docs.libresign.coop/stable/developer_manual/api/external-email-signers.html),
 [stable integration lifecycle](https://docs.libresign.coop/stable/developer_manual/integration/lifecycle.html),

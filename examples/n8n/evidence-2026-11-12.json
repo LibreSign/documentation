@@ -1,0 +1,89 @@
+{
+  "scope": "Disposable single uninterrupted test; no production services",
+  "date": "2026-11-12",
+  "versions": {
+    "n8n": "2.47.3",
+    "nextcloud": "35.0.2",
+    "libresign": "15.0.12",
+    "smtp_sink": "Mailpit 1.31.4"
+  },
+  "workflow": {
+    "id": "n8n-homolog-20261112-real",
+    "execution_id": "19",
+    "mode": "cli",
+    "status": "success",
+    "started_at_utc": "2026-11-12T14:53:25.963Z",
+    "stopped_at_utc": "2026-11-12T14:54:44.615Z",
+    "published_graph_nodes": 21,
+    "only_configure_values_and_credential_bindings_differed": true
+  },
+  "node_execution_counts": {
+    "Manual trigger": 1,
+    "Configure": 1,
+    "Prepare request": 1,
+    "Create request": 1,
+    "Verify created": 1,
+    "Invite signer once": 1,
+    "Verify invite accepted": 1,
+    "Prepare bounded attempts": 1,
+    "Poll attempts": 16,
+    "Get file state": 16,
+    "Reconcile file state": 16,
+    "Signed?": 16,
+    "Wait before polling": 15,
+    "List LibreSign folders": 1,
+    "Parse folder XML": 1,
+    "Choose folders": 1,
+    "Inspect folder files": 1,
+    "Parse file XML": 1,
+    "Resolve signed PDF": 1,
+    "Download signed PDF": 1,
+    "Verify PDF bytes": 1
+  },
+  "completed_request": {
+    "file_id": 3,
+    "source_node_id": 118,
+    "poll_attempts": 16,
+    "pending_status": 1,
+    "completed_status": 3,
+    "create_post_count": 1,
+    "invite_post_count": 1,
+    "manual_signed_pdf_path_used": false,
+    "webdav_propfind_nodes_succeeded": 2,
+    "authorized_pdf_get_succeeded": true
+  },
+  "mailpit": {
+    "invitation_received_at_utc": "2026-11-12T14:53:27.798Z",
+    "signed_notice_received_at_utc": "2026-11-12T14:54:41.434Z",
+    "recipient": "controlled synthetic test mailbox"
+  },
+  "external_signer": {
+    "method": "email invitation; click-to-sign",
+    "nextcloud_account_present": false
+  },
+  "pdf": {
+    "bytes": 47797,
+    "sha256": "d82577ce17455205f83ff28e1fb46165aafd72c2f95a3cd0d63b3ab859f7ba2a",
+    "pdfsig_signature_valid": true,
+    "pdfsig_entire_document_signed": true,
+    "pdfsig_hash_algorithm": "SHA-256",
+    "pdfsig_type": "adbe.pkcs7.detached",
+    "private_test_ca_trusted_by_host": false,
+    "n8n_native_cryptographic_verification": false
+  },
+  "separate_negative_checks": [
+    "invalid App Password stops before invite",
+    "authorization refusal prevents creation",
+    "SMTP offline does not prove delivery",
+    "isolated HTTP timeout does not auto-retry POST",
+    "12 contract tests cover ambiguous/missing/wrong PDF matches, unsafe DAV paths and polling exhaustion"
+  ],
+  "limits": [
+    "release 15.0.12 only",
+    "one document and one email signer",
+    "default storage only",
+    "manual reruns are not idempotent",
+    "not real SMTP deliverability or legal certificate-chain trust",
+    "raw logs and invitation URLs not published"
+  ]
+}
