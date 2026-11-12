@@ -25,7 +25,7 @@
       ],
       "parameters": {
         "mode": "runOnceForAllItems",
-        "jsCode": "// Edit these example values before running. Never add a password here.\nreturn [{ json: {\n  baseUrl: 'https://nextcloud.example.invalid',\n  version: '15', // '13', '14', '15' or 'main' (development)\n  integrationUser: 'integration-user',\n  signerEmail: 'signer@example.invalid', // replace with a mailbox YOU control\n  signedPdfPath: 'Contracts/synthetic-n8n-signed.pdf', // verified relative WebDAV path, not an ID\n  maxAttempts: 20,\n  waitSeconds: 30,\n  pdfBase64: 'JVBERi0xLjQKJVN5bnRoZXRpYyBMaWJyZVNpZ24gbjhuIGZpeHR1cmUKMSAwIG9iago8PCAvVHlwZSAvQ2F0YWxvZyAvUGFnZXMgMiAwIFIgPj4KZW5kb2JqCjIgMCBvYmoKPDwgL1R5cGUgL1BhZ2VzIC9LaWRzIFszIDAgUl0gL0NvdW50IDEgPj4KZW5kb2JqCjMgMCBvYmoKPDwgL1R5cGUgL1BhZ2UgL1BhcmVudCAyIDAgUiAvTWVkaWFCb3ggWzAgMCA2MTIgNzkyXSAvUmVzb3VyY2VzIDw8IC9Gb250IDw8IC9GMSA0IDAgUiA+PiA+PiAvQ29udGVudHMgNSAwIFIgPj4KZW5kb2JqCjQgMCBvYmoKPDwgL1R5cGUgL0ZvbnQgL1N1YnR5cGUgL1R5cGUxIC9CYXNlRm9udCAvSGVsdmV0aWNhID4+CmVuZG9iago1IDAgb2JqCjw8IC9MZW5ndGggODMgPj4Kc3RyZWFtCkJUIC9GMSAxNiBUZiA3MiA3MjAgVGQgKFN5bnRoZXRpYyBMaWJyZVNpZ24gbjhuIGNvbnRyYWN0IC0gbm8gcGVyc29uYWwgZGF0YSkgVGogRVQKZW5kc3RyZWFtCmVuZG9iagp4cmVmCjAgNgowMDAwMDAwMDAwIDY1NTM1IGYgCjAwMDAwMDAwNDIgMDAwMDAgbiAKMDAwMDAwMDA5MSAwMDAwMCBuIAowMDAwMDAwMTQ4IDAwMDAwIG4gCjAwMDAwMDAyNzQgMDAwMDAgbiAKMDAwMDAwMDM0NCAwMDAwMCBuIAp0cmFpbGVyCjw8IC9TaXplIDYgL1Jvb3QgMSAwIFIgPj4Kc3RhcnR4cmVmCjQ3NgolJUVPRgo=', // public, one-page synthetic fixture\n} }];"
+        "jsCode": "// Edit these example values before running. Never add a password here.\nreturn [{ json: {\n  baseUrl: 'https://nextcloud.example.invalid',\n  version: '15', // '13', '14', '15' or 'main' (development)\n  integrationUser: 'integration-user',\n  signerEmail: 'signer@example.invalid', // replace with a mailbox YOU control\n  maxSearchFolders: 50, // bounded WebDAV discovery, set 1 to 250 if needed\n  maxAttempts: 20,\n  waitSeconds: 30,\n  pdfBase64: 'JVBERi0xLjQKJVN5bnRoZXRpYyBMaWJyZVNpZ24gbjhuIGZpeHR1cmUKMSAwIG9iago8PCAvVHlwZSAvQ2F0YWxvZyAvUGFnZXMgMiAwIFIgPj4KZW5kb2JqCjIgMCBvYmoKPDwgL1R5cGUgL1BhZ2VzIC9LaWRzIFszIDAgUl0gL0NvdW50IDEgPj4KZW5kb2JqCjMgMCBvYmoKPDwgL1R5cGUgL1BhZ2UgL1BhcmVudCAyIDAgUiAvTWVkaWFCb3ggWzAgMCA2MTIgNzkyXSAvUmVzb3VyY2VzIDw8IC9Gb250IDw8IC9GMSA0IDAgUiA+PiA+PiAvQ29udGVudHMgNSAwIFIgPj4KZW5kb2JqCjQgMCBvYmoKPDwgL1R5cGUgL0ZvbnQgL1N1YnR5cGUgL1R5cGUxIC9CYXNlRm9udCAvSGVsdmV0aWNhID4+CmVuZG9iago1IDAgb2JqCjw8IC9MZW5ndGggODMgPj4Kc3RyZWFtCkJUIC9GMSAxNiBUZiA3MiA3MjAgVGQgKFN5bnRoZXRpYyBMaWJyZVNpZ24gbjhuIGNvbnRyYWN0IC0gbm8gcGVyc29uYWwgZGF0YSkgVGogRVQKZW5kc3RyZWFtCmVuZG9iagp4cmVmCjAgNgowMDAwMDAwMDAwIDY1NTM1IGYgCjAwMDAwMDAwNDIgMDAwMDAgbiAKMDAwMDAwMDA5MSAwMDAwMCBuIAowMDAwMDAwMTQ4IDAwMDAwIG4gCjAwMDAwMDAyNzQgMDAwMDAgbiAKMDAwMDAwMDM0NCAwMDAwMCBuIAp0cmFpbGVyCjw8IC9TaXplIDYgL1Jvb3QgMSAwIFIgPj4Kc3RhcnR4cmVmCjQ3NgolJUVPRgo=', // public, one-page synthetic fixture\n} }];"
       },
       "notes": "Edit public parameters here; never paste App Password in this node.",
       "notesInFlow": false
@@ -41,7 +41,7 @@
       ],
       "parameters": {
         "mode": "runOnceForAllItems",
-        "jsCode": "const c = $input.first().json;\nif (!['13', '14', '15', 'main'].includes(c.version)) throw new Error('Choose LibreSign 13, 14, 15 or main');\n// n8n Code nodes do not expose the URL constructor. Accept only an HTTPS origin.\nconst match = /^https:\\/\\/([a-z0-9](?:[a-z0-9.-]*[a-z0-9])?|\\[[0-9a-f:.]+\\])(?::([0-9]{1,5}))?\\/?$/i.exec(c.baseUrl);\nif (!match || (match[2] && (Number(match[2]) < 1 || Number(match[2]) > 65535))) throw new Error('Use an HTTPS Nextcloud origin with no credentials, path or query');\nconst hostname = match[1].toLowerCase();\nif (!hostname.startsWith('[') && hostname.split('.').some(label => !label || label.startsWith('-') || label.endsWith('-'))) throw new Error('Invalid Nextcloud hostname');\nif (hostname.endsWith('.invalid') || hostname === 'example.com') throw new Error('Replace the placeholder Nextcloud host');\nconst baseUrl = 'https://' + hostname + (match[2] ? ':' + Number(match[2]) : '');\nif (!/^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$/.test(c.signerEmail) || /@(?:example\\.(?:test|invalid|com|org|net))$/i.test(c.signerEmail)) throw new Error('Use an inbox under your control');\nif (!/^[A-Za-z0-9_.@-]+$/.test(c.integrationUser)) throw new Error('Use a simple integration account ID; URL-encode it for DAV');\nif (typeof c.signedPdfPath !== 'string' || !c.signedPdfPath || c.signedPdfPath.startsWith('/') || c.signedPdfPath.split('/').some(p => !p || p === '.' || p === '..' || p.includes('\\\\') || p.includes('?') || p.includes('#'))) throw new Error('Set a verified relative WebDAV PDF path');\nif (!Number.isInteger(c.maxAttempts) || c.maxAttempts < 1 || c.maxAttempts > 120) throw new Error('maxAttempts must be 1 to 120');\nif (!Number.isInteger(c.waitSeconds) || c.waitSeconds < 5 || c.waitSeconds > 3600) throw new Error('waitSeconds must be 5 to 3600');\nif (typeof c.pdfBase64 !== 'string' || !c.pdfBase64.startsWith('JVBERi0')) throw new Error('Provide a base64-encoded synthetic PDF');\nconst method = { method: 'email', value: c.signerEmail };\nif (c.version === '13' || c.version === '14') method.mandatory = 1;\nelse method.requirement = 'required';\nconst requestBody = { name: 'Synthetic service agreement', status: 1, file: { name: 'synthetic-n8n.pdf', base64: c.pdfBase64 }, signers: [{ displayName: 'External Test Signer', notify: 0, identifyMethods: [method] }] };\nreturn [{ json: { ...c, baseUrl, requestBody } }];"
+        "jsCode": "const c = $input.first().json;\nif (!['13', '14', '15', 'main'].includes(c.version)) throw new Error('Choose LibreSign 13, 14, 15 or main');\n// n8n Code nodes do not expose the URL constructor. Accept only an HTTPS origin.\nconst match = /^https:\\/\\/([a-z0-9](?:[a-z0-9.-]*[a-z0-9])?|\\[[0-9a-f:.]+\\])(?::([0-9]{1,5}))?\\/?$/i.exec(c.baseUrl);\nif (!match || (match[2] && (Number(match[2]) < 1 || Number(match[2]) > 65535))) throw new Error('Use an HTTPS Nextcloud origin with no credentials, path or query');\nconst hostname = match[1].toLowerCase();\nif (!hostname.startsWith('[') && hostname.split('.').some(label => !label || label.startsWith('-') || label.endsWith('-'))) throw new Error('Invalid Nextcloud hostname');\nif (hostname.endsWith('.invalid') || hostname === 'example.com') throw new Error('Replace the placeholder Nextcloud host');\nconst baseUrl = 'https://' + hostname + (match[2] ? ':' + Number(match[2]) : '');\nif (!/^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$/.test(c.signerEmail) || /@(?:example\\.(?:test|invalid|com|org|net))$/i.test(c.signerEmail)) throw new Error('Use an inbox under your control');\nif (!/^[A-Za-z0-9_.@-]+$/.test(c.integrationUser)) throw new Error('Use a simple integration account ID; URL-encode it for DAV');\nif (!Number.isInteger(c.maxSearchFolders) || c.maxSearchFolders < 1 || c.maxSearchFolders > 250) throw new Error('maxSearchFolders must be 1 to 250');\nif (!Number.isInteger(c.maxAttempts) || c.maxAttempts < 1 || c.maxAttempts > 120) throw new Error('maxAttempts must be 1 to 120');\nif (!Number.isInteger(c.waitSeconds) || c.waitSeconds < 5 || c.waitSeconds > 3600) throw new Error('waitSeconds must be 5 to 3600');\nif (typeof c.pdfBase64 !== 'string' || !c.pdfBase64.startsWith('JVBERi0')) throw new Error('Provide a base64-encoded synthetic PDF');\nconst method = { method: 'email', value: c.signerEmail };\nif (c.version === '13' || c.version === '14') method.mandatory = 1;\nelse method.requirement = 'required';\nconst requestBody = { name: 'Synthetic service agreement', status: 1, file: { name: 'synthetic-n8n.pdf', base64: c.pdfBase64 }, signers: [{ displayName: 'External Test Signer', notify: 0, identifyMethods: [method] }] };\nreturn [{ json: { ...c, baseUrl, requestBody } }];\n"
       }
     },
     {
@@ -257,7 +257,7 @@
       ],
       "parameters": {
         "mode": "runOnceForAllItems",
-        "jsCode": "const o = $input.first().json;\nif (o?.ocs?.meta?.status !== 'ok' || !Array.isArray(o?.ocs?.data?.data)) throw new Error('Status check failed or returned an invalid OCS envelope');\nconst { fileId, fileUuid } = $('Verify created').first().json;\nconst row = o.ocs.data.data.find(x => String(x.id) === String(fileId) && x.uuid === fileUuid);\nif (!row) throw new Error('File not returned: missing permission, unavailable, or filtered; not proof of deletion');\nconst status = Number(row.status);\nif (![0, 1, 2, 3, 4].includes(status)) throw new Error('Unknown file status; manual reconciliation required');\nif (status === 4) throw new Error('Signing request was deleted/terminated');\nconst attempt = $('Poll attempts').item.json.attempt;\nif (status !== 3 && attempt >= $('Prepare request').first().json.maxAttempts) throw new Error('Polling limit reached; reconcile before creating anything again');\nreturn [{ json: { signed: status === 3, status, attempt, fileId, fileUuid } }];"
+        "jsCode": "const o = $input.first().json;\nif (o?.ocs?.meta?.status !== 'ok' || !Array.isArray(o?.ocs?.data?.data)) throw new Error('Status check failed or returned an invalid OCS envelope');\nconst { fileId, fileUuid } = $('Verify created').first().json;\nconst row = o.ocs.data.data.find(x => String(x.id) === String(fileId) && x.uuid === fileUuid);\nif (!row) throw new Error('File not returned: missing permission, unavailable, or filtered; not proof of deletion');\nconst status = Number(row.status);\nif (![0, 1, 2, 3, 4].includes(status)) throw new Error('Unknown file status; manual reconciliation required');\nif (status === 4) throw new Error('Signing request was deleted/terminated');\nconst sourceNodeId = Number(row.nodeId);\nif (status === 3 && (!Number.isSafeInteger(sourceNodeId) || sourceNodeId < 1)) throw new Error('Signed file state lacks a valid source nodeId');\nconst attempt = $('Poll attempts').item.json.attempt;\nif (status !== 3 && attempt >= $('Prepare request').first().json.maxAttempts) throw new Error('Polling limit reached; reconcile before creating anything again');\nreturn [{ json: { signed: status === 3, status, attempt, fileId, fileUuid, sourceNodeId } }];"
       }
     },
     {
@@ -315,12 +315,12 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        2990,
+        4490,
         120
       ],
       "parameters": {
         "method": "GET",
-        "url": "={{ (() => { const c = $('Prepare request').first().json; return c.baseUrl + '/remote.php/dav/files/' + encodeURIComponent(c.integrationUser) + '/' + c.signedPdfPath.split('/').map(encodeURIComponent).join('/'); })() }}",
+        "url": "={{ $('Prepare request').first().json.baseUrl + $json.signedDavHref }}",
         "authentication": "genericCredentialType",
         "genericAuthType": "httpBasicAuth",
         "options": {
@@ -347,7 +347,7 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        3240,
+        4740,
         120
       ],
       "parameters": {
@@ -356,6 +356,172 @@
       },
       "notes": "A PDF header is not cryptographic signature verification.",
       "notesInFlow": false
+    },
+    {
+      "id": "qa-list-ls",
+      "name": "List LibreSign folders",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2990,
+        120
+      ],
+      "parameters": {
+        "method": "PROPFIND",
+        "url": "={{ $('Prepare request').first().json.baseUrl + '/remote.php/dav/files/' + encodeURIComponent($('Prepare request').first().json.integrationUser) + '/LibreSign/' }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "options": {
+          "timeout": 30000,
+          "webdavMethods": true,
+          "redirect": {
+            "redirect": {
+              "followRedirects": false
+            }
+          },
+          "response": {
+            "response": {
+              "responseFormat": "text",
+              "outputPropertyName": "data"
+            }
+          }
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Depth",
+              "value": "1"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/xml"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/xml",
+        "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><d:propfind xmlns:d=\"DAV:\" xmlns:oc=\"http://owncloud.org/ns\"><d:prop><d:resourcetype/><d:getcontenttype/><d:getcontentlength/><oc:fileid/></d:prop></d:propfind>"
+      },
+      "notes": "Use a verified path under the integration account DAV root, with file read access.",
+      "notesInFlow": false
+    },
+    {
+      "id": "qa-parse-folders",
+      "name": "Parse folder XML",
+      "type": "n8n-nodes-base.xml",
+      "typeVersion": 1,
+      "position": [
+        3240,
+        120
+      ],
+      "parameters": {
+        "mode": "xmlToJson",
+        "dataPropertyName": "data",
+        "options": {
+          "explicitArray": false,
+          "explicitRoot": true,
+          "ignoreAttrs": true
+        }
+      }
+    },
+    {
+      "id": "qa-choose-folders",
+      "name": "Choose folders",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3490,
+        120
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const c = $('Prepare request').first().json;\nconst prefix = '/remote.php/dav/files/' + encodeURIComponent(c.integrationUser) + '/LibreSign/';\nconst o = $input.first().json;\nconst root = o['d:multistatus'] ?? o['multistatus'];\nif (!root) throw new Error('Invalid WebDAV folder multistatus');\nconst list = v => v == null ? [] : Array.isArray(v) ? v : [v];\nconst records = list(root['d:response'] ?? root['response']);\nconst hrefs = records.map(r => r['d:href'] ?? r['href']).filter(v => typeof v === 'string');\nconst isSafeFolder = h => {\n if (!h.startsWith(prefix) || !h.endsWith('/') || h === prefix || /[?#]/.test(h)) return false;\n const tail = h.slice(prefix.length);\n const parts = tail.split('/').filter(Boolean);\n return parts.length === 1 && !parts.some(p => p === '.' || p === '..' || /%(?:2e|2f|5c|00)/i.test(p));\n};\nconst folders = hrefs.filter(isSafeFolder);\nif (folders.length === 0 || folders.length > c.maxSearchFolders || new Set(folders).size !== folders.length) throw new Error('No bounded, unique LibreSign DAV folders found');\nreturn folders.map(h => ({ json: { folderHref: h } }));"
+      }
+    },
+    {
+      "id": "qa-list-files",
+      "name": "Inspect folder files",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3740,
+        120
+      ],
+      "parameters": {
+        "method": "PROPFIND",
+        "url": "={{ $('Prepare request').first().json.baseUrl + $json.folderHref }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "options": {
+          "timeout": 30000,
+          "webdavMethods": true,
+          "redirect": {
+            "redirect": {
+              "followRedirects": false
+            }
+          },
+          "response": {
+            "response": {
+              "responseFormat": "text",
+              "outputPropertyName": "data"
+            }
+          }
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Depth",
+              "value": "1"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/xml"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/xml",
+        "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><d:propfind xmlns:d=\"DAV:\" xmlns:oc=\"http://owncloud.org/ns\"><d:prop><d:resourcetype/><d:getcontenttype/><d:getcontentlength/><oc:fileid/></d:prop></d:propfind>"
+      },
+      "notes": "Use a verified path under the integration account DAV root, with file read access.",
+      "notesInFlow": false
+    },
+    {
+      "id": "qa-parse-files",
+      "name": "Parse file XML",
+      "type": "n8n-nodes-base.xml",
+      "typeVersion": 1,
+      "position": [
+        3990,
+        120
+      ],
+      "parameters": {
+        "mode": "xmlToJson",
+        "dataPropertyName": "data",
+        "options": {
+          "explicitArray": false,
+          "explicitRoot": true,
+          "ignoreAttrs": true
+        }
+      }
+    },
+    {
+      "id": "qa-resolve-signed",
+      "name": "Resolve signed PDF",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4240,
+        120
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const c = $('Prepare request').first().json;\nconst prefix = '/remote.php/dav/files/' + encodeURIComponent(c.integrationUser) + '/LibreSign/';\nconst safeHref = h => {\n if (typeof h !== 'string' || !h.startsWith(prefix) || /[?#]/.test(h)) return false;\n const tail = h.slice(prefix.length);\n const parts = tail.split('/').filter(Boolean);\n return parts.length > 0 && !parts.some(p => p === '.' || p === '..' || /%(?:2e|2f|5c|00)/i.test(p));\n};\nconst nodeId = String($('Reconcile file state').first().json.sourceNodeId);\nif (!/^\\d+$/.test(nodeId) || nodeId === '0') throw new Error('OCS does not expose a valid authorized source nodeId');\nconst list = v => v == null ? [] : Array.isArray(v) ? v : [v];\nconst fileGroups = $input.all().map(i => {\n const root = i.json['d:multistatus'] ?? i.json.multistatus;\n if (!root) throw new Error('Invalid WebDAV file multistatus');\n return list(root['d:response'] ?? root.response).map(r => {\n  const href = r['d:href'] ?? r.href;\n  const propstat = list(r['d:propstat'] ?? r.propstat);\n  const good = propstat.find(p => String(p['d:status'] ?? p.status).includes('200'));\n  const prop = good?.['d:prop'] ?? good?.prop ?? {};\n  return { href, fileid: String(prop['oc:fileid'] ?? prop.fileid ?? ''), type: String(prop['d:getcontenttype'] ?? prop.getcontenttype ?? ''), size: Number(prop['d:getcontentlength'] ?? prop.getcontentlength ?? 0) };\n });\n});\nconst related = fileGroups.filter(items => items.some(i => i.fileid === nodeId));\nif (related.length !== 1) throw new Error('Cannot uniquely associate an authorized DAV folder with OCS source nodeId');\nconst items=related[0];\nconst original = items.filter(i => i.fileid === nodeId && safeHref(i.href) && !i.href.endsWith('/'));\nif (original.length !== 1) throw new Error('Original document is ambiguous');\nconst folder = String(original[0].href).replace(/[^/]+$/, '');\nif (!folder.startsWith(prefix)) throw new Error('Original DAV path outside LibreSign root');\nconst candidates=items.filter(x => x.fileid !== nodeId && safeHref(x.href) && x.href.startsWith(folder) && x.href !== folder && !x.href.endsWith('/') && x.type === 'application/pdf' && x.size > 0);\nif (candidates.length !== 1) throw new Error('Expected exactly one non-source PDF in the signed document folder');\nconst target = candidates[0].href;\nif (!target.startsWith(prefix) || target.includes('?') || target.includes('#') || /%2f|%5c|%2e%2e/i.test(target)) throw new Error('Unsafe WebDAV target');\nreturn [{ json: { signedDavHref: target, sourceNodeId: Number(nodeId), candidateCount: candidates.length } }];"
+      }
     }
   ],
   "connections": {
@@ -485,7 +651,7 @@
       "main": [
         [
           {
-            "node": "Download signed PDF",
+            "node": "List LibreSign folders",
             "type": "main",
             "index": 0
           }
@@ -515,6 +681,72 @@
         [
           {
             "node": "Verify PDF bytes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "List LibreSign folders": {
+      "main": [
+        [
+          {
+            "node": "Parse folder XML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse folder XML": {
+      "main": [
+        [
+          {
+            "node": "Choose folders",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Choose folders": {
+      "main": [
+        [
+          {
+            "node": "Inspect folder files",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Inspect folder files": {
+      "main": [
+        [
+          {
+            "node": "Parse file XML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse file XML": {
+      "main": [
+        [
+          {
+            "node": "Resolve signed PDF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Resolve signed PDF": {
+      "main": [
+        [
+          {
+            "node": "Download signed PDF",
             "type": "main",
             "index": 0
           }
