@@ -47,19 +47,29 @@ branch (not in another release's source):
 
 * `Bash client (flow.sh) <https://github.com/LibreSign/documentation/blob/stable15/examples/external-email-signers/flow.sh>`_
 * `PHP client (flow.php) <https://github.com/LibreSign/documentation/blob/stable15/examples/external-email-signers/flow.php>`_
-* `LibreSign 15 fixture (request-15.json) <https://github.com/LibreSign/documentation/blob/stable15/examples/external-email-signers/request-main.json>`_
+* `LibreSign 15 fixture (request-15.json) <https://github.com/LibreSign/documentation/blob/stable15/examples/external-email-signers/request-15.json>`_
 
 Clone the **matching documentation branch**, then work in the examples
 directory (Git required):
 
 .. code-block:: bash
 
-   git clone --depth 1 --branch main https://github.com/LibreSign/documentation.git
+   git clone --depth 1 --branch stable15 https://github.com/LibreSign/documentation.git
    cd documentation/examples/external-email-signers
 
 Keep the clients and their ``request-*.json`` fixtures together. Consult this
 release's :doc:`openapi` and its pinned `OpenAPI JSON <openapi.json>`_ when
 adapting the request to a real integration.
+
+For a ready-to-import n8n workflow, see the `shared LibreSign + n8n guide
+<https://github.com/LibreSign/documentation/blob/560861b9ac0c4673cac490aaf8de226d227fa792/examples/n8n/README.md>`_. It uses a single external signer, explicit invitation,
+bounded OCS polling and an authorized WebDAV download. Select this
+LibreSign release in the workflow configuration: versions 13/14 use
+``mandatory: 1``; versions 15/development use
+``requirement: "required"``. Native completion events belong to the
+development documentation and are not required by the polling workflow.
+The n8n files are maintained on the development branch; do not replace
+the release-specific cURL/PHP fixtures with development payloads.
 
 .. include:: _external-email-signers-release.inc
 
