@@ -20,7 +20,8 @@ jobs:
       github.event.workflow_run.event == 'pull_request' &&
       github.event.workflow_run.conclusion == 'success' &&
       github.event.workflow_run.pull_requests[0].number > 0 &&
-      github.event.workflow_run.head_repository.id != github.event.repository.id
+      (github.event.workflow_run.head_repository.id != github.event.repository.id ||
+       startsWith(github.event.workflow_run.head_branch, 'dependabot/'))
     runs-on: ubuntu-latest
     timeout-minutes: 15
     concurrency:
@@ -46,7 +47,7 @@ jobs:
 
       - name: Create scoped Pages deployment token
         id: preview-token
-        uses: actions/create-github-app-token@fee1f7d63c2ff003460e3d139729b119787bc349 # v2
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
         with:
           app-id: ${{ vars.LIBRECODE_WORKFLOW_APP_ID }}
           private-key: ${{ secrets.LIBRECODE_WORKFLOW_APP_PRIVATE_KEY }}
