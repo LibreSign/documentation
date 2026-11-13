@@ -83,7 +83,7 @@ Read the relevant guide
   integration with fixture selection and authorized PDF retrieval.
 - :doc:`../api/openapi` — the **actual API schema for this release**, including
   required properties and supported responses.
-- `n8n importable signing workflow <https://github.com/LibreSign/documentation/blob/4d6e2b8b5f9dbbd254b4cc00ec5875411fac06ed/examples/n8n/README.md>`_ — one external email
+- `n8n importable signing workflow <https://github.com/LibreSign/documentation/blob/main/examples/n8n/README.md>`_ — one external email
   signer, App Password authentication, bounded OCS polling and automatic
   WebDAV discovery and authenticated download in the default LibreSign
   folder. The shared example selects the request schema for LibreSign
