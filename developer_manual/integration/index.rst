@@ -88,8 +88,8 @@ Read the relevant guide
   WebDAV discovery and authenticated download in the default LibreSign
   folder. The shared example selects the request schema for LibreSign
   13/14 (``mandatory``) or 15/development (``requirement``). The discovery
-  step was exercised only on LibreSign 15.0.12; versions 13, 14 and
-  development still require runtime verification. Native completion
+  step requires default LibreSign storage and requester WebDAV access.
+  Verify these prerequisites on the target installation. Native completion
   events are documented only for development; the workflow uses OCS polling.
 
 Contract and ownership boundaries

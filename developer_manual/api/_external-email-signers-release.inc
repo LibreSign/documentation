@@ -45,6 +45,3 @@ the exact source commit used in this build is in the linked provenance:
 * `Guest signing and visible signature <https://github.com/LibreSign/libresign/blob/stable35/playwright/e2e/sign-envelope-unauthenticated-visible-signature.spec.ts>`_
 * `Unauthenticated email-token signing <https://github.com/LibreSign/libresign/blob/stable35/playwright/e2e/sign-email-token-unauthenticated.spec.ts>`_
 * `Sequential signing <https://github.com/LibreSign/libresign/blob/stable35/playwright/e2e/multi-signer-sequential.spec.ts>`_
-
-**Evidence limit:** source tests are present; their existence does not
-prove that SMTP, browser behavior or PDF signing passed in this deployment.
