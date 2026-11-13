@@ -68,9 +68,9 @@ from the default LibreSign folder. Select this LibreSign release in the
 workflow configuration: versions 13/14 use ``mandatory: 1``; versions
 15/development use ``requirement: "required"``. Native completion events
 belong to the development documentation and are not required by polling.
-Automated discovery was exercised only on LibreSign 15.0.12; versions 13,
-14 and development still require runtime verification. The link pins the
-README and its relative 21-node JSON workflow to one immutable revision.
+Confirm that this release meets the OCS and WebDAV prerequisites before
+using the shared workflow. The pinned link keeps its README and relative
+JSON workflow at the same immutable revision.
 Do not replace release-specific cURL/PHP fixtures with development payloads.
 
 .. include:: _external-email-signers-release.inc
@@ -220,9 +220,8 @@ Protect invitation links, App Passwords, signer metadata and PDFs.
 Poll with backoff; native webhooks require a separately verified
 LibreSign event contract for the deployed Nextcloud version.
 
-The release-specific section links to browser-test sources from that
-application branch. Their presence is source evidence; running them
-against the installed release is still necessary to establish E2E behavior.
-Contract checks cannot prove SMTP, browser signing or certificate trust.
+Validate browser signing, SMTP delivery and certificate trust on the target
+installation before relying on the integration. Contract checks alone do
+not establish operational compatibility.
 
 Consult the OpenAPI reference beside this page for exact schemas.
