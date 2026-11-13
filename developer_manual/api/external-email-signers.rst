@@ -62,7 +62,7 @@ release's :doc:`openapi` and its pinned `OpenAPI JSON <openapi.json>`_ when
 adapting the request to a real integration.
 
 For a ready-to-import n8n workflow, see the `shared LibreSign + n8n guide
-<https://github.com/LibreSign/documentation/blob/a7b772cf579fcbd734810661f6e2104bd8444e6a/examples/n8n/README.md>`_. It uses a single external signer, explicit invitation,
+<https://github.com/LibreSign/documentation/blob/4d6e2b8b5f9dbbd254b4cc00ec5875411fac06ed/examples/n8n/README.md>`_. It uses a single external signer, explicit invitation,
 bounded OCS polling, automatic WebDAV discovery and authenticated download
 from the default LibreSign folder. Select this LibreSign release in the
 workflow configuration: versions 13/14 use ``mandatory: 1``; versions
