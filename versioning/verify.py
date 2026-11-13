@@ -41,6 +41,8 @@ def verify_version_aliases(output: Path, catalog: dict) -> list[str]:
             if (f"url={target_url}" not in content or
                     "location.search" not in content or "location.hash" not in content):
                 errors.append(f"Incorrect /{alias}/ redirect: {relative}")
+            if 'name="robots" content="noindex,follow"' not in content:
+                errors.append(f"Indexable /{alias}/ redirect: {relative}")
         for filename in ("openapi.json", "openapi.provenance.json"):
             relative = Path("developer_manual/api") / filename
             pinned = source / relative
@@ -193,7 +195,8 @@ def verify_site(output: Path, versions: list[str] | None = None,
     if (output / ".nojekyll").exists():
         errors.extend(verify_version_aliases(output, catalog))
         errors.extend(verify_seo(output, catalog,
-                                 preview=bool(os.environ.get("LIBRESIGN_PREVIEW_PR"))))
+                                 preview=bool(os.environ.get("LIBRESIGN_PREVIEW_PR")),
+                                 root=Path(__file__).resolve().parent.parent))
     if errors:
         raise ValueError("\n".join(errors[:60]))
     return {

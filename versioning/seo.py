@@ -175,4 +175,6 @@ def verify_seo(site: Path, catalog: dict, *, preview: bool = False,
             markup = old_page.read_text(encoding="utf-8")
             if f"url=/{destination}" not in markup or 'http-equiv=\'refresh\'' not in markup:
                 errors.append(f"Incorrect legacy redirect: {source} => {destination}")
+            if 'name="robots" content="noindex,follow"' not in markup:
+                errors.append(f"Indexable legacy redirect: {source}")
     return errors

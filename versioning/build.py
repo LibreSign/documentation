@@ -87,6 +87,7 @@ def redirect_html(target: str) -> str:
     json_target = json.dumps(target)
     return (
         "<!doctype html><html lang='en'><head><meta charset='utf-8'>"
+        '<meta name="robots" content="noindex,follow" />'
         f"<meta http-equiv='refresh' content='0; url={quoted}'>"
         f"<link rel='canonical' href='{quoted}'>"
         "<title>LibreSign documentation has moved</title></head><body>"
