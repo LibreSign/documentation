@@ -1,7 +1,7 @@
 <!-- SPDX-FileCopyrightText: 2026 LibreCode coop and contributors -->
 <!-- SPDX-License-Identifier: CC-BY-3.0 -->
 
-# LibreSign + n8n: external signer (C2)
+# LibreSign + n8n: external signer
 
 This is an **importable n8n workflow** using public LibreSign OCS v1 requests and
 authenticated Nextcloud WebDAV discovery and download. It creates a
@@ -184,33 +184,9 @@ release, including `main`, and does not require a proprietary callback.
 Event delivery and receiver authentication require separate integration
 verification; they are not represented as already tested here.
 
-## Verification and evidence
-
-`node --test examples/n8n/test-workflow.mjs` runs dependency-free, synthetic
-contract tests for the export, Code-node success/failure cases, WebDAV
-folder and file-ID correlation, ambiguity rejection, status transitions and
-authorization boundaries. This tests **the export and its logic**, not n8n
-runtime import, a live Nextcloud, SMTP delivery, legal identity, or
-cryptographic signing. The discovery and final GET were also executed on a
-**disposable Nextcloud 35 / LibreSign 15.0.12 / n8n 2.47.3 installation** with
-one already signed synthetic PDF: the 21-node graph successfully retrieved
-47,799 PDF bytes through authenticated WebDAV; `pdfsig` independently
-confirmed a cryptographically valid signature from the test-only CA. The
-creation, invitation, SMTP, external signing and polling were verified on
-that installation in a separate earlier run. This is **not** an uninterrupted
-end-to-end n8n run nor evidence of runtime compatibility with releases 13, 14,
-or development. Revalidate in the target disposable release before using it
-for live documents.
-
 References: [LibreSign stable API guide](https://docs.libresign.coop/stable/developer_manual/api/external-email-signers.html),
 [stable integration lifecycle](https://docs.libresign.coop/stable/developer_manual/integration/lifecycle.html),
 [n8n HTTP Request](https://docs.n8n.io/integrations/builtin/core-nodes/n8n-nodes-base.httprequest/),
 [n8n Wait](https://docs.n8n.io/integrations/builtin/core-nodes/n8n-nodes-base.wait/),
 [n8n Webhook](https://docs.n8n.io/integrations/builtin/core-nodes/n8n-nodes-base.webhook/),
 [Nextcloud WebDAV](https://docs.nextcloud.com/server/stable/developer_manual/client_apis/WebDAV/basic.html).
-
-**Navigation follow-up, not part of this PR:** once front C finishes editing
-its versioned integration landing pages, add a link to this example from the
-relevant architecture and external-email-signers guides on `main`,
-`stable13`, `stable14`, and `stable15`, using independently reviewed version
-links. Do not backport an event receiver to stable branches.
