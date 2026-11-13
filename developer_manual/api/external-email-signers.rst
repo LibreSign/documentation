@@ -62,15 +62,15 @@ release's :doc:`openapi` and its pinned `OpenAPI JSON <openapi.json>`_ when
 adapting the request to a real integration.
 
 For a ready-to-import n8n workflow, see the `shared LibreSign + n8n guide
-<https://github.com/LibreSign/documentation/blob/4d6e2b8b5f9dbbd254b4cc00ec5875411fac06ed/examples/n8n/README.md>`_. It uses a single external signer, explicit invitation,
+<https://github.com/LibreSign/documentation/blob/main/examples/n8n/README.md>`_. It uses a single external signer, explicit invitation,
 bounded OCS polling, automatic WebDAV discovery and authenticated download
 from the default LibreSign folder. Select this LibreSign release in the
 workflow configuration: versions 13/14 use ``mandatory: 1``; versions
 15/development use ``requirement: "required"``. Native completion events
 belong to the development documentation and are not required by polling.
 Confirm that this release meets the OCS and WebDAV prerequisites before
-using the shared workflow. The pinned link keeps its README and relative
-JSON workflow at the same immutable revision.
+using the shared workflow. Its README and relative JSON workflow are
+maintained together on the documentation ``main`` branch.
 Do not replace release-specific cURL/PHP fixtures with development payloads.
 
 .. include:: _external-email-signers-release.inc
