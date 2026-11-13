@@ -2,8 +2,6 @@
 LibreSign manuals style guide
 =============================
 
-*This is a work in progress*
-
 See the `Documentation README <https://github.com/LibreSign/documentation/blob/main/README.rst>`_ for information on setting up your documentation build environment
 
 See `reStructuredText Primer <https://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html>`_ for a complete 
@@ -135,10 +133,7 @@ or add a caption. Captions must follow a blank line and be italicized, like this
      *Figure 1: The file listing and administration page.*
 
 Images must go into a sub-directory of the directory containing your manual 
-page. Currently the manuals have both a single master images directory, and 
-image directories local to each chapter. A single master images directory is 
-difficult to maintain and inevitably becomes cluttered with obsolete images. Eventually
-the single master directories will be gone.
+page.
 
 Example URL
 -----------
