@@ -92,6 +92,12 @@ class PublicationTests(unittest.TestCase):
                 (api / "openapi.provenance.json").write_text('{"branch": "' + slug + '"}')
             write_version_aliases(site, catalog)
             self.assertEqual(verify_version_aliases(site, catalog), [])
+            alias = site / "stable/developer_manual/api/openapi.html"
+            self.assertIn('name="robots" content="noindex,follow"', alias.read_text())
+            alias.write_text(alias.read_text().replace('<meta name="robots" content="noindex,follow" />', ""))
+            self.assertTrue(any("Indexable /stable/ redirect" in error
+                                for error in verify_version_aliases(site, catalog)))
+            write_version_aliases(site, catalog)
             self.assertIn("url=/site-preview/docs-preview/pr-149/main/developer_manual/api/openapi.html",
                           (site / "latest/developer_manual/api/openapi.html").read_text())
             self.assertIn("url=/site-preview/docs-preview/pr-149/15/developer_manual/api/openapi.html",
@@ -188,6 +194,7 @@ class PublicationTests(unittest.TestCase):
         markup = redirect_html("/15/developer_manual/api/openapi.html")
         self.assertIn("location.search", markup)
         self.assertIn("location.hash", markup)
+        self.assertIn('<meta name="robots" content="noindex,follow" />', markup)
         self.assertNotIn("/main/", markup)
 
     def test_preview_redirects_stay_under_isolated_origin(self):

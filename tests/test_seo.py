@@ -51,6 +51,29 @@ class DocumentationSeoTests(unittest.TestCase):
         redirect = (self.site / "user_manual/functionality.html").read_text()
         self.assertIn("url=/main/user_manual/functionality.html", redirect)
         self.assertNotIn("url=/15/user_manual/index.html", redirect)
+        self.assertIn('<meta name="robots" content="noindex,follow" />', redirect)
+
+    def test_published_legacy_redirect_without_noindex_fails_verification(self):
+        self.page("15/index.html")
+        self.page("main/user_manual/functionality.html")
+        (self.site / "versions.json").write_text(json.dumps(self.catalog))
+        (self.root / "versioning").mkdir()
+        (self.root / "versioning/legacy-routes.json").write_text(json.dumps({
+            "user_manual/functionality.html": "main/user_manual/functionality.html",
+        }))
+        with patch.dict("os.environ", {"LIBRESIGN_DOC_BASE_PATH": ""}), \
+             patch("versioning.build.version_overview",
+                   return_value=self.page("index.html").read_text()):
+            legacy_redirects(self.site, "15", routes={
+                "user_manual/functionality.html": "main/user_manual/functionality.html",
+            })
+        apply_seo(self.site, self.catalog)
+        self.assertEqual(verify_seo(self.site, self.catalog, root=self.root), [])
+        page = self.site / "user_manual/functionality.html"
+        page.write_text(page.read_text().replace(
+            '<meta name="robots" content="noindex,follow" />', ""))
+        self.assertIn("Indexable legacy redirect: user_manual/functionality.html",
+                      verify_seo(self.site, self.catalog, root=self.root))
 
     def test_preview_legacy_routes_and_placeholder_are_not_indexable(self):
         self.page("15/index.html")
