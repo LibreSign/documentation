@@ -1,0 +1,422 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Translation &mdash; LibreSign Documentation 16.0.0-dev.3 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="_static/version-switcher.css?v=2caec843" />
+      <link rel="stylesheet" type="text/css" href="_static/ecosystem-nav.css?v=2d662436" />
+      <link rel="stylesheet" type="text/css" href="_static/ecosystem-footer.css?v=a963003a" />
+      <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/general.css?v=c0a7eb24" />
+      <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/dark.css?v=70edf1c7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=fac63cce"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="_static/copybutton.js?v=f281be69"></script>
+      <script src="_static/version-switcher.js?v=9500aa06"></script>
+      <script src="_static/ecosystem-nav.js?v=d00f03b9"></script>
+      <script src="_static/scroll-navigation.js?v=96b42595"></script>
+      <script src="_static/dark_mode_js/default_dark.js?v=fd565c74"></script>
+      <script src="_static/dark_mode_js/theme_switcher.js?v=358d3910"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Requesting features" href="requesting-features.html" />
+    <link rel="prev" title="External signing with native webhooks" href="webhooks/external-signing-flow.html" /> 
+  <link rel="canonical" href="https://docs.libresign.coop/main/developer_manual/translation.html" />
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #184c4e" >
+
+          
+          
+          <a href="index.html">
+            
+              <img src="_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="prologue/index.html">Prologue</a></li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Architecture and code map</a></li>
+<li class="toctree-l1"><a class="reference internal" href="error-handling.html">Error handling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting-started/index.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="development-workflow.html">Development workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="integration/index.html">Integration architecture: choose a pattern</a></li>
+<li class="toctree-l1"><a class="reference internal" href="webhooks/index.html">Webhooks</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Translation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#transifex">Transifex</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fixing-original-strings">Fixing original strings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#translation-workflow-with-transifex">Translation workflow with Transifex</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#translator-hints-in-application-source">Translator hints in application source</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="requesting-features.html">Requesting features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release-process.html">Release process</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #184c4e" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">LibreSign Documentation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+  
+  <div class="libresign-manual-navigation libresign-scroll-header">
+    
+<div class="libresign-nav-shell">
+  <button class="libresign-nav-toggle" type="button" aria-controls="libresign-ecosystem-links"
+          aria-expanded="false" aria-label="Open LibreSign navigation">
+    <svg aria-hidden="true" viewBox="0 0 24 24" width="19" height="19" fill="none"
+         stroke="currentColor" stroke-width="1.9" stroke-linecap="round">
+      <path d="M4 6h16M4 12h16M4 18h16"/>
+    </svg>
+    <span>Menu</span>
+  </button>
+  <nav class="libresign-ecosystem-nav" id="libresign-ecosystem-links"
+       aria-label="LibreSign ecosystem">
+  <a class="libresign-nav-docs" href="/">Documentation</a>
+  <details class="libresign-nav-group">
+    <summary>Product</summary>
+    <div class="libresign-nav-menu">
+      <a href="https://libresign.coop/">LibreSign overview</a>
+      <a href="https://libresign.coop/features/">Features</a>
+      <a href="https://libresign.coop/pricing/">Plans and pricing</a>
+    </div>
+  </details>
+  <details class="libresign-nav-group">
+    <summary>Support</summary>
+    <div class="libresign-nav-menu">
+      <a href="/">Documentation</a>
+      <a href="https://libresign.coop/faq/">Frequently asked questions</a>
+      <a href="https://libresign.coop/contact-us/">Contact our team</a>
+      <a href="https://github.com/LibreSign/libresign/issues">Report a problem</a>
+    </div>
+  </details>
+  <details class="libresign-nav-group">
+    <summary>Community</summary>
+    <div class="libresign-nav-menu">
+      <a href="https://github.com/LibreSign/libresign">Source code</a>
+      <a href="https://github.com/LibreSign/libresign/blob/main/CONTRIBUTING.md">How to contribute</a>
+      <a href="https://t.me/libresign">Community chat</a>
+      <a href="https://apps.nextcloud.com/apps/libresign">Nextcloud App Store</a>
+    </div>
+  </details>
+  <details class="libresign-nav-group">
+    <summary>About</summary>
+    <div class="libresign-nav-menu">
+      <a href="https://libresign.coop/about/">About LibreSign</a>
+      <a href="https://libresign.coop/posts/">Blog</a>
+      <a href="https://librecode.coop/">LibreCode cooperative</a>
+    </div>
+  </details>
+    <a class="libresign-nav-quote" href="https://libresign.coop/pricing/">Request a quote</a>
+    <a class="libresign-nav-source" href="https://github.com/LibreSign/documentation"
+       aria-label="Documentation source on GitHub" title="Documentation source on GitHub">
+      <svg aria-hidden="true" viewBox="0 0 24 24" width="16" height="16"
+           fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+           stroke-linejoin="round">
+        <path d="M8 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-3"/>
+        <path d="M12 12 21 3M15 3h6v6"/>
+      </svg>
+      <span>Source</span>
+    </a>
+  </nav>
+</div>
+  </div>
+  
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Translation</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/LibreSign/documentation/blob/main/developer_manual/translation.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="translation">
+<h1>Translation<a class="headerlink" href="#translation" title="Link to this heading"></a></h1>
+<section id="transifex">
+<h2>Transifex<a class="headerlink" href="#transifex" title="Link to this heading"></a></h2>
+<ol class="arabic">
+<li><p>Access the link to start translating:</p>
+<p><a class="reference external" href="https://app.transifex.com/nextcloud/nextcloud/libresign">LibreSign at Transifex</a></p>
+</li>
+<li><p>If you do not have an account, create one or log in at Transifex.</p></li>
+</ol>
+<p>That’s all translators need to start.</p>
+<p>You don’t need to change anything in the codebase to translate LibreSign.</p>
+</section>
+<section id="fixing-original-strings">
+<h2>Fixing original strings<a class="headerlink" href="#fixing-original-strings" title="Link to this heading"></a></h2>
+<p>If you find an original string that needs to be corrected, locate it in the codebase and send a Pull Request (PR) to the repository with the fix.</p>
+</section>
+<section id="translation-workflow-with-transifex">
+<h2>Translation workflow with Transifex<a class="headerlink" href="#translation-workflow-with-transifex" title="Link to this heading"></a></h2>
+<p>The LibreSign repository is directly integrated with Transifex. This means you can translate the application in Transifex, and the translations are automatically synchronized with the repository.</p>
+<p>Workflow steps:</p>
+<ol class="arabic simple">
+<li><p>A GitHub bot runs daily to detect new strings in the codebase.</p></li>
+<li><p>All new strings are pushed to Transifex and made available for translation.</p></li>
+<li><p>Translators provide translations directly in Transifex and will be committed to the repository at the next daily run.</p></li>
+<li><p>Transifex sends the translated files back to the repository, placing them into the <code class="docutils literal notranslate"><span class="pre">l10n</span></code> folder.</p></li>
+<li><p>You will need to wait the next release to see your translations in the application.</p></li>
+</ol>
+</section>
+<section id="translator-hints-in-application-source">
+<h2>Translator hints in application source<a class="headerlink" href="#translator-hints-in-application-source" title="Link to this heading"></a></h2>
+<p>This section is for developers changing translatable strings in the LibreSign
+application. Translators do not need to edit source files: they can continue
+working in Transifex as described above.</p>
+<p>LibreSign follows the
+<a class="reference external" href="https://docs.nextcloud.com/server/stable/developer_manual/basics/front-end/l10n.html">Nextcloud localization guide</a>
+for translation extraction. The following conventions apply to LibreSign source
+code:</p>
+<ul class="simple">
+<li><p>Translate complete, meaningful messages using <code class="docutils literal notranslate"><span class="pre">t()</span></code> or <code class="docutils literal notranslate"><span class="pre">n()</span></code>. Do not
+construct a sentence by concatenating individually translated fragments.</p></li>
+<li><p>Add a concise <code class="docutils literal notranslate"><span class="pre">TRANSLATORS</span></code> comment when a string’s purpose, terminology,
+placeholders, or workflow context could be unclear. Place the comment
+immediately before the corresponding translation call.</p></li>
+<li><p>Write the marker <strong>without a colon</strong>: <code class="docutils literal notranslate"><span class="pre">//</span> <span class="pre">TRANSLATORS</span> <span class="pre">Explanation</span></code> in
+TypeScript, JavaScript, and PHP, or <code class="docutils literal notranslate"><span class="pre">&lt;!--</span> <span class="pre">TRANSLATORS</span> <span class="pre">Explanation</span> <span class="pre">--&gt;</span></code> in
+Vue templates. Nextcloud also accepts a colon, but LibreSign deliberately
+uses one consistent style.</p></li>
+<li><p>Provide <strong>one context comment for each relevant translation</strong>, not several
+consecutive comments for one string. A repeated message at a different call
+site can have its own hint.</p></li>
+<li><p>Keep separate <code class="docutils literal notranslate"><span class="pre">t()</span></code> or <code class="docutils literal notranslate"><span class="pre">n()</span></code> calls on separate source lines, particularly
+in conditional expressions. Nextcloud’s extraction tooling cannot associate
+an independent preceding hint with the second call on the same line.</p></li>
+<li><p>Explain placeholders such as <code class="docutils literal notranslate"><span class="pre">{count}</span></code> or <code class="docutils literal notranslate"><span class="pre">%s</span></code> when necessary, and
+preserve their spelling in translated strings.</p></li>
+<li><p>Do not edit generated files under <code class="docutils literal notranslate"><span class="pre">l10n/</span></code>; they are managed through the
+translation synchronization workflow.</p></li>
+</ul>
+<p>For example, give the document approver’s action and an ordinary signer’s
+action distinct comments and translation calls:</p>
+<div class="highlight-typescript notranslate"><div class="highlight"><pre><span></span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">isApprover</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// TRANSLATORS An authorized reviewer signs a submitted document to record its approval.</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">t</span><span class="p">(</span><span class="s1">'libresign'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Sign and approve document'</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="c1">// TRANSLATORS An ordinary signer digitally signs a document without recording an approval.</span>
+<span class="k">return</span><span class="w"> </span><span class="nx">t</span><span class="p">(</span><span class="s1">'libresign'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Sign document'</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In a Vue template, the same convention applies:</p>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="cm">&lt;!-- TRANSLATORS Action to start reviewing a submitted document before approving it. --&gt;</span>
+<span class="p">&lt;</span><span class="nt">NcButton</span><span class="p">&gt;</span>{{ t('libresign', 'Review and approve') }}<span class="p">&lt;/</span><span class="nt">NcButton</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<p>Avoid assigning a single hint to both alternatives of a same-line conditional:</p>
+<div class="highlight-typescript notranslate"><div class="highlight"><pre><span></span><span class="c1">// Avoid: the second translation has no independent context comment.</span>
+<span class="k">return</span><span class="w"> </span><span class="nx">isApprover</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="nx">t</span><span class="p">(</span><span class="s1">'libresign'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Approve'</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nx">t</span><span class="p">(</span><span class="s1">'libresign'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Sign'</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The LibreSign repository enforces structural checks through
+<code class="docutils literal notranslate"><span class="pre">npm</span> <span class="pre">run</span> <span class="pre">lint:translator-hints</span></code>, which is also included in <code class="docutils literal notranslate"><span class="pre">npm</span> <span class="pre">run</span> <span class="pre">lint</span></code>.
+The checker rejects colon-prefixed markers, consecutive hints for one
+translation, and multiple LibreSign translation calls on one source line.
+Run <code class="docutils literal notranslate"><span class="pre">npm</span> <span class="pre">run</span> <span class="pre">test:translator-hints</span></code> to test the checker itself.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="webhooks/external-signing-flow.html" class="btn btn-neutral float-left" title="External signing with native webhooks" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="requesting-features.html" class="btn btn-neutral float-right" title="Requesting features" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026 LibreCode coop.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+
+      </div>
+    </section>
+  </div>
+  
+
+
+<div class="rst-versions libresign-rst-versions"
+     id="libresign-release-picker"
+     data-version="main"
+     data-site-root=""
+     data-manual="developer_manual"
+     role="navigation"
+     aria-label="Documentation versions">
+  <button type="button" id="libresign-version-toggle" class="rst-current-version"
+          aria-label="Development documentation for upcoming LibreSign release (not released), main branch; choose version"
+          aria-controls="libresign-version-menu" aria-expanded="false">
+    <span class="libresign-version-current">Upcoming · main</span>
+    <span class="libresign-version-chevron" aria-hidden="true">▴</span>
+  </button>
+  <div id="libresign-version-menu" class="rst-other-versions" hidden>
+    <p class="libresign-version-menu-heading">Documentation versions</p>
+    <ul id="libresign-version-list" class="libresign-version-list">
+      
+        <li>
+          <a href="/main/developer_manual/"
+             data-version-target="main"
+             aria-current="true">
+            <span class="libresign-version-name">
+              main
+            </span>
+            <span class="libresign-version-detail">
+              Not released
+            </span>
+          </a>
+        </li>
+      
+        <li>
+          <a href="/15/developer_manual/"
+             data-version-target="15"
+             >
+            <span class="libresign-version-name">
+              LibreSign 15
+            </span>
+            <span class="libresign-version-detail">
+              Latest stable
+            </span>
+          </a>
+        </li>
+      
+        <li>
+          <a href="/14/developer_manual/"
+             data-version-target="14"
+             >
+            <span class="libresign-version-name">
+              LibreSign 14
+            </span>
+            <span class="libresign-version-detail">
+              NC 34
+            </span>
+          </a>
+        </li>
+      
+        <li>
+          <a href="/13/developer_manual/"
+             data-version-target="13"
+             >
+            <span class="libresign-version-name">
+              LibreSign 13
+            </span>
+            <span class="libresign-version-detail">
+              Oldest documented
+            </span>
+          </a>
+        </li>
+      
+    </ul>
+    <a class="libresign-all-versions" href="/">All versions and manuals</a>
+    <p id="libresign-version-notice" class="libresign-sr-only" role="status" aria-live="polite"></p>
+  </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+  
+<footer class="libresign-site-footer" aria-label="LibreSign site footer">
+  <div class="libresign-footer-container">
+    <div class="libresign-footer-main">
+      <div class="libresign-footer-about">
+        <a class="libresign-footer-brand" href="https://libresign.coop/" aria-label="LibreSign official website">
+          <img src="/logo.png" width="136" height="55" alt="LibreSign">
+        </a>
+        <p>Open source electronic signatures for Nextcloud. Request, sign, and validate documents on infrastructure you control.</p>
+        <a class="libresign-footer-cta" href="https://libresign.coop/pricing/">Plans and professional support</a>
+      </div>
+      <nav class="libresign-footer-nav" aria-label="Footer resources">
+        <div class="libresign-footer-column">
+          <h2>Documentation</h2>
+          <ul>
+            <li><a href="/">All versions</a></li>
+            <li><a href="/15/user_manual/">User manual</a></li>
+            <li><a href="/15/admin_manual/">Administrator manual</a></li>
+            <li><a href="/15/developer_manual/">Developer manual and API</a></li>
+            <li><a href="/15/lifecycle.html">Release lifecycle</a></li>
+          </ul>
+        </div>
+        <div class="libresign-footer-column">
+          <h2>Product</h2>
+          <ul>
+            <li><a href="https://libresign.coop/features/">Features</a></li>
+            <li><a href="https://libresign.coop/pricing/">Plans and pricing</a></li>
+            <li><a href="https://apps.nextcloud.com/apps/libresign">Nextcloud App Store</a></li>
+            <li><a href="https://libresign.coop/about/">About LibreSign</a></li>
+            <li><a href="https://libresign.coop/posts/">Blog</a></li>
+          </ul>
+        </div>
+        <div class="libresign-footer-column">
+          <h2>Community</h2>
+          <ul>
+            <li><a href="https://github.com/LibreSign/libresign">Source code</a></li>
+            <li><a href="https://github.com/LibreSign/libresign/blob/main/CONTRIBUTING.md">How to contribute</a></li>
+            <li><a href="https://github.com/LibreSign/documentation">Improve the documentation</a></li>
+            <li><a href="https://t.me/libresign">Community chat</a></li>
+          </ul>
+        </div>
+        <div class="libresign-footer-column">
+          <h2>Support</h2>
+          <ul>
+            <li><a href="https://libresign.coop/faq/">Frequently asked questions</a></li>
+            <li><a href="https://libresign.coop/contact-us/">Contact our team</a></li>
+            <li><a href="https://github.com/LibreSign/libresign/issues">Report a problem</a></li>
+            <li><a href="https://libresign.coop/brand/">Brand and pronunciation</a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+    <div class="libresign-footer-bottom">
+      <span>Developed by <a href="https://librecode.coop/">LibreCode cooperative</a>.</span>
+      <span>Documentation licensed under <a href="https://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>.</span>
+    </div>
+  </div>
+</footer>
+
+
+</body>
+</html>

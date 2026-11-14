@@ -1,0 +1,335 @@
+/* One small navigation shared by the landing page and Sphinx manuals. */
+/* Both documentation entry points select layout by available header width,
+   not by screen width (Sphinx has a permanent desktop sidebar). */
+.page-header,
+.libresign-manual-navigation {
+  container: libresign-navigation / inline-size;
+}
+.libresign-nav-shell { min-width: 0; flex: 1; }
+.libresign-nav-toggle { display: none; }
+nav.libresign-ecosystem-nav {
+  position: relative;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: nowrap;
+  gap: .1rem .22rem;
+  font: 500 .875rem/1.35 system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+nav.libresign-ecosystem-nav > a { white-space: nowrap; }
+nav.libresign-ecosystem-nav a,
+nav.libresign-ecosystem-nav summary {
+  color: #f0fffa;
+  text-decoration: none;
+  border-radius: 4px;
+  padding: .55rem .65rem;
+}
+nav.libresign-ecosystem-nav > a:hover,
+nav.libresign-ecosystem-nav > a:focus-visible,
+nav.libresign-ecosystem-nav summary:hover,
+nav.libresign-ecosystem-nav summary:focus-visible,
+nav.libresign-ecosystem-nav .libresign-nav-group[open] > summary {
+  background: #236567;
+  color: #fff;
+}
+nav.libresign-ecosystem-nav a:focus-visible,
+nav.libresign-ecosystem-nav summary:focus-visible {
+  outline: 3px solid #f4ce70;
+  outline-offset: 2px;
+}
+.libresign-nav-docs { font-weight: 700; }
+nav.libresign-ecosystem-nav .libresign-nav-source {
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  margin-left: .18rem;
+  color: #c6ded9;
+  font-size: .77rem;
+  font-weight: 400;
+  opacity: .85;
+}
+nav.libresign-ecosystem-nav .libresign-nav-source:hover,
+nav.libresign-ecosystem-nav .libresign-nav-source:focus-visible {
+  opacity: 1;
+  color: #fff;
+}
+.libresign-nav-group { position: relative; }
+.libresign-nav-group summary { cursor: pointer; list-style: none; white-space: nowrap; }
+.libresign-nav-group summary::-webkit-details-marker { display: none; }
+.libresign-nav-group summary::marker { content: ""; }
+.libresign-nav-group summary::after {
+  content: "";
+  display: inline-block;
+  width: .4rem;
+  height: .4rem;
+  margin-left: .6rem;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: translateY(-2px) rotate(45deg);
+  transition: transform .15s ease;
+}
+.libresign-nav-group[open] summary::after {
+  transform: translateY(2px) rotate(225deg);
+}
+nav.libresign-ecosystem-nav .libresign-nav-menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 50%;
+  z-index: 60;
+  display: grid;
+  gap: .1rem;
+  min-width: 225px;
+  padding: .4rem;
+  transform: translateX(-50%);
+  background: #f8fbfa;
+  border: 1px solid #b8d2cf;
+  border-radius: 6px;
+  box-shadow: 0 9px 20px rgb(0 0 0 / .2);
+}
+nav.libresign-ecosystem-nav .libresign-nav-menu::before {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  width: 0;
+  height: 0;
+  transform: translateX(-50%);
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 10px solid #f8fbfa;
+  pointer-events: none;
+}
+nav.libresign-ecosystem-nav .libresign-nav-menu a {
+  display: block;
+  padding: .65rem .7rem;
+  color: #173f41;
+  font-weight: 500;
+  line-height: 1.4;
+}
+nav.libresign-ecosystem-nav .libresign-nav-menu a:hover,
+nav.libresign-ecosystem-nav .libresign-nav-menu a:focus-visible {
+  background: #e1f1ee;
+  color: #103f3e;
+}
+nav.libresign-ecosystem-nav .libresign-nav-quote {
+  margin-left: .3rem;
+  border: 1px solid #d8f1e7;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.libresign-manual-navigation {
+  position: relative;
+  z-index: 30;
+  margin: 0 0 1.2rem;
+  padding: .35rem .55rem;
+  background: #184c4e;
+  border-radius: 5px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .libresign-nav-group summary::after { transition: none; }
+}
+
+/* One moving surface gives dropdowns a continuous shape/position transition. */
+nav.libresign-ecosystem-nav .libresign-nav-surface { display: none; }
+@media (hover: hover) and (pointer: fine) {
+  /* Keep the pointer within the group while crossing the arrow gap. */
+  nav.libresign-ecosystem-nav .libresign-nav-group[open]::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: -12px;
+    right: -12px;
+    height: 10px;
+  }
+  nav.libresign-ecosystem-nav.libresign-nav-animated .libresign-nav-surface {
+    position: absolute;
+    z-index: 1;
+    display: block;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    border: 1px solid #b8d2cf;
+    border-radius: 6px;
+    background: #f8fbfa;
+    box-shadow: 0 9px 20px rgb(0 0 0 / .2);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform .24s cubic-bezier(.22, 1, .36, 1),
+      width .24s cubic-bezier(.22, 1, .36, 1),
+      height .24s cubic-bezier(.22, 1, .36, 1),
+      opacity .14s ease;
+  }
+  nav.libresign-ecosystem-nav .libresign-nav-surface.is-visible { opacity: 1; }
+  nav.libresign-ecosystem-nav .libresign-nav-surface::before {
+    content: "";
+    position: absolute;
+    top: -10px;
+    left: var(--arrow-x, 50%);
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 10px solid #f8fbfa;
+    transition: left .24s cubic-bezier(.22, 1, .36, 1);
+  }
+  nav.libresign-ecosystem-nav.libresign-nav-animated .libresign-nav-group {
+    z-index: 2;
+  }
+  nav.libresign-ecosystem-nav.libresign-nav-animated .libresign-nav-menu {
+    background: transparent;
+    border-color: transparent;
+    box-shadow: none;
+  }
+  nav.libresign-ecosystem-nav.libresign-nav-animated .libresign-nav-menu::before {
+    display: none;
+  }
+  nav.libresign-ecosystem-nav.libresign-nav-animated .libresign-nav-group[open] .libresign-nav-menu {
+    animation: libresign-menu-reveal .18s ease-out both;
+  }
+}
+@keyframes libresign-menu-reveal {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  nav.libresign-ecosystem-nav.libresign-nav-animated .libresign-nav-surface,
+  nav.libresign-ecosystem-nav.libresign-nav-animated .libresign-nav-surface::before {
+    transition: none;
+  }
+  nav.libresign-ecosystem-nav.libresign-nav-animated .libresign-nav-group[open] .libresign-nav-menu {
+    animation: none;
+  }
+}
+
+/* Keep the resource navigation accessible without covering the document while reading. */
+@media (min-width: 769px) {
+  .libresign-scroll-header {
+    position: sticky;
+    top: 0;
+    z-index: 85;
+    transform: translateY(0);
+  }
+  .libresign-scroll-header.is-scrolled {
+    box-shadow: 0 8px 24px rgb(0 0 0 / .17);
+  }
+  .libresign-scroll-header.is-hidden {
+    transform: translateY(calc(-100% - 12px));
+    pointer-events: none;
+  }
+  html { scroll-padding-top: 100px; }
+}
+@media (min-width: 769px) and (prefers-reduced-motion: no-preference) {
+  .libresign-scroll-header {
+    transition: transform .24s cubic-bezier(.22, 1, .36, 1), box-shadow .18s ease;
+  }
+}
+
+/* Collapse navigation before links can wrap into a tall header. The popover
+   scrolls internally; opening a long section never extends past the viewport. */
+@container libresign-navigation (max-width: 1020px) {
+  .libresign-nav-shell {
+    display: flex;
+    justify-content: flex-end;
+  }
+  .libresign-nav-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: .45rem;
+    min-height: 42px;
+    padding: 8px 12px;
+    border: 1px solid #9acbc3;
+    border-radius: 5px;
+    background: transparent;
+    color: #f0fffa;
+    font: 600 .88rem/1.3 system-ui, -apple-system, "Segoe UI", sans-serif;
+    cursor: pointer;
+  }
+  .libresign-nav-toggle:hover,
+  .libresign-nav-toggle[aria-expanded="true"] { background: #236567; }
+  .libresign-nav-toggle:focus-visible {
+    outline: 3px solid #f4ce70;
+    outline-offset: 2px;
+  }
+  nav.libresign-ecosystem-nav {
+    display: none;
+    position: absolute;
+    z-index: 100;
+    top: calc(100% + 6px);
+    left: 12px;
+    right: 12px;
+    width: auto;
+    max-height: min(66dvh, 410px);
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+    align-content: start;
+    gap: 4px 10px;
+    padding: 12px;
+    border: 1px solid #8fbab5;
+    border-radius: 8px;
+    background: #184c4e;
+    box-shadow: 0 12px 28px rgb(0 0 0 / .25);
+  }
+  .libresign-nav-shell.is-open nav.libresign-ecosystem-nav { display: grid; }
+  nav.libresign-ecosystem-nav > a,
+  nav.libresign-ecosystem-nav > .libresign-nav-group {
+    display: block;
+    min-width: 0;
+    margin: 0;
+  }
+  nav.libresign-ecosystem-nav > a,
+  nav.libresign-ecosystem-nav > .libresign-nav-group > summary {
+    padding: 11px 12px;
+    font-size: .91rem;
+  }
+  nav.libresign-ecosystem-nav .libresign-nav-group { position: relative; }
+  nav.libresign-ecosystem-nav .libresign-nav-menu {
+    position: static;
+    top: auto;
+    left: auto;
+    right: auto;
+    min-width: 0;
+    max-width: none;
+    width: 100%;
+    padding: 2px 0 8px 10px;
+    transform: none;
+    border: 0;
+    border-left: 2px solid #7eaeaa;
+    border-radius: 0;
+    box-shadow: none;
+    background: transparent;
+  }
+  nav.libresign-ecosystem-nav .libresign-nav-menu::before,
+  nav.libresign-ecosystem-nav .libresign-nav-surface,
+  nav.libresign-ecosystem-nav .libresign-nav-group[open]::after {
+    display: none !important;
+  }
+  nav.libresign-ecosystem-nav .libresign-nav-menu a {
+    padding: 9px 12px;
+    color: #e9fffa;
+    overflow-wrap: anywhere;
+  }
+  nav.libresign-ecosystem-nav .libresign-nav-menu a:hover,
+  nav.libresign-ecosystem-nav .libresign-nav-menu a:focus-visible {
+    color: #173f41;
+  }
+  nav.libresign-ecosystem-nav .libresign-nav-source {
+    font-size: .84rem;
+    opacity: .8;
+  }
+  nav.libresign-ecosystem-nav.libresign-nav-animated .libresign-nav-menu {
+    animation: none;
+  }
+}
+@container libresign-navigation (max-width: 610px) {
+  nav.libresign-ecosystem-nav {
+    grid-template-columns: minmax(0, 1fr);
+    max-height: min(60dvh, 360px);
+  }
+}

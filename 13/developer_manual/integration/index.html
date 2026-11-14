@@ -1,0 +1,475 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Integration architecture: choose a pattern &mdash; LibreSign Documentation 13.4.9 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../_static/version-switcher.css?v=2caec843" />
+      <link rel="stylesheet" type="text/css" href="../_static/ecosystem-nav.css?v=2d662436" />
+      <link rel="stylesheet" type="text/css" href="../_static/ecosystem-footer.css?v=a963003a" />
+      <link rel="stylesheet" type="text/css" href="../_static/dark_mode_css/general.css?v=c0a7eb24" />
+      <link rel="stylesheet" type="text/css" href="../_static/dark_mode_css/dark.css?v=70edf1c7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=d6008aba"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=f281be69"></script>
+      <script src="../_static/version-switcher.js?v=9500aa06"></script>
+      <script src="../_static/ecosystem-nav.js?v=d00f03b9"></script>
+      <script src="../_static/scroll-navigation.js?v=96b42595"></script>
+      <script src="../_static/dark_mode_js/default_dark.js?v=fd565c74"></script>
+      <script src="../_static/dark_mode_js/theme_switcher.js?v=358d3910"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Integrate an existing application without replacing its UI" href="application.html" />
+    <link rel="prev" title="OCS OpenAPI — versioned contract" href="../api/openapi.html" /> 
+  <link rel="canonical" href="https://docs.libresign.coop/13/developer_manual/integration/" />
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #184c4e" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Release-specific integration</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API reference</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Integration architecture: choose a pattern</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#start-with-your-constraint">Start with your constraint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#read-the-relevant-guide">Read the relevant guide</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="application.html">Integrate an existing application without replacing its UI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="identity.html">Account integration and authentication choices</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lifecycle.html">Notifications, completion and document recovery</a></li>
+<li class="toctree-l3"><a class="reference internal" href="deployment.html">Infrastructure, administration and policy preflight</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#contract-and-ownership-boundaries">Contract and ownership boundaries</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #184c4e" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">LibreSign Documentation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+  
+  <div class="libresign-manual-navigation libresign-scroll-header">
+    
+<div class="libresign-nav-shell">
+  <button class="libresign-nav-toggle" type="button" aria-controls="libresign-ecosystem-links"
+          aria-expanded="false" aria-label="Open LibreSign navigation">
+    <svg aria-hidden="true" viewBox="0 0 24 24" width="19" height="19" fill="none"
+         stroke="currentColor" stroke-width="1.9" stroke-linecap="round">
+      <path d="M4 6h16M4 12h16M4 18h16"/>
+    </svg>
+    <span>Menu</span>
+  </button>
+  <nav class="libresign-ecosystem-nav" id="libresign-ecosystem-links"
+       aria-label="LibreSign ecosystem">
+  <a class="libresign-nav-docs" href="/">Documentation</a>
+  <details class="libresign-nav-group">
+    <summary>Product</summary>
+    <div class="libresign-nav-menu">
+      <a href="https://libresign.coop/">LibreSign overview</a>
+      <a href="https://libresign.coop/features/">Features</a>
+      <a href="https://libresign.coop/pricing/">Plans and pricing</a>
+    </div>
+  </details>
+  <details class="libresign-nav-group">
+    <summary>Support</summary>
+    <div class="libresign-nav-menu">
+      <a href="/">Documentation</a>
+      <a href="https://libresign.coop/faq/">Frequently asked questions</a>
+      <a href="https://libresign.coop/contact-us/">Contact our team</a>
+      <a href="https://github.com/LibreSign/libresign/issues">Report a problem</a>
+    </div>
+  </details>
+  <details class="libresign-nav-group">
+    <summary>Community</summary>
+    <div class="libresign-nav-menu">
+      <a href="https://github.com/LibreSign/libresign">Source code</a>
+      <a href="https://github.com/LibreSign/libresign/blob/main/CONTRIBUTING.md">How to contribute</a>
+      <a href="https://t.me/libresign">Community chat</a>
+      <a href="https://apps.nextcloud.com/apps/libresign">Nextcloud App Store</a>
+    </div>
+  </details>
+  <details class="libresign-nav-group">
+    <summary>About</summary>
+    <div class="libresign-nav-menu">
+      <a href="https://libresign.coop/about/">About LibreSign</a>
+      <a href="https://libresign.coop/posts/">Blog</a>
+      <a href="https://librecode.coop/">LibreCode cooperative</a>
+    </div>
+  </details>
+    <a class="libresign-nav-quote" href="https://libresign.coop/pricing/">Request a quote</a>
+    <a class="libresign-nav-source" href="https://github.com/LibreSign/documentation"
+       aria-label="Documentation source on GitHub" title="Documentation source on GitHub">
+      <svg aria-hidden="true" viewBox="0 0 24 24" width="16" height="16"
+           fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+           stroke-linejoin="round">
+        <path d="M8 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-3"/>
+        <path d="M12 12 21 3M15 3h6v6"/>
+      </svg>
+      <span>Source</span>
+    </a>
+  </nav>
+</div>
+  </div>
+  
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Integration architecture: choose a pattern</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/LibreSign/documentation/blob/stable13/developer_manual/integration/index.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="integration-architecture-choose-a-pattern">
+<span id="integration-architecture"></span><h1>Integration architecture: choose a pattern<a class="headerlink" href="#integration-architecture-choose-a-pattern" title="Link to this heading"></a></h1>
+<p>This section is for architects integrating LibreSign into an <strong>existing</strong>
+application. LibreSign is free and open-source software; deploying it does not
+require a commercial service. Optional hosting, support and third-party
+delivery gateways are separate from the LibreSign API. Your application may
+retain its UI, authentication and business workflow.</p>
+<p>You are reading the guide for LibreSign 13.4.9 on Nextcloud
+33. Concepts here apply to the available release line; <strong>the
+OpenAPI contract is version-specific</strong>. Confirm each request shape in
+<a class="reference internal" href="../api/openapi.html"><span class="doc">OCS OpenAPI — versioned contract</span></a> before implementing it.</p>
+<section id="start-with-your-constraint">
+<h2>Start with your constraint<a class="headerlink" href="#start-with-your-constraint" title="Link to this heading"></a></h2>
+<table class="docutils align-default" id="id1">
+<caption><span class="caption-text">Integration decision matrix</span><a class="headerlink" href="#id1" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 18.0%" />
+<col style="width: 20.0%" />
+<col style="width: 19.0%" />
+<col style="width: 24.0%" />
+<col style="width: 19.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Situation</p></th>
+<th class="head"><p>Preferred approach</p></th>
+<th class="head"><p>Benefit</p></th>
+<th class="head"><p>Risk or limitation</p></th>
+<th class="head"><p>Requirements</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Existing product must keep its UI and login</p></td>
+<td><p>Product backend orchestrates LibreSign via authenticated OCS requests</p></td>
+<td><p>No Nextcloud UI migration</p></td>
+<td><p>Backend credentials are powerful; signer actions still need signer authority</p></td>
+<td><p>Authorized Nextcloud principal; API and storage access</p></td>
+</tr>
+<tr class="row-odd"><td><p>Signers already have Nextcloud accounts</p></td>
+<td><p>Account identification; use their own login/session or approved token</p></td>
+<td><p>Reuses account identity and access policies</p></td>
+<td><p>Product login alone is not proof of a Nextcloud signer session</p></td>
+<td><p>Mapped account; enabled signing method</p></td>
+</tr>
+<tr class="row-even"><td><p>Signer has no Nextcloud account</p></td>
+<td><p>Email identification and LibreSign-controlled public signing invitation</p></td>
+<td><p>No Nextcloud account provisioned for the signer</p></td>
+<td><p>Invitation possession and email verification policies must be protected</p></td>
+<td><p>Email method, approved verification flow, delivery</p></td>
+</tr>
+<tr class="row-odd"><td><p>Internal and external signers share a document</p></td>
+<td><p>Mixed signer identification in one request or envelope</p></td>
+<td><p>One auditable workflow with distinct signer identities</p></td>
+<td><p>Different tokens, signing order and completion states</p></td>
+<td><p>All selected identify methods and policies enabled</p></td>
+</tr>
+<tr class="row-even"><td><p>Your product owns message delivery</p></td>
+<td><p>Defer invitations with signer <code class="docutils literal notranslate"><span class="pre">notify:</span> <span class="pre">0</span></code>; trigger LibreSign notifications later or use a verified integrator delivery flow</p></td>
+<td><p>Controlled delivery timing and branding</p></td>
+<td><p>No generic invitation-link retrieval contract is proven; never derive a URL from a UUID</p></td>
+<td><p>Permitted requester, validated delivery flow and secure secrets</p></td>
+</tr>
+<tr class="row-odd"><td><p>External service needs completion signals</p></td>
+<td><p>Poll authorized OCS file status; use a native completion event only where this release publishes one</p></td>
+<td><p>Reliable reconciliation, with optional lower-latency signals</p></td>
+<td><p>Native events are version-gated and HTTP delivery needs deployment testing</p></td>
+<td><p>Authorized status reader and, optionally, Nextcloud Webhook Listeners</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="read-the-relevant-guide">
+<h2>Read the relevant guide<a class="headerlink" href="#read-the-relevant-guide" title="Link to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="application.html">Integrate an existing application without replacing its UI</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="application.html#typical-control-and-signer-paths">Typical control and signer paths</a></li>
+<li class="toctree-l2"><a class="reference internal" href="application.html#choose-the-signer-model">Choose the signer model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="application.html#api-boundary-and-version-differences">API boundary and version differences</a></li>
+<li class="toctree-l2"><a class="reference internal" href="application.html#integration-responsibilities">Integration responsibilities</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="identity.html">Account integration and authentication choices</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="identity.html#security-boundaries">Security boundaries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="identity.html#authenticated-ocs-request-read-only">Authenticated OCS request (read-only)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="identity.html#nextcloud-references">Nextcloud references</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="lifecycle.html">Notifications, completion and document recovery</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="lifecycle.html#notification-ownership">Notification ownership</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lifecycle.html#what-counts-as-complete">What counts as complete?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lifecycle.html#polling-and-reconciliation">Polling and reconciliation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lifecycle.html#native-webhooks-version-specific-completion-events">Native webhooks: version-specific completion events</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lifecycle.html#recover-the-final-pdf-and-evidence">Recover the final PDF and evidence</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="deployment.html">Infrastructure, administration and policy preflight</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="deployment.html#administrative-questions-to-settle-first">Administrative questions to settle first</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deployment.html#production-smoke-checks">Production smoke checks</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<ul class="simple">
+<li><p><a class="reference internal" href="application.html"><span class="doc">Integrate an existing application without replacing its UI</span></a> — retain the product UI; choose account, external, or
+mixed signers; orchestrate without impersonation.</p></li>
+<li><p><a class="reference internal" href="identity.html"><span class="doc">Account integration and authentication choices</span></a> — distinguish Nextcloud accounts, App Passwords, OAuth2,
+OIDC and SSO.</p></li>
+<li><p><a class="reference internal" href="lifecycle.html"><span class="doc">Notifications, completion and document recovery</span></a> — notification ownership, state reconciliation, native
+webhook readiness and authorized document retrieval.</p></li>
+<li><p><a class="reference internal" href="deployment.html"><span class="doc">Infrastructure, administration and policy preflight</span></a> — infrastructure, permissions, certificates, policy
+decisions and go-live checks.</p></li>
+<li><p><a class="reference internal" href="../api/external-email-signers.html"><span class="doc">External email signers: integration</span></a> — version-specific, runnable email-signer
+integration with fixture selection and authorized PDF retrieval.</p></li>
+<li><p><a class="reference internal" href="../api/openapi.html"><span class="doc">OCS OpenAPI — versioned contract</span></a> — the <strong>actual API schema for this release</strong>, including
+required properties and supported responses.</p></li>
+<li><p><a class="reference external" href="https://github.com/LibreSign/documentation/blob/main/examples/n8n/README.md">n8n importable signing workflow</a> — one external email
+signer, App Password authentication, bounded OCS polling and automatic
+WebDAV discovery and authenticated download in the default LibreSign
+folder. The shared example selects the request schema for LibreSign
+13/14 (<code class="docutils literal notranslate"><span class="pre">mandatory</span></code>) or 15/development (<code class="docutils literal notranslate"><span class="pre">requirement</span></code>). The discovery
+step requires default LibreSign storage and requester WebDAV access.
+Verify these prerequisites on the target installation. Native completion
+events are documented only for development; the workflow uses OCS polling.</p></li>
+</ul>
+</section>
+<section id="contract-and-ownership-boundaries">
+<h2>Contract and ownership boundaries<a class="headerlink" href="#contract-and-ownership-boundaries" title="Link to this heading"></a></h2>
+<p><strong>Practical API integration is already documented</strong> in
+<a class="reference internal" href="../api/external-email-signers.html"><span class="doc">External email signers: integration</span></a>, with examples and tests pinned to each
+published LibreSign release. Use that guide for requests, mail invitations,
+status polling, validation and authenticated WebDAV download.</p>
+<p><strong>Native webhook support is release-dependent.</strong> Consult <a class="reference internal" href="lifecycle.html"><span class="doc">Notifications, completion and document recovery</span></a>
+for the event availability on this release and the release-specific Webhooks
+manual where one exists. A compiled application event or passing unit test
+alone does not prove successful outbound HTTP delivery.</p>
+<p>No recommendation here requires direct database access, credential sharing
+with a signer, or disabling Nextcloud authorization. Use supported OCS and
+Nextcloud file APIs instead.</p>
+<p>For details of Nextcloud’s request transport, see the
+<a class="reference external" href="https://docs.nextcloud.com/server/stable/developer_manual/client_apis/OCS/ocs-api-overview.html">Nextcloud OCS API overview</a>.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../api/openapi.html" class="btn btn-neutral float-left" title="OCS OpenAPI — versioned contract" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="application.html" class="btn btn-neutral float-right" title="Integrate an existing application without replacing its UI" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026 LibreCode coop.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+
+      </div>
+    </section>
+  </div>
+  
+
+
+<div class="rst-versions libresign-rst-versions"
+     id="libresign-release-picker"
+     data-version="13"
+     data-site-root=""
+     data-manual="developer_manual"
+     role="navigation"
+     aria-label="Documentation versions">
+  <button type="button" id="libresign-version-toggle" class="rst-current-version"
+          aria-label="LibreSign 13 documentation; choose version"
+          aria-controls="libresign-version-menu" aria-expanded="false">
+    <span class="libresign-version-current">LibreSign 13</span>
+    <span class="libresign-version-chevron" aria-hidden="true">▴</span>
+  </button>
+  <div id="libresign-version-menu" class="rst-other-versions" hidden>
+    <p class="libresign-version-menu-heading">Documentation versions</p>
+    <ul id="libresign-version-list" class="libresign-version-list">
+      
+        <li>
+          <a href="/main/developer_manual/"
+             data-version-target="main"
+             >
+            <span class="libresign-version-name">
+              main
+            </span>
+            <span class="libresign-version-detail">
+              Not released
+            </span>
+          </a>
+        </li>
+      
+        <li>
+          <a href="/15/developer_manual/"
+             data-version-target="15"
+             >
+            <span class="libresign-version-name">
+              LibreSign 15
+            </span>
+            <span class="libresign-version-detail">
+              Latest stable
+            </span>
+          </a>
+        </li>
+      
+        <li>
+          <a href="/14/developer_manual/"
+             data-version-target="14"
+             >
+            <span class="libresign-version-name">
+              LibreSign 14
+            </span>
+            <span class="libresign-version-detail">
+              NC 34
+            </span>
+          </a>
+        </li>
+      
+        <li>
+          <a href="/13/developer_manual/"
+             data-version-target="13"
+             aria-current="true">
+            <span class="libresign-version-name">
+              LibreSign 13
+            </span>
+            <span class="libresign-version-detail">
+              Oldest documented
+            </span>
+          </a>
+        </li>
+      
+    </ul>
+    <a class="libresign-all-versions" href="/">All versions and manuals</a>
+    <p id="libresign-version-notice" class="libresign-sr-only" role="status" aria-live="polite"></p>
+  </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+  
+<footer class="libresign-site-footer" aria-label="LibreSign site footer">
+  <div class="libresign-footer-container">
+    <div class="libresign-footer-main">
+      <div class="libresign-footer-about">
+        <a class="libresign-footer-brand" href="https://libresign.coop/" aria-label="LibreSign official website">
+          <img src="/logo.png" width="136" height="55" alt="LibreSign">
+        </a>
+        <p>Open source electronic signatures for Nextcloud. Request, sign, and validate documents on infrastructure you control.</p>
+        <a class="libresign-footer-cta" href="https://libresign.coop/pricing/">Plans and professional support</a>
+      </div>
+      <nav class="libresign-footer-nav" aria-label="Footer resources">
+        <div class="libresign-footer-column">
+          <h2>Documentation</h2>
+          <ul>
+            <li><a href="/">All versions</a></li>
+            <li><a href="/15/user_manual/">User manual</a></li>
+            <li><a href="/15/admin_manual/">Administrator manual</a></li>
+            <li><a href="/15/developer_manual/">Developer manual and API</a></li>
+            <li><a href="/15/lifecycle.html">Release lifecycle</a></li>
+          </ul>
+        </div>
+        <div class="libresign-footer-column">
+          <h2>Product</h2>
+          <ul>
+            <li><a href="https://libresign.coop/features/">Features</a></li>
+            <li><a href="https://libresign.coop/pricing/">Plans and pricing</a></li>
+            <li><a href="https://apps.nextcloud.com/apps/libresign">Nextcloud App Store</a></li>
+            <li><a href="https://libresign.coop/about/">About LibreSign</a></li>
+            <li><a href="https://libresign.coop/posts/">Blog</a></li>
+          </ul>
+        </div>
+        <div class="libresign-footer-column">
+          <h2>Community</h2>
+          <ul>
+            <li><a href="https://github.com/LibreSign/libresign">Source code</a></li>
+            <li><a href="https://github.com/LibreSign/libresign/blob/main/CONTRIBUTING.md">How to contribute</a></li>
+            <li><a href="https://github.com/LibreSign/documentation">Improve the documentation</a></li>
+            <li><a href="https://t.me/libresign">Community chat</a></li>
+          </ul>
+        </div>
+        <div class="libresign-footer-column">
+          <h2>Support</h2>
+          <ul>
+            <li><a href="https://libresign.coop/faq/">Frequently asked questions</a></li>
+            <li><a href="https://libresign.coop/contact-us/">Contact our team</a></li>
+            <li><a href="https://github.com/LibreSign/libresign/issues">Report a problem</a></li>
+            <li><a href="https://libresign.coop/brand/">Brand and pronunciation</a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+    <div class="libresign-footer-bottom">
+      <span>Developed by <a href="https://librecode.coop/">LibreCode cooperative</a>.</span>
+      <span>Documentation licensed under <a href="https://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>.</span>
+    </div>
+  </div>
+</footer>
+
+
+</body>
+</html>
