@@ -18,6 +18,8 @@ Start here
   runtime.
 - :doc:`development-workflow` — follow work from an issue to a reviewed pull
   request.
+- :doc:`community-governance` — review the proposed community roles and
+  promotion policy.
 - :doc:`getting-started/tests` — choose and run the appropriate validation.
 - :doc:`api/index` — work with the public API.
 - :doc:`integration/index` — choose an integration architecture for an existing system.
@@ -50,6 +52,7 @@ For professional services or partnerships,
    error-handling
    getting-started/index
    development-workflow
+   community-governance
    api/index
    integration/index
    webhooks/index
