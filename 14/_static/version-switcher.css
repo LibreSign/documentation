@@ -1,0 +1,127 @@
+.libresign-rst-versions {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 300;
+  width: 300px;
+  background: #184c4e;
+  box-shadow: 0 -2px 10px rgb(0 0 0 / .08);
+  color: #fff;
+  text-align: left;
+}
+.libresign-rst-versions .rst-current-version {
+  display: flex;
+  width: 100%;
+  min-height: 44px;
+  padding: .6rem 1.1rem;
+  align-items: center;
+  justify-content: space-between;
+  gap: .75rem;
+  background: #184c4e;
+  color: #fff;
+  border: 0;
+  cursor: pointer;
+  font: inherit;
+  font-size: .9rem;
+  font-weight: 600;
+  text-align: left;
+}
+.libresign-rst-versions .rst-current-version:hover { background: #225e60; }
+.libresign-rst-versions .rst-current-version:focus-visible,
+.libresign-rst-versions a:focus-visible {
+  outline: 3px solid #e9b949;
+  outline-offset: -3px;
+}
+.libresign-version-chevron { transition: transform .15s ease; }
+.libresign-rst-versions.shift-up .libresign-version-chevron { transform: rotate(180deg); }
+.libresign-rst-versions .rst-other-versions {
+  display: none;
+  max-height: min(65vh, 430px);
+  padding: .85rem 0 .7rem;
+  overflow-y: auto;
+  background: #f4f7f7;
+  color: #233437;
+}
+.libresign-rst-versions.shift-up .rst-other-versions:not([hidden]) { display: block; }
+.libresign-version-menu-heading {
+  margin: 0 1rem .45rem;
+  font-size: .8rem;
+  font-weight: 600;
+  color: #536568;
+}
+.libresign-rst-versions .libresign-version-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.libresign-rst-versions .libresign-version-list li { margin: 0; }
+.libresign-rst-versions .libresign-version-list a {
+  display: flex;
+  justify-content: space-between;
+  gap: .5rem;
+  align-items: center;
+  padding: .6rem 1rem;
+  text-decoration: none;
+  color: #193e40;
+  font-size: .86rem;
+}
+.libresign-rst-versions .libresign-version-list a:hover {
+  background: #dbe8e8;
+}
+.libresign-rst-versions .libresign-version-list a[aria-current="true"] {
+  border-left: 3px solid #186c62;
+  background: #e3eded;
+  font-weight: 700;
+  padding-left: calc(1rem - 3px);
+}
+.libresign-version-detail {
+  color: #596b6e;
+  font-size: .75rem;
+  font-weight: 400;
+  white-space: nowrap;
+}
+.libresign-rst-versions .libresign-all-versions {
+  display: block;
+  margin: .55rem 1rem 0;
+  padding-top: .65rem;
+  border-top: 1px solid #cad8d8;
+  color: #15585b;
+  font-size: .8rem;
+  text-decoration: underline;
+}
+.libresign-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+.wy-side-scroll { padding-bottom: 58px; }
+.libresign-preview-banner {
+  padding: .5rem .75rem;
+  margin-bottom: 1.1rem;
+  background: #fff5ce;
+  color: #40331c;
+  border-left: 3px solid #b78d20;
+  font-size: .8rem;
+  line-height: 1.45;
+}
+.libresign-preview-banner a {
+  color: #154c6e;
+  text-decoration: underline;
+}
+@media (max-width: 768px) {
+  .libresign-rst-versions {
+    display: block;
+    width: 100%;
+    max-width: none;
+  }
+  .wy-nav-content { padding-bottom: 4.25rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .libresign-version-chevron { transition: none; }
+}

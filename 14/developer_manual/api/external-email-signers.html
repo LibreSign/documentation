@@ -1,0 +1,561 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>External email signers: integration &mdash; LibreSign Documentation 14.2.9 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../_static/version-switcher.css?v=2caec843" />
+      <link rel="stylesheet" type="text/css" href="../_static/ecosystem-nav.css?v=2d662436" />
+      <link rel="stylesheet" type="text/css" href="../_static/ecosystem-footer.css?v=a963003a" />
+      <link rel="stylesheet" type="text/css" href="../_static/dark_mode_css/general.css?v=c0a7eb24" />
+      <link rel="stylesheet" type="text/css" href="../_static/dark_mode_css/dark.css?v=70edf1c7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=2b83d925"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=f281be69"></script>
+      <script src="../_static/version-switcher.js?v=9500aa06"></script>
+      <script src="../_static/ecosystem-nav.js?v=d00f03b9"></script>
+      <script src="../_static/scroll-navigation.js?v=96b42595"></script>
+      <script src="../_static/dark_mode_js/default_dark.js?v=fd565c74"></script>
+      <script src="../_static/dark_mode_js/theme_switcher.js?v=358d3910"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="OCS OpenAPI — versioned contract" href="openapi.html" />
+    <link rel="prev" title="API reference" href="index.html" /> 
+  <link rel="canonical" href="https://docs.libresign.coop/14/developer_manual/api/external-email-signers.html" />
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #184c4e" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Release-specific integration</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">API reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">External email signers: integration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#authentication-and-identity-are-separate">Authentication and identity are separate</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#create-and-invite-with-ocs-v1">Create and invite with OCS v1</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#poll-validate-and-retrieve">Poll, validate and retrieve</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ordering-release-differences-errors-and-security">Ordering, release differences, errors and security</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="openapi.html">OCS OpenAPI — versioned contract</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../integration/index.html">Integration architecture: choose a pattern</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #184c4e" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">LibreSign Documentation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+  
+  <div class="libresign-manual-navigation libresign-scroll-header">
+    
+<div class="libresign-nav-shell">
+  <button class="libresign-nav-toggle" type="button" aria-controls="libresign-ecosystem-links"
+          aria-expanded="false" aria-label="Open LibreSign navigation">
+    <svg aria-hidden="true" viewBox="0 0 24 24" width="19" height="19" fill="none"
+         stroke="currentColor" stroke-width="1.9" stroke-linecap="round">
+      <path d="M4 6h16M4 12h16M4 18h16"/>
+    </svg>
+    <span>Menu</span>
+  </button>
+  <nav class="libresign-ecosystem-nav" id="libresign-ecosystem-links"
+       aria-label="LibreSign ecosystem">
+  <a class="libresign-nav-docs" href="/">Documentation</a>
+  <details class="libresign-nav-group">
+    <summary>Product</summary>
+    <div class="libresign-nav-menu">
+      <a href="https://libresign.coop/">LibreSign overview</a>
+      <a href="https://libresign.coop/features/">Features</a>
+      <a href="https://libresign.coop/pricing/">Plans and pricing</a>
+    </div>
+  </details>
+  <details class="libresign-nav-group">
+    <summary>Support</summary>
+    <div class="libresign-nav-menu">
+      <a href="/">Documentation</a>
+      <a href="https://libresign.coop/faq/">Frequently asked questions</a>
+      <a href="https://libresign.coop/contact-us/">Contact our team</a>
+      <a href="https://github.com/LibreSign/libresign/issues">Report a problem</a>
+    </div>
+  </details>
+  <details class="libresign-nav-group">
+    <summary>Community</summary>
+    <div class="libresign-nav-menu">
+      <a href="https://github.com/LibreSign/libresign">Source code</a>
+      <a href="https://github.com/LibreSign/libresign/blob/main/CONTRIBUTING.md">How to contribute</a>
+      <a href="https://t.me/libresign">Community chat</a>
+      <a href="https://apps.nextcloud.com/apps/libresign">Nextcloud App Store</a>
+    </div>
+  </details>
+  <details class="libresign-nav-group">
+    <summary>About</summary>
+    <div class="libresign-nav-menu">
+      <a href="https://libresign.coop/about/">About LibreSign</a>
+      <a href="https://libresign.coop/posts/">Blog</a>
+      <a href="https://librecode.coop/">LibreCode cooperative</a>
+    </div>
+  </details>
+    <a class="libresign-nav-quote" href="https://libresign.coop/pricing/">Request a quote</a>
+    <a class="libresign-nav-source" href="https://github.com/LibreSign/documentation"
+       aria-label="Documentation source on GitHub" title="Documentation source on GitHub">
+      <svg aria-hidden="true" viewBox="0 0 24 24" width="16" height="16"
+           fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+           stroke-linejoin="round">
+        <path d="M8 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-3"/>
+        <path d="M12 12 21 3M15 3h6v6"/>
+      </svg>
+      <span>Source</span>
+    </a>
+  </nav>
+</div>
+  </div>
+  
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">API reference</a></li>
+      <li class="breadcrumb-item active">External email signers: integration</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/LibreSign/documentation/blob/stable14/developer_manual/api/external-email-signers.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="external-email-signers-integration">
+<h1>External email signers: integration<a class="headerlink" href="#external-email-signers-integration" title="Link to this heading"></a></h1>
+<p><strong>Applicable release:</strong> LibreSign 14.2.9 on Nextcloud 34.
+The exact source commit and contract hash are published as
+<a class="reference external" href="openapi.provenance.json">pinned OpenAPI provenance</a>.
+The path /api/v1 is the API protocol version, not the LibreSign major version.</p>
+<p>An existing system may retain its own interface and authentication while
+its backend creates LibreSign signature requests. An external signer may
+sign in LibreSign without a Nextcloud account.</p>
+<section id="authentication-and-identity-are-separate">
+<h2>Authentication and identity are separate<a class="headerlink" href="#authentication-and-identity-are-separate" title="Link to this heading"></a></h2>
+<p>The integrator uses a dedicated Nextcloud account authorized to request
+signatures, over HTTPS. HTTP Basic with a revocable Nextcloud App Password
+and the OCS-APIRequest: true header is supported. OpenAPI also declares
+bearer authentication, but external OAuth/OIDC tokens only work if the
+deployed Nextcloud server validates them for a mapped, permitted account.
+SSO may create a Nextcloud browser session; it is not automatically an
+OCS service credential. Never send integrator credentials to the signer.</p>
+<p>External signers are identified by email. Enable the email identify
+method and an allowed signing method (clickToSign or emailToken) in the
+effective LibreSign policies. The latter uses a separate emailed code.
+Receipt of an invitation is not strong legal identity verification.
+Administrators also must configure mail delivery, a signing certificate
+engine, writable storage, requester permissions, validation privacy,
+and any mandatory identity-document or visible signature policies.</p>
+</section>
+<section id="create-and-invite-with-ocs-v1">
+<h2>Create and invite with OCS v1<a class="headerlink" href="#create-and-invite-with-ocs-v1" title="Link to this heading"></a></h2>
+<p>All four documented release lines use this OCS prefix:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>https://cloud.example.com/ocs/v2.php/apps/libresign/api/v1
+</pre></div>
+</div>
+<p>The request structure is selected for this documentation release. Use only
+the version-specific fixture below with the cURL/Bash or PHP clients.
+The version selector is mandatory.</p>
+<p>The runnable clients and matching fixture are kept in this documentation
+branch (not in another release’s source):</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/LibreSign/documentation/blob/stable14/examples/external-email-signers/flow.sh">Bash client (flow.sh)</a></p></li>
+<li><p><a class="reference external" href="https://github.com/LibreSign/documentation/blob/stable14/examples/external-email-signers/flow.php">PHP client (flow.php)</a></p></li>
+<li><p><a class="reference external" href="https://github.com/LibreSign/documentation/blob/stable14/examples/external-email-signers/request-14.json">LibreSign 14 fixture (request-14.json)</a></p></li>
+</ul>
+<p>Clone the <strong>matching documentation branch</strong>, then work in the examples
+directory (Git required):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>--depth<span class="w"> </span><span class="m">1</span><span class="w"> </span>--branch<span class="w"> </span>stable14<span class="w"> </span>https://github.com/LibreSign/documentation.git
+<span class="nb">cd</span><span class="w"> </span>documentation/examples/external-email-signers
+</pre></div>
+</div>
+<p>Keep the clients and their <code class="docutils literal notranslate"><span class="pre">request-*.json</span></code> fixtures together. Consult this
+release’s <a class="reference internal" href="openapi.html"><span class="doc">OCS OpenAPI — versioned contract</span></a> and its pinned <a class="reference external" href="openapi.json">OpenAPI JSON</a> when
+adapting the request to a real integration.</p>
+<p>For a ready-to-import n8n workflow, see the <a class="reference external" href="https://github.com/LibreSign/documentation/blob/main/examples/n8n/README.md">shared LibreSign + n8n guide</a>. It uses a single external signer, explicit invitation,
+bounded OCS polling, automatic WebDAV discovery and authenticated download
+from the default LibreSign folder. Select this LibreSign release in the
+workflow configuration: versions 13/14 use <code class="docutils literal notranslate"><span class="pre">mandatory:</span> <span class="pre">1</span></code>; versions
+15/development use <code class="docutils literal notranslate"><span class="pre">requirement:</span> <span class="pre">&quot;required&quot;</span></code>. Native completion events
+belong to the development documentation and are not required by polling.
+Confirm that this release meets the OCS and WebDAV prerequisites before
+using the shared workflow. Its README and relative JSON workflow are
+maintained together on the documentation <code class="docutils literal notranslate"><span class="pre">main</span></code> branch.
+Do not replace release-specific cURL/PHP fixtures with development payloads.</p>
+<p><strong>Release:</strong> LibreSign 14.2.9, Nextcloud 34.
+<strong>Executable request template:</strong> <code class="docutils literal notranslate"><span class="pre">request-14.json</span></code>.
+This template is specific to the published application contract.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Synthetic service agreement"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"status"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"file"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"synthetic.pdf"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"base64"</span><span class="p">:</span><span class="w"> </span><span class="s2">"REPLACE_WITH_BASE64"</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">"signers"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"displayName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"External Test Signer"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"notify"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"identifyMethods"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">"method"</span><span class="p">:</span><span class="w"> </span><span class="s2">"email"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"signer@example.test"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"mandatory"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">]</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Select the documentation line before running either client:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">LIBRESIGN_DOC_LINE</span><span class="o">=</span><span class="m">14</span>
+</pre></div>
+</div>
+<p>This release requires the integer <code class="docutils literal notranslate"><span class="pre">mandatory</span></code> on an email identify method;
+<code class="docutils literal notranslate"><span class="pre">requirement</span></code> is not part of this release’s declared identity schema.
+Its <code class="docutils literal notranslate"><span class="pre">POST</span> <span class="pre">/request-signature</span></code> accepts <code class="docutils literal notranslate"><span class="pre">signatureFlow</span></code> with values
+<code class="docutils literal notranslate"><span class="pre">parallel</span></code> and <code class="docutils literal notranslate"><span class="pre">ordered_numeric</span></code>. Supply signer <code class="docutils literal notranslate"><span class="pre">signingOrder</span></code> when
+the configured flow is ordered.</p>
+<p>The cited browser tests belong to application branch <code class="docutils literal notranslate"><span class="pre">stable34</span></code>;
+the exact source commit used in this build is in the linked provenance:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/LibreSign/libresign/blob/stable34/playwright/e2e/sign-envelope-unauthenticated-visible-signature.spec.ts">Guest signing and visible signature</a></p></li>
+<li><p><a class="reference external" href="https://github.com/LibreSign/libresign/blob/stable34/playwright/e2e/sign-email-token-unauthenticated.spec.ts">Unauthenticated email-token signing</a></p></li>
+<li><p><a class="reference external" href="https://github.com/LibreSign/libresign/blob/stable34/playwright/e2e/multi-signer-sequential.spec.ts">Sequential signing</a></p></li>
+</ul>
+<p>The scripts POST /request-signature,
+verify ocs.meta and retain ocs.data.id (LibreSign file ID) and
+ocs.data.uuid (document UUID). notify: 0 disables initial auto-invites;
+the scripts explicitly POST /notify/signers with the returned file ID:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">"fileId"</span><span class="p">:</span><span class="w"> </span><span class="mi">123</span><span class="p">,</span><span class="w"> </span><span class="nt">"signers"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="nt">"email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"signer@example.test"</span><span class="p">}]}</span>
+</pre></div>
+</div>
+<p>A processed notification request is not proof of email delivery.
+Do not send duplicate invitations. Use an actual test inbox.</p>
+<p>Run the examples <strong>only on a disposable test installation</strong>, never on a
+production service. Prerequisites are HTTPS, the LibreSign release described
+by this page installed on a compatible Nextcloud, email delivery to a
+controlled test inbox, enabled email identification/signing methods, and a
+signing certificate engine. The requesting Nextcloud account needs permission
+to request signatures and access to the relevant Files folder. Create a
+revocable <strong>App Password</strong> for this dedicated account under Nextcloud’s
+<strong>Personal settings &gt; Security</strong>. Do not share it with the external signer.</p>
+<p>For Bash, install Bash, cURL, jq and GNU <code class="docutils literal notranslate"><span class="pre">stat</span></code> (Linux). For PHP, use
+PHP 8.1+ with the cURL extension. From the cloned examples directory, set
+the common variables below; <code class="docutils literal notranslate"><span class="pre">PDF_PATH</span></code> must be an <strong>absolute path</strong> to a
+valid, synthetic PDF, and the signer email must be a deliverable test inbox
+you control (replace all illustrative values):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">NC_BASE_URL</span><span class="o">=</span>https://your-test-nextcloud.example.org
+<span class="nb">export</span><span class="w"> </span><span class="nv">NC_USER</span><span class="o">=</span>integration-user
+<span class="nb">export</span><span class="w"> </span><span class="nv">PDF_PATH</span><span class="o">=</span>/absolute/path/to/synthetic.pdf
+<span class="nb">export</span><span class="w"> </span><span class="nv">SIGNER_EMAIL</span><span class="o">=</span>signer@your-controlled-test-domain.example.org
+</pre></div>
+</div>
+<p>Use <strong>one</strong> client for <code class="docutils literal notranslate"><span class="pre">start</span></code>, not both: each invocation creates a new
+signature request and can send a new invitation.</p>
+<p>For <strong>Bash</strong>, keep the App Password in a private <code class="docutils literal notranslate"><span class="pre">netrc</span></code> file whose
+<code class="docutils literal notranslate"><span class="pre">machine</span></code> matches the host in <code class="docutils literal notranslate"><span class="pre">NC_BASE_URL</span></code>:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>machine your-test-nextcloud.example.org
+  login integration-user
+  password YOUR_NEXTCLOUD_APP_PASSWORD
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">NC_NETRC</span><span class="o">=</span><span class="s2">"</span><span class="nv">$HOME</span><span class="s2">/.config/libresign-integration.netrc"</span>
+<span class="nb">umask</span><span class="w"> </span><span class="m">077</span>
+mkdir<span class="w"> </span>-p<span class="w"> </span><span class="s2">"</span><span class="nv">$HOME</span><span class="s2">/.config"</span>
+touch<span class="w"> </span><span class="s2">"</span><span class="nv">$NC_NETRC</span><span class="s2">"</span>
+chmod<span class="w"> </span><span class="m">600</span><span class="w"> </span><span class="s2">"</span><span class="nv">$NC_NETRC</span><span class="s2">"</span>
+<span class="si">${</span><span class="nv">EDITOR</span><span class="k">:-</span><span class="nv">vi</span><span class="si">}</span><span class="w"> </span><span class="s2">"</span><span class="nv">$NC_NETRC</span><span class="s2">"</span><span class="w">  </span><span class="c1"># enter the netrc contents shown above</span>
+bash<span class="w"> </span>flow.sh<span class="w"> </span>start
+</pre></div>
+</div>
+<p>For <strong>PHP instead</strong>, provide the App Password privately, not as a literal
+shell command argument or a checked-in file:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">read</span><span class="w"> </span>-r<span class="w"> </span>-s<span class="w"> </span>-p<span class="w"> </span><span class="s2">"Nextcloud App Password: "</span><span class="w"> </span>NC_APP_PASSWORD<span class="p">;</span><span class="w"> </span><span class="nb">echo</span>
+<span class="nb">export</span><span class="w"> </span>NC_APP_PASSWORD
+php<span class="w"> </span>flow.php<span class="w"> </span>start
+</pre></div>
+</div>
+<p>Keep the resulting <code class="docutils literal notranslate"><span class="pre">fileId</span></code> and <code class="docutils literal notranslate"><span class="pre">fileUuid</span></code>; the scripts do not sign
+on the external person’s behalf. Clear <code class="docutils literal notranslate"><span class="pre">NC_APP_PASSWORD</span></code> from the
+shell environment when finished with the PHP client.</p>
+<p>The signer receives an individual invitation link, opens the public
+signing browser page and completes the configured identification and
+signature checks without Nextcloud login. A file UUID differs from the
+signer’s sign-request UUID; never generate or disclose a genuine link.</p>
+</section>
+<section id="poll-validate-and-retrieve">
+<h2>Poll, validate and retrieve<a class="headerlink" href="#poll-validate-and-retrieve" title="Link to this heading"></a></h2>
+<p>Use the integrator identity to GET /file/list?details=1; find the
+saved file UUID in the paginated ocs.data.data array. Common statuses:
+0 draft; 1 ready; 2 partially signed; 3 signed; 4 deleted. Check all
+required signers and envelope children before marking completion.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">FILE_UUID</span><span class="o">=</span>UUID_RETURNED_BY_START
+bash<span class="w"> </span>flow.sh<span class="w"> </span>check<span class="w">  </span><span class="c1"># or: php flow.php check</span>
+</pre></div>
+</div>
+<p>GET /file/validate/file_id/{fileId} enforces file access and returns
+available validation data. Public /file/validate/uuid/{uuid} is
+restricted by the private-validation policy, not unrestricted evidence
+access. Validation output is not a guaranteed standalone audit dossier.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">FILE_ID</span><span class="o">=</span>ID_RETURNED_BY_START
+bash<span class="w"> </span>flow.sh<span class="w"> </span>validate<span class="w">  </span><span class="c1"># or: php flow.php validate</span>
+</pre></div>
+</div>
+<p>The OCS specification has no generic binary GET /file/download/{id}.
+The public LibreSign PDF viewer is governed by validation privacy, not
+a general backend download authorization. Discover the actual signed
+file path in the integrator’s readable Nextcloud Files folder, using
+authenticated WebDAV PROPFIND if necessary. Then use WebDAV GET:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>/remote.php/dav/files/&lt;integration-user&gt;/&lt;encoded-signed-PDF-path&gt;
+</pre></div>
+</div>
+<p>Neither a LibreSign file ID, nodeId, signedNodeId nor sign-request UUID
+is a WebDAV path. After confirming the workflow is signed, locate the actual
+PDF in <strong>Nextcloud Files</strong> with the same authorized integration account (or
+use authenticated WebDAV PROPFIND to find the file’s path). Set the full URL
+with URL-encoded path segments and a private local destination; replace this
+illustrative path with the real authorized location:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">SIGNED_DAV_URL</span><span class="o">=</span><span class="s2">"</span><span class="nv">$NC_BASE_URL</span><span class="s2">/remote.php/dav/files/</span><span class="nv">$NC_USER</span><span class="s2">/Signed%20Documents/synthetic.pdf"</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">SIGNED_OUTPUT</span><span class="o">=</span><span class="s2">"</span><span class="nv">$HOME</span><span class="s2">/signed-synthetic.pdf"</span>
+bash<span class="w"> </span>flow.sh<span class="w"> </span>retrieve<span class="w">  </span><span class="c1"># or: php flow.php retrieve</span>
+</pre></div>
+</div>
+<p>Both clients require the App Password again for later commands (the Bash
+client reads <code class="docutils literal notranslate"><span class="pre">NC_NETRC</span></code>; the PHP client reads <code class="docutils literal notranslate"><span class="pre">NC_APP_PASSWORD</span></code>).
+Verify the downloaded PDF signature and certificate chain independently.
+Do not bypass file permissions or query LibreSign database tables directly.</p>
+</section>
+<section id="ordering-release-differences-errors-and-security">
+<h2>Ordering, release differences, errors and security<a class="headerlink" href="#ordering-release-differences-errors-and-security" title="Link to this heading"></a></h2>
+<p>Use separate signers[] records and signingOrder when ordered signing
+is configured. Sequential recipients are activated in order; parallel
+signers can act independently. files[] can create envelopes when enabled.
+The specific supported request options for this LibreSign release are
+documented above. Do not copy parameters from other major versions.</p>
+<p>Typical errors: 401 authentication; 403 file permission; 404 missing
+or inaccessible resource; 412 missing OCS header where enforced; 422
+validation or policy violation (inspect ocs.data.message/errors).
+Main notifications also document 500/502 for failed/unconfirmed
+transport; older contracts differ. POST is not generally idempotent:
+check for existing workflows before retrying after a timeout.</p>
+<p>Protect invitation links, App Passwords, signer metadata and PDFs.
+Poll with backoff; native webhooks require a separately verified
+LibreSign event contract for the deployed Nextcloud version.</p>
+<p>Validate browser signing, SMTP delivery and certificate trust on the target
+installation before relying on the integration. Contract checks alone do
+not establish operational compatibility.</p>
+<p>Consult the OpenAPI reference beside this page for exact schemas.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="API reference" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="openapi.html" class="btn btn-neutral float-right" title="OCS OpenAPI — versioned contract" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026 LibreCode coop.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+
+      </div>
+    </section>
+  </div>
+  
+
+
+<div class="rst-versions libresign-rst-versions"
+     id="libresign-release-picker"
+     data-version="14"
+     data-site-root=""
+     data-manual="developer_manual"
+     role="navigation"
+     aria-label="Documentation versions">
+  <button type="button" id="libresign-version-toggle" class="rst-current-version"
+          aria-label="LibreSign 14 documentation; choose version"
+          aria-controls="libresign-version-menu" aria-expanded="false">
+    <span class="libresign-version-current">LibreSign 14</span>
+    <span class="libresign-version-chevron" aria-hidden="true">▴</span>
+  </button>
+  <div id="libresign-version-menu" class="rst-other-versions" hidden>
+    <p class="libresign-version-menu-heading">Documentation versions</p>
+    <ul id="libresign-version-list" class="libresign-version-list">
+      
+        <li>
+          <a href="/main/developer_manual/"
+             data-version-target="main"
+             >
+            <span class="libresign-version-name">
+              main
+            </span>
+            <span class="libresign-version-detail">
+              Not released
+            </span>
+          </a>
+        </li>
+      
+        <li>
+          <a href="/15/developer_manual/"
+             data-version-target="15"
+             >
+            <span class="libresign-version-name">
+              LibreSign 15
+            </span>
+            <span class="libresign-version-detail">
+              Latest stable
+            </span>
+          </a>
+        </li>
+      
+        <li>
+          <a href="/14/developer_manual/"
+             data-version-target="14"
+             aria-current="true">
+            <span class="libresign-version-name">
+              LibreSign 14
+            </span>
+            <span class="libresign-version-detail">
+              NC 34
+            </span>
+          </a>
+        </li>
+      
+        <li>
+          <a href="/13/developer_manual/"
+             data-version-target="13"
+             >
+            <span class="libresign-version-name">
+              LibreSign 13
+            </span>
+            <span class="libresign-version-detail">
+              Oldest documented
+            </span>
+          </a>
+        </li>
+      
+    </ul>
+    <a class="libresign-all-versions" href="/">All versions and manuals</a>
+    <p id="libresign-version-notice" class="libresign-sr-only" role="status" aria-live="polite"></p>
+  </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+  
+<footer class="libresign-site-footer" aria-label="LibreSign site footer">
+  <div class="libresign-footer-container">
+    <div class="libresign-footer-main">
+      <div class="libresign-footer-about">
+        <a class="libresign-footer-brand" href="https://libresign.coop/" aria-label="LibreSign official website">
+          <img src="/logo.png" width="136" height="55" alt="LibreSign">
+        </a>
+        <p>Open source electronic signatures for Nextcloud. Request, sign, and validate documents on infrastructure you control.</p>
+        <a class="libresign-footer-cta" href="https://libresign.coop/pricing/">Plans and professional support</a>
+      </div>
+      <nav class="libresign-footer-nav" aria-label="Footer resources">
+        <div class="libresign-footer-column">
+          <h2>Documentation</h2>
+          <ul>
+            <li><a href="/">All versions</a></li>
+            <li><a href="/15/user_manual/">User manual</a></li>
+            <li><a href="/15/admin_manual/">Administrator manual</a></li>
+            <li><a href="/15/developer_manual/">Developer manual and API</a></li>
+            <li><a href="/15/lifecycle.html">Release lifecycle</a></li>
+          </ul>
+        </div>
+        <div class="libresign-footer-column">
+          <h2>Product</h2>
+          <ul>
+            <li><a href="https://libresign.coop/features/">Features</a></li>
+            <li><a href="https://libresign.coop/pricing/">Plans and pricing</a></li>
+            <li><a href="https://apps.nextcloud.com/apps/libresign">Nextcloud App Store</a></li>
+            <li><a href="https://libresign.coop/about/">About LibreSign</a></li>
+            <li><a href="https://libresign.coop/posts/">Blog</a></li>
+          </ul>
+        </div>
+        <div class="libresign-footer-column">
+          <h2>Community</h2>
+          <ul>
+            <li><a href="https://github.com/LibreSign/libresign">Source code</a></li>
+            <li><a href="https://github.com/LibreSign/libresign/blob/main/CONTRIBUTING.md">How to contribute</a></li>
+            <li><a href="https://github.com/LibreSign/documentation">Improve the documentation</a></li>
+            <li><a href="https://t.me/libresign">Community chat</a></li>
+          </ul>
+        </div>
+        <div class="libresign-footer-column">
+          <h2>Support</h2>
+          <ul>
+            <li><a href="https://libresign.coop/faq/">Frequently asked questions</a></li>
+            <li><a href="https://libresign.coop/contact-us/">Contact our team</a></li>
+            <li><a href="https://github.com/LibreSign/libresign/issues">Report a problem</a></li>
+            <li><a href="https://libresign.coop/brand/">Brand and pronunciation</a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+    <div class="libresign-footer-bottom">
+      <span>Developed by <a href="https://librecode.coop/">LibreCode cooperative</a>.</span>
+      <span>Documentation licensed under <a href="https://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>.</span>
+    </div>
+  </div>
+</footer>
+
+
+</body>
+</html>

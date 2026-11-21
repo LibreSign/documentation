@@ -1,0 +1,552 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>External signing with native webhooks &mdash; LibreSign Documentation 16.0.0-dev.3 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../_static/version-switcher.css?v=2caec843" />
+      <link rel="stylesheet" type="text/css" href="../_static/ecosystem-nav.css?v=2d662436" />
+      <link rel="stylesheet" type="text/css" href="../_static/ecosystem-footer.css?v=a963003a" />
+      <link rel="stylesheet" type="text/css" href="../_static/dark_mode_css/general.css?v=c0a7eb24" />
+      <link rel="stylesheet" type="text/css" href="../_static/dark_mode_css/dark.css?v=70edf1c7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=fac63cce"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=f281be69"></script>
+      <script src="../_static/version-switcher.js?v=9500aa06"></script>
+      <script src="../_static/ecosystem-nav.js?v=d00f03b9"></script>
+      <script src="../_static/scroll-navigation.js?v=96b42595"></script>
+      <script src="../_static/dark_mode_js/default_dark.js?v=fd565c74"></script>
+      <script src="../_static/dark_mode_js/theme_switcher.js?v=358d3910"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Translation" href="../translation.html" />
+    <link rel="prev" title="Signing workflow completed" href="signing_completion.html" /> 
+  <link rel="canonical" href="https://docs.libresign.coop/main/developer_manual/webhooks/external-signing-flow.html" />
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #184c4e" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../prologue/index.html">Prologue</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture and code map</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../error-handling.html">Error handling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/index.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development-workflow.html">Development workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../integration/index.html">Integration architecture: choose a pattern</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Webhooks</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="event-catalog.html">LibreSign event catalog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html">Configure webhook deliveries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="signing_completion.html">Signing workflow completed</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">External signing with native webhooks</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#prepare-the-nextcloud-environment">1. Prepare the Nextcloud environment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#register-the-native-completion-event">2. Register the native completion event</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#create-the-request-without-an-initial-invitation">3. Create the request without an initial invitation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#send-the-invitation-explicitly">4. Send the invitation explicitly</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sign-without-a-nextcloud-session">5. Sign without a Nextcloud session</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#receive-authenticate-and-correlate-the-event">6. Receive, authenticate and correlate the event</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#recover-and-validate-the-signed-document">7. Recover and validate the signed document</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#handle-envelopes-and-non-completion-states">8. Handle envelopes and non-completion states</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#integration-verification-checklist">Integration verification checklist</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../translation.html">Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../requesting-features.html">Requesting features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../release-process.html">Release process</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #184c4e" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">LibreSign Documentation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+  
+  <div class="libresign-manual-navigation libresign-scroll-header">
+    
+<div class="libresign-nav-shell">
+  <button class="libresign-nav-toggle" type="button" aria-controls="libresign-ecosystem-links"
+          aria-expanded="false" aria-label="Open LibreSign navigation">
+    <svg aria-hidden="true" viewBox="0 0 24 24" width="19" height="19" fill="none"
+         stroke="currentColor" stroke-width="1.9" stroke-linecap="round">
+      <path d="M4 6h16M4 12h16M4 18h16"/>
+    </svg>
+    <span>Menu</span>
+  </button>
+  <nav class="libresign-ecosystem-nav" id="libresign-ecosystem-links"
+       aria-label="LibreSign ecosystem">
+  <a class="libresign-nav-docs" href="/">Documentation</a>
+  <details class="libresign-nav-group">
+    <summary>Product</summary>
+    <div class="libresign-nav-menu">
+      <a href="https://libresign.coop/">LibreSign overview</a>
+      <a href="https://libresign.coop/features/">Features</a>
+      <a href="https://libresign.coop/pricing/">Plans and pricing</a>
+    </div>
+  </details>
+  <details class="libresign-nav-group">
+    <summary>Support</summary>
+    <div class="libresign-nav-menu">
+      <a href="/">Documentation</a>
+      <a href="https://libresign.coop/faq/">Frequently asked questions</a>
+      <a href="https://libresign.coop/contact-us/">Contact our team</a>
+      <a href="https://github.com/LibreSign/libresign/issues">Report a problem</a>
+    </div>
+  </details>
+  <details class="libresign-nav-group">
+    <summary>Community</summary>
+    <div class="libresign-nav-menu">
+      <a href="https://github.com/LibreSign/libresign">Source code</a>
+      <a href="https://github.com/LibreSign/libresign/blob/main/CONTRIBUTING.md">How to contribute</a>
+      <a href="https://t.me/libresign">Community chat</a>
+      <a href="https://apps.nextcloud.com/apps/libresign">Nextcloud App Store</a>
+    </div>
+  </details>
+  <details class="libresign-nav-group">
+    <summary>About</summary>
+    <div class="libresign-nav-menu">
+      <a href="https://libresign.coop/about/">About LibreSign</a>
+      <a href="https://libresign.coop/posts/">Blog</a>
+      <a href="https://librecode.coop/">LibreCode cooperative</a>
+    </div>
+  </details>
+    <a class="libresign-nav-quote" href="https://libresign.coop/pricing/">Request a quote</a>
+    <a class="libresign-nav-source" href="https://github.com/LibreSign/documentation"
+       aria-label="Documentation source on GitHub" title="Documentation source on GitHub">
+      <svg aria-hidden="true" viewBox="0 0 24 24" width="16" height="16"
+           fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+           stroke-linejoin="round">
+        <path d="M8 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-3"/>
+        <path d="M12 12 21 3M15 3h6v6"/>
+      </svg>
+      <span>Source</span>
+    </a>
+  </nav>
+</div>
+  </div>
+  
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Webhooks</a></li>
+      <li class="breadcrumb-item active">External signing with native webhooks</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/LibreSign/documentation/blob/main/developer_manual/webhooks/external-signing-flow.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="external-signing-with-native-webhooks">
+<h1>External signing with native webhooks<a class="headerlink" href="#external-signing-with-native-webhooks" title="Link to this heading"></a></h1>
+<p>This guide follows an <strong>existing external application</strong> that keeps its own
+interface and authentication. It creates a LibreSign signing request for
+a person <strong>without a Nextcloud account</strong>, controls the invitation, receives
+a signed-workflow event, then retrieves the final PDF with authorization.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Webhook Listeners delivers <strong>JSON event metadata</strong>, not the signed PDF.
+Configure an authenticated receiver in Nextcloud. Retrieve documents
+separately using credentials authorized for the signing request.</p>
+</div>
+<section id="prepare-the-nextcloud-environment">
+<h2>1. Prepare the Nextcloud environment<a class="headerlink" href="#prepare-the-nextcloud-environment" title="Link to this heading"></a></h2>
+<p>Enable Webhook Listeners and configure Nextcloud’s <strong>Cron</strong> background
+jobs. Ensure the server can reach the receiver over HTTPS and can deliver
+e-mail.</p>
+<p>As in Nextcloud’s official documentation, these <code class="docutils literal notranslate"><span class="pre">occ</span></code> examples specify
+subcommands without an installation-specific wrapper:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">occ app:enable webhook_listeners</span>
+<span class="go">occ background:cron</span>
+</pre></div>
+</div>
+<p>Use the Nextcloud CLI appropriate to your installation and privileges, as
+explained in <a class="reference internal" href="configuration.html"><span class="doc">Configure webhook deliveries</span></a>. Selecting Cron mode does <strong>not</strong> schedule
+<code class="docutils literal notranslate"><span class="pre">cron.php</span></code>: configure an actual scheduler and confirm that background jobs
+run, following the Nextcloud guidance linked there.</p>
+<p>For testing, use an SMTP capture server such as Mailpit. Use a dedicated
+Nextcloud integration account with an App Password and only the permissions
+needed to create requests and access its own PDFs.</p>
+</section>
+<section id="register-the-native-completion-event">
+<h2>2. Register the native completion event<a class="headerlink" href="#register-the-native-completion-event" title="Link to this heading"></a></h2>
+<p>An authorized <strong>Nextcloud administrator</strong> registers a webhook subscription
+using Webhook Listeners’ own OCS API, not LibreSign’s signing API.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">NC_URL</span><span class="o">=</span><span class="s2">"https://cloud.example.test"</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">NC_ADMIN</span><span class="o">=</span><span class="s2">"nextcloud-admin"</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">NC_ADMIN_APP_PASSWORD</span><span class="o">=</span><span class="s2">"&lt;from-secret-manager&gt;"</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">RECEIVER_URL</span><span class="o">=</span><span class="s2">"https://integrator.example.test/webhooks/libresign"</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">RECEIVER_SECRET</span><span class="o">=</span><span class="s2">"&lt;random-per-receiver-secret&gt;"</span>
+
+curl<span class="w"> </span>--fail-with-body<span class="w"> </span>-sS<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-u<span class="w"> </span><span class="s2">"</span><span class="nv">$NC_ADMIN</span><span class="s2">:</span><span class="nv">$NC_ADMIN_APP_PASSWORD</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"OCS-APIRequest: true"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Accept: application/json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--data-urlencode<span class="w"> </span><span class="s2">"httpMethod=POST"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--data-urlencode<span class="w"> </span><span class="s2">"uri=</span><span class="nv">$RECEIVER_URL</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--data-urlencode<span class="w"> </span><span class="s1">'event=OCA\Libresign\Events\SigningRequestCompletedEvent'</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--data-urlencode<span class="w"> </span><span class="s2">"authMethod=header"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--data-urlencode<span class="w"> </span><span class="s2">"authData[X-LibreSign-Webhook-Token]=</span><span class="nv">$RECEIVER_SECRET</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span><span class="s2">"</span><span class="nv">$NC_URL</span><span class="s2">/ocs/v2.php/apps/webhook_listeners/api/v1/webhooks"</span>
+</pre></div>
+</div>
+<p>Inspect both HTTP status and <code class="docutils literal notranslate"><span class="pre">ocs.meta.statuscode</span></code>. The receiver must
+reject requests without the expected secret. Leave <code class="docutils literal notranslate"><span class="pre">userIdFilter</span></code> unset
+for external signers, because the incoming wrapper’s <code class="docutils literal notranslate"><span class="pre">user</span></code> can be null.
+Exact administrative fields and authentication modes depend on the installed
+Nextcloud Webhook Listeners version; see <a class="reference internal" href="configuration.html"><span class="doc">Configure webhook deliveries</span></a>.</p>
+</section>
+<section id="create-the-request-without-an-initial-invitation">
+<h2>3. Create the request without an initial invitation<a class="headerlink" href="#create-the-request-without-an-initial-invitation" title="Link to this heading"></a></h2>
+<p>Authenticate as the <strong>integration requester</strong>, not the signer. Prepare a
+base64-encoded PDF and replace the sample <code class="docutils literal notranslate"><span class="pre">&lt;BASE64_PDF_BYTES&gt;</span></code> value.
+The signer’s e-mail is an identity method, not a Nextcloud username.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">NC_USER</span><span class="o">=</span><span class="s2">"integration-account"</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">NC_APP_PASSWORD</span><span class="o">=</span><span class="s2">"&lt;from-secret-manager&gt;"</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">API</span><span class="o">=</span><span class="s2">"</span><span class="nv">$NC_URL</span><span class="s2">/ocs/v2.php/apps/libresign/api/v1"</span>
+
+curl<span class="w"> </span>--fail-with-body<span class="w"> </span>-sS<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-u<span class="w"> </span><span class="s2">"</span><span class="nv">$NC_USER</span><span class="s2">:</span><span class="nv">$NC_APP_PASSWORD</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"OCS-APIRequest: true"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Accept: application/json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">'{</span>
+<span class="s1">    "name": "External contract",</span>
+<span class="s1">    "file": {"name": "contract.pdf", "base64": "&lt;BASE64_PDF_BYTES&gt;"},</span>
+<span class="s1">    "status": 1,</span>
+<span class="s1">    "signers": [{</span>
+<span class="s1">      "displayName": "External signer",</span>
+<span class="s1">      "notify": 0,</span>
+<span class="s1">      "identifyMethods": [{</span>
+<span class="s1">        "method": "email",</span>
+<span class="s1">        "value": "signer@example.test",</span>
+<span class="s1">        "requirement": "required"</span>
+<span class="s1">      }]</span>
+<span class="s1">    }]</span>
+<span class="s1">  }'</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span><span class="s2">"</span><span class="nv">$API</span><span class="s2">/request-signature"</span>
+</pre></div>
+</div>
+<p>Capture the returned file <code class="docutils literal notranslate"><span class="pre">id</span></code> and workflow <code class="docutils literal notranslate"><span class="pre">uuid</span></code>. Confirm the
+request is <code class="docutils literal notranslate"><span class="pre">Able</span> <span class="pre">to</span> <span class="pre">sign</span></code> (status 1) before inviting anyone.
+With <code class="docutils literal notranslate"><span class="pre">notify:</span> <span class="pre">0</span></code>, LibreSign does not send the initial invitation.
+Verify the absence of an invitation in the test mail transport.</p>
+</section>
+<section id="send-the-invitation-explicitly">
+<h2>4. Send the invitation explicitly<a class="headerlink" href="#send-the-invitation-explicitly" title="Link to this heading"></a></h2>
+<p>Send it using LibreSign’s authenticated endpoint:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">FILE_ID</span><span class="o">=</span><span class="s2">"123"</span><span class="w">  </span><span class="c1"># replace with the returned request ID</span>
+
+curl<span class="w"> </span>--fail-with-body<span class="w"> </span>-sS<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-u<span class="w"> </span><span class="s2">"</span><span class="nv">$NC_USER</span><span class="s2">:</span><span class="nv">$NC_APP_PASSWORD</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"OCS-APIRequest: true"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">'{"fileId":123,"signers":[{"email":"signer@example.test"}]}'</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span><span class="s2">"</span><span class="nv">$API</span><span class="s2">/notify/signers"</span>
+</pre></div>
+</div>
+<p>Replace the example numeric ID in the JSON. This endpoint lets <strong>LibreSign</strong>
+send the signer’s invitation; it does not provide a contract for extracting
+or constructing a secret signing URL. Verify that the explicit request
+produced the intended invitation without duplication. An HTTP success
+response is not proof of delivery to the recipient.</p>
+</section>
+<section id="sign-without-a-nextcloud-session">
+<h2>5. Sign without a Nextcloud session<a class="headerlink" href="#sign-without-a-nextcloud-session" title="Link to this heading"></a></h2>
+<p>Open the invitation URL in a fresh browser profile <strong>without Nextcloud
+authentication</strong>. Complete the signing method permitted by the configured
+policy, such as <code class="docutils literal notranslate"><span class="pre">clickToSign</span></code>. Email-token signing may require a
+separate verification e-mail; the authentication policy determines the steps.</p>
+<p>For multiple signers, the first signature may leave the document
+<code class="docutils literal notranslate"><span class="pre">Partially</span> <span class="pre">signed</span></code>. That state is <strong>not</strong> a completion event. For an
+envelope, wait for the parent envelope workflow to complete, not merely
+one child PDF.</p>
+</section>
+<section id="receive-authenticate-and-correlate-the-event">
+<h2>6. Receive, authenticate and correlate the event<a class="headerlink" href="#receive-authenticate-and-correlate-the-event" title="Link to this heading"></a></h2>
+<p>Nextcloud queues a <code class="docutils literal notranslate"><span class="pre">WebhookCall</span></code> background job. Cron performs an
+asynchronous HTTP POST; the event is <strong>not delivered synchronously</strong> by
+the signing endpoint. The receiver verifies the configured header, parses
+the JSON body, and checks:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">event.class</span></code> equals
+<code class="docutils literal notranslate"><span class="pre">OCA\Libresign\Events\SigningRequestCompletedEvent</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">event.contractVersion</span></code> equals <code class="docutils literal notranslate"><span class="pre">1</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">event.status</span></code> equals <code class="docutils literal notranslate"><span class="pre">completed</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">event.requestUuid</span></code> maps to a request controlled by this integrator.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">event.eventId</span></code> has not already been processed successfully.</p></li>
+</ul>
+<p>For the JSON shape, including <code class="docutils literal notranslate"><span class="pre">requestType</span></code> (<code class="docutils literal notranslate"><span class="pre">document</span></code> or
+<code class="docutils literal notranslate"><span class="pre">envelope</span></code>) and an optional null <code class="docutils literal notranslate"><span class="pre">user</span></code>, see
+<a class="reference internal" href="signing_completion.html"><span class="doc">Signing workflow completed</span></a>. Persist the event ID and return a 2xx when
+accepted. Do not expect exactly-once delivery, guaranteed ordering, or
+automatic retries; run periodic, bounded reconciliation independently.</p>
+</section>
+<section id="recover-and-validate-the-signed-document">
+<h2>7. Recover and validate the signed document<a class="headerlink" href="#recover-and-validate-the-signed-document" title="Link to this heading"></a></h2>
+<p>The event does not contain the PDF or authorize its download.
+Using the <strong>requesting account’s</strong> credentials, reconcile the current
+state and determine the actual authorized file path:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>--fail-with-body<span class="w"> </span>-sS<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-u<span class="w"> </span><span class="s2">"</span><span class="nv">$NC_USER</span><span class="s2">:</span><span class="nv">$NC_APP_PASSWORD</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"OCS-APIRequest: true"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Accept: application/json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span><span class="s2">"</span><span class="nv">$API</span><span class="s2">/file/list?details=1&amp;fileIds%5B%5D=</span><span class="nv">$FILE_ID</span><span class="s2">"</span>
+</pre></div>
+</div>
+<p>Check the intended entry’s <code class="docutils literal notranslate"><span class="pre">status</span></code>, <code class="docutils literal notranslate"><span class="pre">uuid</span></code> and file/envelope
+membership. Resolve the final signed file through the authorized account’s
+file listing. <strong>Never derive a WebDAV path from the webhook UUID.</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">SIGNED_DAV_URL</span><span class="o">=</span><span class="s2">"https://cloud.example.test/remote.php/dav/files/integration-account/Contracts/contract.signed.pdf"</span>
+
+curl<span class="w"> </span>--fail-with-body<span class="w"> </span>-sS<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-u<span class="w"> </span><span class="s2">"</span><span class="nv">$NC_USER</span><span class="s2">:</span><span class="nv">$NC_APP_PASSWORD</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-o<span class="w"> </span>signed-contract.pdf<span class="w"> </span><span class="s2">"</span><span class="nv">$SIGNED_DAV_URL</span><span class="s2">"</span>
+
+pdfsig<span class="w"> </span>signed-contract.pdf
+</pre></div>
+</div>
+<p>The path above is <strong>illustrative</strong>; use the actual authorized path in
+your installation. Check the PDF signature’s cryptographic validity,
+coverage and trust chain separately. Verify that anonymous callers and
+other authenticated users <strong>cannot</strong> retrieve the document. Do not
+assume that the same HTTP denial status is used by every installation.</p>
+</section>
+<section id="handle-envelopes-and-non-completion-states">
+<h2>8. Handle envelopes and non-completion states<a class="headerlink" href="#handle-envelopes-and-non-completion-states" title="Link to this heading"></a></h2>
+<p>An envelope may remain in Draft after <code class="docutils literal notranslate"><span class="pre">POST</span> <span class="pre">/request-signature</span></code>,
+even when status 1 was requested. Read the returned state before
+notifying. Where authorized, use <code class="docutils literal notranslate"><span class="pre">PATCH</span> <span class="pre">/request-signature</span></code> with
+the envelope <code class="docutils literal notranslate"><span class="pre">uuid</span></code> and <code class="docutils literal notranslate"><span class="pre">status:</span> <span class="pre">1</span></code> to make it ready for signing.
+The completion event for an envelope has <code class="docutils literal notranslate"><span class="pre">requestType:</span> <span class="pre">&quot;envelope&quot;</span></code>.</p>
+<p>When rejection policy <code class="docutils literal notranslate"><span class="pre">cancel</span></code> ends the workflow in Canceled
+(status 6), it does <strong>not</strong> emit a completion event. Subscribe to
+<code class="docutils literal notranslate"><span class="pre">SigningRequestCanceledEvent</span></code> to handle workflow cancellation and
+<code class="docutils literal notranslate"><span class="pre">SignerRejectedWebhookEvent</span></code> to handle individual rejections.
+Reconcile the authoritative state with authenticated API requests.</p>
+</section>
+<section id="integration-verification-checklist">
+<h2>Integration verification checklist<a class="headerlink" href="#integration-verification-checklist" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p>Register the native event subscription in Nextcloud and secure the
+receiver using the authentication mechanism supported by your installation.</p></li>
+<li><p>Create a request with an external email signer and <code class="docutils literal notranslate"><span class="pre">notify:</span> <span class="pre">0</span></code>; confirm
+that no invitation is sent before calling <code class="docutils literal notranslate"><span class="pre">/notify/signers</span></code>.</p></li>
+<li><p>Complete signing in a browser without a Nextcloud session. Verify
+the authenticated HTTP POST from Nextcloud’s background-job worker.</p></li>
+<li><p>Match the event’s <code class="docutils literal notranslate"><span class="pre">requestUuid</span></code> to a request owned by the integrator,
+deduplicate using <code class="docutils literal notranslate"><span class="pre">eventId</span></code> and reconcile the current workflow state.</p></li>
+<li><p>Recover and validate the signed PDF using an authorized Nextcloud account.
+Confirm that unrelated and unauthenticated callers cannot download it.</p></li>
+</ol>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="signing_completion.html" class="btn btn-neutral float-left" title="Signing workflow completed" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../translation.html" class="btn btn-neutral float-right" title="Translation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026 LibreCode coop.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+
+      </div>
+    </section>
+  </div>
+  
+
+
+<div class="rst-versions libresign-rst-versions"
+     id="libresign-release-picker"
+     data-version="main"
+     data-site-root=""
+     data-manual="developer_manual"
+     role="navigation"
+     aria-label="Documentation versions">
+  <button type="button" id="libresign-version-toggle" class="rst-current-version"
+          aria-label="Development documentation for upcoming LibreSign release (not released), main branch; choose version"
+          aria-controls="libresign-version-menu" aria-expanded="false">
+    <span class="libresign-version-current">Upcoming · main</span>
+    <span class="libresign-version-chevron" aria-hidden="true">▴</span>
+  </button>
+  <div id="libresign-version-menu" class="rst-other-versions" hidden>
+    <p class="libresign-version-menu-heading">Documentation versions</p>
+    <ul id="libresign-version-list" class="libresign-version-list">
+      
+        <li>
+          <a href="/main/developer_manual/"
+             data-version-target="main"
+             aria-current="true">
+            <span class="libresign-version-name">
+              main
+            </span>
+            <span class="libresign-version-detail">
+              Not released
+            </span>
+          </a>
+        </li>
+      
+        <li>
+          <a href="/15/developer_manual/"
+             data-version-target="15"
+             >
+            <span class="libresign-version-name">
+              LibreSign 15
+            </span>
+            <span class="libresign-version-detail">
+              Latest stable
+            </span>
+          </a>
+        </li>
+      
+        <li>
+          <a href="/14/developer_manual/"
+             data-version-target="14"
+             >
+            <span class="libresign-version-name">
+              LibreSign 14
+            </span>
+            <span class="libresign-version-detail">
+              NC 34
+            </span>
+          </a>
+        </li>
+      
+        <li>
+          <a href="/13/developer_manual/"
+             data-version-target="13"
+             >
+            <span class="libresign-version-name">
+              LibreSign 13
+            </span>
+            <span class="libresign-version-detail">
+              Oldest documented
+            </span>
+          </a>
+        </li>
+      
+    </ul>
+    <a class="libresign-all-versions" href="/">All versions and manuals</a>
+    <p id="libresign-version-notice" class="libresign-sr-only" role="status" aria-live="polite"></p>
+  </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+  
+<footer class="libresign-site-footer" aria-label="LibreSign site footer">
+  <div class="libresign-footer-container">
+    <div class="libresign-footer-main">
+      <div class="libresign-footer-about">
+        <a class="libresign-footer-brand" href="https://libresign.coop/" aria-label="LibreSign official website">
+          <img src="/logo.png" width="136" height="55" alt="LibreSign">
+        </a>
+        <p>Open source electronic signatures for Nextcloud. Request, sign, and validate documents on infrastructure you control.</p>
+        <a class="libresign-footer-cta" href="https://libresign.coop/pricing/">Plans and professional support</a>
+      </div>
+      <nav class="libresign-footer-nav" aria-label="Footer resources">
+        <div class="libresign-footer-column">
+          <h2>Documentation</h2>
+          <ul>
+            <li><a href="/">All versions</a></li>
+            <li><a href="/15/user_manual/">User manual</a></li>
+            <li><a href="/15/admin_manual/">Administrator manual</a></li>
+            <li><a href="/15/developer_manual/">Developer manual and API</a></li>
+            <li><a href="/15/lifecycle.html">Release lifecycle</a></li>
+          </ul>
+        </div>
+        <div class="libresign-footer-column">
+          <h2>Product</h2>
+          <ul>
+            <li><a href="https://libresign.coop/features/">Features</a></li>
+            <li><a href="https://libresign.coop/pricing/">Plans and pricing</a></li>
+            <li><a href="https://apps.nextcloud.com/apps/libresign">Nextcloud App Store</a></li>
+            <li><a href="https://libresign.coop/about/">About LibreSign</a></li>
+            <li><a href="https://libresign.coop/posts/">Blog</a></li>
+          </ul>
+        </div>
+        <div class="libresign-footer-column">
+          <h2>Community</h2>
+          <ul>
+            <li><a href="https://github.com/LibreSign/libresign">Source code</a></li>
+            <li><a href="https://github.com/LibreSign/libresign/blob/main/CONTRIBUTING.md">How to contribute</a></li>
+            <li><a href="https://github.com/LibreSign/documentation">Improve the documentation</a></li>
+            <li><a href="https://t.me/libresign">Community chat</a></li>
+          </ul>
+        </div>
+        <div class="libresign-footer-column">
+          <h2>Support</h2>
+          <ul>
+            <li><a href="https://libresign.coop/faq/">Frequently asked questions</a></li>
+            <li><a href="https://libresign.coop/contact-us/">Contact our team</a></li>
+            <li><a href="https://github.com/LibreSign/libresign/issues">Report a problem</a></li>
+            <li><a href="https://libresign.coop/brand/">Brand and pronunciation</a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+    <div class="libresign-footer-bottom">
+      <span>Developed by <a href="https://librecode.coop/">LibreCode cooperative</a>.</span>
+      <span>Documentation licensed under <a href="https://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>.</span>
+    </div>
+  </div>
+</footer>
+
+
+</body>
+</html>
