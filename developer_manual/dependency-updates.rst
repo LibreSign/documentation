@@ -2,7 +2,7 @@
 .. SPDX-License-Identifier: CC-BY-3.0
 
 Updating vendored dependencies
-=============================
+==============================
 
 LibreSign's scoped PHP dependencies are maintained in the
 `LibreSign/3rdparty repository <https://github.com/LibreSign/3rdparty>`_,
