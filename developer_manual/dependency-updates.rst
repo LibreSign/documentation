@@ -82,16 +82,31 @@ Follow :doc:`getting-started/tests` for the affected test matrix.
 When the source PR was merged early
 -----------------------------------
 
-A merged 3rdparty PR cannot reliably run the original PR-creation flow
-again. Create a **separate, narrowly scoped** LibreSign PR targeting the
-corresponding code branch. Its only change should be the ``3rdparty``
-gitlink pointing directly to the **source merge SHA**.
+Once the merged-source-safe workflow is active in LibreSign/3rdparty, a
+maintainer may post ``/libresign-pr`` on an **already merged** source PR.
+The workflow resolves the **actual source merge commit SHA**, rather than
+depending on the source branch still existing, and generates the Composer
+diff relative to the merge's first parent.
 
-Create a new cryptographically signed, DCO-compliant commit and run the
-normal LibreSign CI. Do not try to reconstruct the old source PR, amend
-reviewed commits or force-push to substitute a merge SHA. The prior
+This route accepts a two-parent merge commit, verifies that the target
+``3rdparty`` gitlink would advance rather than move backward or sideways,
+and creates a matching LibreSign PR referencing the **merged SHA directly**.
+Do not run ``/update-3rdparty`` again for that same SHA. Review the source
+merge commit's signature and matching DCO sign-off separately: green
+checks on the source PR head do not prove the merge commit is compliant.
+The destination LibreSign PR must pass its own CI and normal review.
+
+If a destination branch or PR already exists, inspect and continue it
+instead of creating a duplicate. If this automation is unavailable or
+rejects the source (for example, it was squash-merged rather than merged
+with two parents), follow the manual update instructions below: create a
+**separate, narrowly scoped** LibreSign PR targeting the corresponding
+code branch and update only the ``3rdparty`` gitlink to the source merge
+SHA. Create a new verified signed/DCO commit, verify LibreSign CI, and do
+not reconstruct the source PR, amend reviewed commits or force-push.
+The prior
 `LibreSign integration PR #9590 <https://github.com/LibreSign/libresign/pull/9590>`_
-illustrates this fallback.
+illustrates the manual fallback.
 
 Manual update when automation is unavailable
 --------------------------------------------
