@@ -104,9 +104,6 @@ with two parents), follow the manual update instructions below: create a
 code branch and update only the ``3rdparty`` gitlink to the source merge
 SHA. Create a new verified signed/DCO commit, verify LibreSign CI, and do
 not reconstruct the source PR, amend reviewed commits or force-push.
-The prior
-`LibreSign integration PR #9590 <https://github.com/LibreSign/libresign/pull/9590>`_
-illustrates the manual fallback.
 
 Manual update when automation is unavailable
 --------------------------------------------
@@ -157,7 +154,8 @@ Troubleshooting
   subsequent command only after confirming the revised commit.
 * **Destination branch or PR already exists:** Inspect and continue that
   PR rather than creating a duplicate or overwriting its branch.
-* **Source PR already merged:** Use the direct gitlink PR procedure above.
+* **Source PR already merged:** Use ``/libresign-pr`` if the merged-source
+  workflow is available; otherwise follow the manual gitlink procedure.
 * **Destination checks fail:** Diagnose the LibreSign integration independently
   of the successful 3rdparty Composer checks.
 
