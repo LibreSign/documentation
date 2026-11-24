@@ -43,5 +43,6 @@ Visit our `blog <https://libresign.coop/posts/>`__
 
    start
    functionality
+   external_signing
    faq
    suport

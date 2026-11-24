@@ -44,3 +44,4 @@ Visit our `blog <https://libresign.coop/posts/>`__
    configuration
    maintenance
    security
+   csc
