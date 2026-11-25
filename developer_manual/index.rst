@@ -49,6 +49,7 @@ For professional services or partnerships,
 
    prologue/index
    architecture
+   architecture/policy-workbench
    error-handling
    getting-started/index
    development-workflow
