@@ -1,0 +1,124 @@
+/* Shared site footer for the overview and versioned Sphinx manuals. */
+.libresign-site-footer {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 52px 0 22px;
+  background: #123e40;
+  color: #e7f1ee;
+  font: 400 14px/1.65 system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+.libresign-site-footer *,
+.libresign-site-footer *::before,
+.libresign-site-footer *::after { box-sizing: border-box; }
+.libresign-site-footer a {
+  color: #c9eee4;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+.libresign-site-footer a:hover {
+  color: #fff;
+  border-bottom-color: currentColor;
+}
+.libresign-site-footer a:focus-visible {
+  outline: 3px solid #f4ce70;
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+.libresign-footer-container {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+.libresign-footer-main {
+  display: grid;
+  grid-template-columns: minmax(230px, 1.25fr) minmax(0, 3fr);
+  gap: clamp(28px, 4vw, 64px);
+  align-items: start;
+}
+.libresign-footer-brand {
+  display: inline-block;
+  border: 0 !important;
+}
+.libresign-footer-brand img {
+  display: block;
+  width: 136px;
+  height: auto;
+  max-width: 100%;
+  object-fit: contain;
+}
+.libresign-footer-about p {
+  max-width: 290px;
+  margin: 18px 0;
+  color: #c4d9d5;
+}
+.libresign-footer-cta {
+  display: inline-block;
+  padding: 9px 14px;
+  border: 1px solid #a9d9cd !important;
+  border-radius: 5px;
+  font-weight: 650;
+}
+.libresign-footer-cta:hover { background: #236567; }
+.libresign-footer-nav {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px;
+  align-items: start;
+}
+.libresign-site-footer .libresign-footer-column h2 {
+  margin: 0 0 17px;
+  padding: 0;
+  border: 0;
+  color: #fff;
+  font: 700 15px/1.4 system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+.libresign-footer-column ul {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.libresign-footer-column li { margin: 0; padding: 0; }
+.libresign-footer-column li a {
+  display: inline-block;
+  padding: 2px 0;
+  overflow-wrap: anywhere;
+}
+.libresign-footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 6px 24px;
+  margin-top: 46px;
+  padding-top: 20px;
+  border-top: 1px solid #426668;
+  color: #b9d0cb;
+  font-size: 12px;
+}
+/* The RTD sidebar occupies 300px on desktop. Keep the footer beneath the
+   content pane rather than underneath the fixed navigation. */
+@media (min-width: 769px) {
+  body.wy-body-for-nav > .libresign-site-footer { margin-left: 300px; }
+}
+@media (max-width: 1250px) {
+  .libresign-footer-main { grid-template-columns: minmax(0, 1fr); }
+  .libresign-footer-about p { max-width: 540px; }
+}
+@media (max-width: 960px) {
+  .libresign-footer-nav { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 30px; }
+}
+@media (max-width: 580px) {
+  .libresign-site-footer { padding-top: 36px; }
+  .libresign-footer-container { padding: 0 22px; }
+  .libresign-footer-nav {
+    gap: 24px 18px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .libresign-footer-about p { max-width: 26rem; }
+  .libresign-footer-bottom { margin-top: 30px; }
+}
+}
+@media (max-width: 350px) {
+  .libresign-footer-nav { grid-template-columns: minmax(0, 1fr); }
+}
